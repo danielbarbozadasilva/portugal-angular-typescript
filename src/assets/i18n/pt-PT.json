@@ -1,0 +1,19 @@
+{
+    "APP_TITLE": "Aplicação Bancária",
+    "LOGIN": {
+      "TITLE": "Iniciar sessão",
+      "USERNAME": "Utilizador",
+      "PASSWORD": "Palavra-passe",
+      "BUTTON": "Entrar",
+      "REGISTER_LINK": "Ainda não está registado? Registe-se"
+    },
+    "REGISTER": {
+      "TITLE": "Registo",
+      "USERNAME": "Nome de utilizador",
+      "PASSWORD": "Palavra-passe",
+      "EMAIL": "Correio eletrónico",
+      "BUTTON": "Registar",
+      "LOGIN_LINK": "Já tem conta? Inicie sessão"
+    }
+  }
+  

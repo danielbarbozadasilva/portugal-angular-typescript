@@ -1,0 +1,46 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">
+      {{ 'REGISTER.TITLE' | translate }}
+    </h2>
+  
+    <label class="block mb-2">
+      {{ 'REGISTER.USERNAME' | translate }}
+    </label>
+    <input
+      class="border rounded w-full mb-4 p-2"
+      [(ngModel)]="username"
+      type="text"
+    />
+  
+    <label class="block mb-2">
+      {{ 'REGISTER.PASSWORD' | translate }}
+    </label>
+    <input
+      class="border rounded w-full mb-4 p-2"
+      [(ngModel)]="password"
+      type="password"
+    />
+  
+    <label class="block mb-2">
+      {{ 'REGISTER.EMAIL' | translate }}
+    </label>
+    <input
+      class="border rounded w-full mb-4 p-2"
+      [(ngModel)]="email"
+      type="email"
+    />
+  
+    <button
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      (click)="onRegister()"
+    >
+      {{ 'REGISTER.BUTTON' | translate }}
+    </button>
+  
+    <div class="mt-4">
+      <a routerLink="/login" class="text-blue-600 hover:text-blue-800">
+        {{ 'REGISTER.LOGIN_LINK' | translate }}
+      </a>
+    </div>
+  </div>
+  

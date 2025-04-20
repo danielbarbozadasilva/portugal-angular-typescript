@@ -1,0 +1,19 @@
+{
+    "APP_TITLE": "Banking Application",
+    "LOGIN": {
+      "TITLE": "Login",
+      "USERNAME": "Username",
+      "PASSWORD": "Password",
+      "BUTTON": "Sign In",
+      "REGISTER_LINK": "Not registered yet? Sign up"
+    },
+    "REGISTER": {
+      "TITLE": "Register",
+      "USERNAME": "Username",
+      "PASSWORD": "Password",
+      "EMAIL": "Email",
+      "BUTTON": "Sign Up",
+      "LOGIN_LINK": "Already have an account? Login"
+    }
+  }
+  
