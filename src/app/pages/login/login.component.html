@@ -1,37 +1,36 @@
-<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-    <h2 class="text-xl font-semibold mb-4">
-      {{ 'LOGIN.TITLE' | translate }}
-    </h2>
-  
+<div class="max-w-md mx-auto mt-10 p-4 border border-gray-300 bg-white">
+  <h2 class="text-2xl mb-4 font-bold">Login</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <label class="block mb-2">
-      {{ 'LOGIN.USERNAME' | translate }}
+      <span>E-mail</span>
+      <input
+        formControlName="email"
+        type="email"
+        class="border w-full p-2"
+        placeholder="Informe seu e-mail"
+      />
     </label>
-    <input
-      class="border rounded w-full mb-4 p-2"
-      [(ngModel)]="username"
-      type="text"
-    />
-  
+
     <label class="block mb-2">
-      {{ 'LOGIN.PASSWORD' | translate }}
+      <span>Senha</span>
+      <input
+        formControlName="password"
+        type="password"
+        class="border w-full p-2"
+        placeholder="Informe sua senha"
+      />
     </label>
-    <input
-      class="border rounded w-full mb-4 p-2"
-      [(ngModel)]="password"
-      type="password"
-    />
-  
+
     <button
-      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      (click)="onLogin()"
+      type="submit"
+      class="bg-blue-600 text-white px-4 py-2 mt-2"
     >
-      {{ 'LOGIN.BUTTON' | translate }}
+      Entrar
     </button>
-  
-    <div class="mt-4">
-      <a routerLink="/register" class="text-blue-600 hover:text-blue-800">
-        {{ 'LOGIN.REGISTER_LINK' | translate }}
-      </a>
-    </div>
+  </form>
+
+  <div class="mt-4 text-red-500" *ngIf="(error$ | async) as errorMsg">
+    Erro: {{ errorMsg }}
   </div>
-  
+</div>

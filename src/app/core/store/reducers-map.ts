@@ -2,7 +2,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import { AuthState, authReducer } from './auth/auth.reducer';
 import { ActivityState, activityReducer } from './activity/activity.reducer';
 import { AgentState, agentReducer } from './agent/agent.reducer';
-import { AuditLogState, auditLogReducer } from './auditlog/audit-log.reducer';
+import { AuditLogState, auditLogReducer } from './auditlog/auditlog.reducer';
 import { ClientState, clientReducer } from './client/client.reducer';
 import { ContentPageState, contentPageReducer } from './content-page/content-page.reducer';
 import { GroupState, groupReducer } from './group/group.reducer';

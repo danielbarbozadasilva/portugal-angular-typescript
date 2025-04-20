@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IAuthResponse } from '../models/user.model';
-import { environment } from '../../../environments/environment'; // Se tiver um environment
+import { IAuthResponse } from '../models/models.index';
+import { environment } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = environment.apiBaseUrl; // Ajuste para sua API
+  private baseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +22,7 @@ export class AuthService {
     return this.http.post<any>(url, { _id: userId });
   }
 
-  public refreshToken(userId: string): Observable<any> {
+  public refreshToken(userId: any): Observable<any> {
     const url = `${this.baseUrl}/auth/refresh-token`;
     return this.http.post<any>(url, { _id: userId });
   }

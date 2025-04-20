@@ -9,7 +9,7 @@ import { reducers } from './reducers-map';
 import { AuthEffects } from './auth/auth.effects';
 import { ActivityEffects } from './activity/activity.effects';
 import { AgentEffects } from './agent/agent.effects';
-import { AuditLogEffects } from './auditlog/audit-log.effects';
+import { AuditLogEffects } from './auditlog/auditlog.effects';
 import { ClientEffects } from './client/client.effects';
 import { ContentPageEffects } from './content-page/content-page.effects';
 import { GroupEffects } from './group/group.effects';
@@ -38,9 +38,9 @@ import { UserEffects } from './user/user.effects';
       RatingEffects,
       SolicitationEffects,
       SolicitationCartEffects,
-      UserEffects,
-    ]),
+      UserEffects
+    ])
   ],
-  exports: [],
+  exports: []
 })
 export class AppStoreModule {}

@@ -1,82 +1,68 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { AuthService } from '../../../core/authentication/auth.service';
 import * as AuthActions from './auth.actions';
-import { AuthService } from '../../authentication/auth.service';
-import { switchMap, map, catchError, of, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { catchError, map, mergeMap, of } from 'rxjs';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private actions$: Actions,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
-  // Exemplo de efeito de login
-  login$ = createEffect(() =>
+  signIn$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.loginRequest),
-      switchMap(({ username, password }) => {
-        // Exemplo simulado:
-        // Aqui você chamaria um serviço HTTP real; vamos simular uma resposta:
-        if (username === 'admin' && password === 'admin') {
-          const token = 'FAKE-TOKEN-123';
-          return of(AuthActions.loginSuccess({ token }));
-        } else {
-          return of(AuthActions.loginFailure({ error: 'Invalid credentials' }));
-        }
-      })
+      ofType(AuthActions.signIn),
+      mergeMap(({ email, password }) =>
+        this.authService.signIn(email, password).pipe(
+          map(response => AuthActions.signInSuccess({ response })),
+          catchError(error => of(AuthActions.signInFailure({ error })))
+        )
+      )
     )
   );
 
-  // Ao ter sucesso no login, salvar token no localStorage via AuthService
-  loginSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loginSuccess),
-        tap(({ token }) => {
-          this.authService.setToken(token);
-          this.router.navigate(['/dashboard']);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  // Efeito de register
-  register$ = createEffect(() =>
+  logout$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.registerRequest),
-      switchMap(({ username, password, email }) => {
-        // Simulação de sucesso, substitua por chamada HTTP real
-        return of(AuthActions.registerSuccess());
-      }),
-      catchError((error) => of(AuthActions.registerFailure({ error })))
+      ofType(AuthActions.logout),
+      mergeMap(({ userId }) =>
+        this.authService.logout(userId).pipe(
+          map(() => AuthActions.logoutSuccess()),
+          catchError(error => of(AuthActions.logoutFailure({ error })))
+        )
+      )
     )
   );
 
-  // Após registerSuccess, redirecionar para login
-  registerSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.registerSuccess),
-        tap(() => {
-          this.router.navigate(['/login']);
-        })
-      ),
-    { dispatch: false }
+  refreshToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.refreshToken),
+      mergeMap(({ userId }) =>
+        this.authService.refreshToken(userId).pipe(
+          map(result => {
+            if (result && result.success && result.data && result.data.token) {
+              return AuthActions.refreshTokenSuccess({ newToken: result.data.token });
+            }
+            return AuthActions.refreshTokenFailure({ error: 'Token não retornado' });
+          }),
+          catchError(error => of(AuthActions.refreshTokenFailure({ error })))
+        )
+      )
+    )
   );
 
-  // LOGOUT
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          this.authService.clearToken();
-          this.router.navigate(['/login']);
-        })
-      ),
-    { dispatch: false }
+  checkToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkToken),
+      mergeMap(({ token }) =>
+        this.authService.checkToken(token).pipe(
+          map(resp => {
+            return AuthActions.checkTokenSuccess({ valid: resp.success });
+          }),
+          catchError(error => of(AuthActions.checkTokenFailure({ error })))
+        )
+      )
+    )
   );
 }

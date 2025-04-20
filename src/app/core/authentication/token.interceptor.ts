@@ -1,37 +1,40 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
+  HttpEvent,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError, switchMap } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 import { Store } from '@ngrx/store';
-import { selectToken } from '../store/auth/auth.selectors';
-import { of } from 'rxjs';
-import { refreshToken } from '../store/auth/auth.actions';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { refreshTokenSuccess, refreshTokenFailure } from '../store/auth/auth.actions';
+import { selectToken, selectCurrentUser } from '../store/auth/auth.selectors';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private token: string | null = null;
-
-  constructor(private store: Store) {
-    // Escuta mudanças no token via NgRx
-    this.store.select(selectToken).subscribe(token => {
-      this.token = token;
+  private userId: string | null = null;
+  constructor(
+    private store: Store,
+    private authService: AuthService
+  ) {
+    // Sempre que o token mudar no Store, atualiza localmente
+    this.store.select(selectToken).subscribe(tk => {
+      this.token = tk;
+    });
+    this.store.select(selectCurrentUser).subscribe(tk => {
+      this.userId = tk;
     });
   }
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-
-    let authReq = request;
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    // Clona a requisição com token, se existir
+    let authReq = req;
     if (this.token) {
-      authReq = request.clone({
+      authReq = req.clone({
         setHeaders: {
           Authorization: `Bearer ${this.token}`
         }
@@ -41,9 +44,30 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Exemplo de como poderíamos tentar renovar token
-          return this.store.dispatch(refreshToken({ userId: '' })) as any;
+          // Exemplo de "refresh token" prático:
+          // 1) Chama um método do AuthService que retorna Observable<string> (o novo token)
+          return this.authService.refreshToken(this.userId).pipe(
+            switchMap((newToken: string) => {
+              // Dispara a action no store (opcional)
+              this.store.dispatch(refreshTokenSuccess({ newToken }));
+              // Clona a requisição novamente com o novo token
+              const newAuthReq = req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${newToken}`
+                }
+              });
+              // Reenvia a requisição original com o token renovado
+              return next.handle(newAuthReq);
+            }),
+            catchError((refreshError) => {
+              // Se der falha no refresh, podemos dispatch de logout ou algo do tipo
+              this.store.dispatch(refreshTokenFailure({ error: refreshError }));
+              // Propaga o erro original
+              return throwError(() => refreshError);
+            })
+          );
         }
+        // Se não for 401, apenas propaga o erro
         return throwError(() => error);
       })
     );
