@@ -1,0 +1,28 @@
+<!-- home.component.html -->
+<app-layout>
+  <!-- Container principal da Home -->
+  <div class="home-container w-full">
+    <!-- Seção de apresentação -->
+    <app-apresentation></app-apresentation>
+
+    <!-- Seção de busca e filtros de atividades -->
+    <app-search-activities
+      [activities]="activities"
+      [filters]="filters"
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (onFilterChange)="handleFilterChange($event.name, $event.value)"
+      (onSearch)="handleSearch()"
+      (onPageChange)="handlePageChange($event)">
+    </app-search-activities>
+
+    <!-- Seção do herói -->
+    <app-hero></app-hero>
+
+    <!-- Seção de destaques -->
+    <app-showcase></app-showcase>
+
+    <!-- Seção de gastronomia -->
+    <app-gastronomy></app-gastronomy>
+  </div>
+</app-layout>

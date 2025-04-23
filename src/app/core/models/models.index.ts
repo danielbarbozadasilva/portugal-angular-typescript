@@ -10,7 +10,7 @@ import { IGroup } from './models.group';
 import { IPaymentMethod } from './models.paymentMethod';
 import { IContentPage } from './models.contentPage';
 import { IAuditLog } from './models.auditLog';
-import { IAuth, IAuthResponse } from './models.auth';
+import { IAuth } from './models.auth';
 import { ISolicitationCartItem } from './models.solicitationCartItem';
 
 export type {
@@ -28,5 +28,4 @@ export type {
   IContentPage,
   IAuditLog,
   ISolicitationCartItem,
-  IAuthResponse
 };

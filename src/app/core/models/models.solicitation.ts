@@ -2,10 +2,10 @@ import { ISolicitationCartItem } from './models.solicitationCartItem';
 
 export interface ISolicitation {
   _id?: string;
-  cart: ISolicitationCartItem[];  // array de itens
+  cart: ISolicitationCartItem[];
   solicitationNumber: string;
-  client: string; // ID de Client
-  order?: string; // ID de Order
+  client: string;
+  order?: string; 
   canceled?: boolean;
   createdAt?: Date;
   updatedAt?: Date;

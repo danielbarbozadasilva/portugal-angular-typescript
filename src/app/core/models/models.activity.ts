@@ -1,36 +1,48 @@
-export type ActivityCategory = 'Passeio' | 'Excursão' | 'Evento' | 'Outro';
+export interface ILocationCoordinates {
+  type: string;
+  coordinates: number[];
+}
 
 export interface IActivity {
-  _id?: string;
+  locationCoordinates: ILocationCoordinates;
+  _id: string;
   name: string;
   description: string;
   shortDescription: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   location: string;
-  meetingPoint?: string;
+  meetingPoint: string;
   price: number;
   featured: boolean;
-  promotion?: string;
   images: string[];
-  videos?: string[];
+  videos: string[];
   totalSlots: number;
   bookedSlots: number;
   available: boolean;
-  notes?: string;
-  category: ActivityCategory;
-  language?: string;
-  agent: string[]; // IDs do Agent
-  rating: string[]; // IDs do Rating
-  likes: string[];  // IDs do Client
-  client: string[]; // IDs do Client
+  notes: string;
+  category: string;
+  agent: any[];
   shareCount: number;
-  groups: string[]; // IDs do Group
   allowedPaymentMethods: string[];
-  locationCoordinates: {
-    type: 'Point';
-    coordinates: number[];
-  };
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
+  rating: any[];
+  likes: any[];
+  client: any[];
+  groups: any[];
+  averageRating: number;
+}
+
+export interface IActivityFilters {
+  keyword: string;
+  category: string;
+  startDate: string;
+  endDate: string;
+  minPrice: string;
+  maxPrice: string;
+  language: string;
+  lat: string;
+  lng: string;
+  sort: string;
 }

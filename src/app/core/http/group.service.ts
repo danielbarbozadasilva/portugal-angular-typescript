@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environments';
   providedIn: 'root'
 })
 export class GroupService {
-  private baseUrl = `${environment.apiBaseUrl}/groups`; // Ajuste a rota
+  private baseUrl = `${environment.apiBaseUrl}/groups`;
 
   constructor(private http: HttpClient) {}
 

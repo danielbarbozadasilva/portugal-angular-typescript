@@ -10,7 +10,7 @@ export interface IAuth {
   };
 }
 
-interface UserMapper {
+export interface UserMapper {
   _id: string;
   username: string;
   name: string;
@@ -18,7 +18,7 @@ interface UserMapper {
   permissions: string;
 }
 
-interface TokenResult {
+export interface TokenResult {
   auth: boolean;
   token: string;
   refreshToken: string;
@@ -44,4 +44,48 @@ export interface IAuthResponse {
   createdAt?: Date;
   updatedAt?: Date;
   passwordRecoveryCode?: string;
+}
+
+export interface IAuthParams {
+  email: string;
+  recoveryCode: string;
+  newPassword: string;
+}
+
+export interface IDataResponse {
+  status: number;
+  success: boolean;
+  message: string;
+  data: Record<string, unknown>;
+}
+
+export interface IAuthResponse {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    token: string;
+    username: string;
+    name: string;
+    email: string;
+    permissions: string;
+  };
+}
+
+export interface IResponseError {
+  success: boolean;
+}
+
+export interface ITokenResponse {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    token: string;
+    refreshToken: {
+      data: string;
+      expiresIn: number;
+      iv: string;
+    };
+  };
 }

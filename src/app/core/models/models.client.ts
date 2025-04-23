@@ -20,6 +20,6 @@ export interface IClient {
   deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  paymentMethods?: string[]; // IDs do PaymentMethod
+  paymentMethods?: string[];
   interests?: string[];
 }

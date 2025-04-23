@@ -3,7 +3,7 @@ export type PaymentMethodBrand = 'Visa' | 'Mastercard' | 'American Express' | 'E
 
 export interface IPaymentMethod {
   _id?: string;
-  client: string;  // ID do Client
+  client: string;
   type: PaymentMethodType;
   brand?: PaymentMethodBrand;
   last4?: string;

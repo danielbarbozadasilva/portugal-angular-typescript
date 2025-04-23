@@ -1,6 +1,6 @@
 export interface IOrder {
   _id?: string;
-  solicitation: string; // ID de Solicitation
+  solicitation: string;
   type: string;
   situation: string;
   date?: Date;

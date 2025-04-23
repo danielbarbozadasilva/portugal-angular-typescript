@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environments';
   providedIn: 'root'
 })
 export class AuditLogService {
-  private baseUrl = `${environment.apiBaseUrl}/auditlogs`; // Ajuste conforme suas rotas
+  private baseUrl = `${environment.apiBaseUrl}/auditlogs`;
 
   constructor(private http: HttpClient) {}
 

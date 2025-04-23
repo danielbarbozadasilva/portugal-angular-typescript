@@ -1,41 +1,35 @@
-<div class="p-4 bg-gray-100 min-h-screen">
-  <header class="mb-4">
+<header class="bg-white shadow p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Título traduzido -->
     <h1 class="text-2xl font-bold">
       {{ 'APP_TITLE' | translate }}
     </h1>
-    <div class="mt-2">
-      <button
-        class="px-3 py-1 border rounded mr-2"
-        (click)="changeLanguage('pt-BR')"
-      >
+    <!-- Seletor de idioma -->
+    <div class="space-x-2">
+      <button class="px-3 py-1 border rounded hover:bg-gray-200" (click)="useLanguage('pt-BR')">
         pt-BR
       </button>
-      <button
-        class="px-3 py-1 border rounded mr-2"
-        (click)="changeLanguage('pt-PT')"
-      >
+      <button class="px-3 py-1 border rounded hover:bg-gray-200" (click)="useLanguage('pt-PT')">
         pt-PT
       </button>
-      <button
-        class="px-3 py-1 border rounded mr-2"
-        (click)="changeLanguage('en-US')"
-      >
+      <button class="px-3 py-1 border rounded hover:bg-gray-200" (click)="useLanguage('en-US')">
         en-US
       </button>
-      <button
-        class="px-3 py-1 border rounded mr-2"
-        (click)="changeLanguage('es-ES')"
-      >
+      <button class="px-3 py-1 border rounded hover:bg-gray-200" (click)="useLanguage('es-ES')">
         es-ES
       </button>
-      <button
-        class="px-3 py-1 border rounded"
-        (click)="changeLanguage('fr-FR')"
-      >
+      <button class="px-3 py-1 border rounded hover:bg-gray-200" (click)="useLanguage('fr-FR')">
         fr-FR
       </button>
     </div>
-  </header>
+  </div>
+</header>
 
+<main class="bg-gray-100 min-h-screen p-4">
+  <!-- Ponto único de montagem das rotas -->
   <router-outlet></router-outlet>
-</div>
+</main>
+
+<footer class="bg-white text-center p-4">
+  &copy; {{ currentYear }} {{ 'APP_TITLE' | translate }}.
+</footer>

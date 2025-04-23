@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import SolicitationCartService from '../../../core/http/solicitationsCartItem.service';
+import { SolicitationCartService } from '../../../core/http/solicitationsCartItem.service';
 import * as SolicitationCartActions from './solicitation-cart.actions';
 import { mergeMap, map, catchError, of } from 'rxjs';
 
@@ -9,7 +9,7 @@ export class SolicitationCartEffects {
   constructor(
     private actions$: Actions,
     private solicitationCartService: SolicitationCartService
-  ) {}
+  ) { }
 
   loadAllItems$ = createEffect(() =>
     this.actions$.pipe(

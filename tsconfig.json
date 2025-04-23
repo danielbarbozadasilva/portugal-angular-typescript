@@ -1,28 +1,36 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "downlevelIteration": true,
-    "importHelpers": true,
+    "baseUrl": "./src",
     "target": "es2020",
     "module": "es2020",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "allowJs": false,
-    "noEmitOnError": true,
-    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    /* Estrito e coerente */
     "strict": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": false,
+    "strictBindCallApply": true,
+    "noImplicitAny": true,
+    /* Decorators para Angular */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "sourceMap": true,
+    /* Erros e avisos */
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmitOnError": true,
+    /* Emit e interop */
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    /* Outras opções */
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

@@ -1,6 +1,11 @@
+/**
+ * @file activity.reducer.ts
+ * @description Define como o estado da aplicação é alterado em resposta às ações definidas no ActivityActions.
+ */
+
 import { createReducer, on } from '@ngrx/store';
 import * as ActivityActions from './activity.actions';
-import { IActivity } from '../../models/activity.model';
+import { IActivity } from '../../models/models.activity';
 
 export interface ActivityState {
   loading: boolean;
@@ -19,6 +24,7 @@ const initialState: ActivityState = {
 export const activityReducer = createReducer(
   initialState,
 
+  // Carregar todas as atividades
   on(ActivityActions.loadActivities, (state) => ({
     ...state,
     loading: true,
@@ -35,6 +41,7 @@ export const activityReducer = createReducer(
     error: error
   })),
 
+  // Carregar atividade por ID
   on(ActivityActions.loadActivityById, (state) => ({
     ...state,
     loading: true
@@ -50,6 +57,7 @@ export const activityReducer = createReducer(
     error: error
   })),
 
+  // Criar atividade
   on(ActivityActions.createActivity, (state) => ({
     ...state,
     loading: true
@@ -64,6 +72,7 @@ export const activityReducer = createReducer(
     error: error
   })),
 
+  // Atualizar atividade
   on(ActivityActions.updateActivity, (state) => ({
     ...state,
     loading: true
@@ -78,6 +87,7 @@ export const activityReducer = createReducer(
     error: error
   })),
 
+  // Deletar atividade
   on(ActivityActions.deleteActivity, (state) => ({
     ...state,
     loading: true

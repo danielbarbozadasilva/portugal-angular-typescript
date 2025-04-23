@@ -3,8 +3,8 @@ export interface IRating {
   name: string;
   text: string;
   score: number;
-  activity: string; // ID de Activity
-  client: string;   // ID de Client
+  activity: string; 
+  client: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

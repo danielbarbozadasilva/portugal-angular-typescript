@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environments';
   providedIn: 'root'
 })
 export class SolicitationCartService {
-  private baseUrl = `${environment.apiBaseUrl}/solicitationCartItem`; // Ajuste a rota
+  private baseUrl = `${environment.apiBaseUrl}/solicitationCartItem`;
 
   constructor(private http: HttpClient) {}
 

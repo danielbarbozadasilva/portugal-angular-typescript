@@ -5,7 +5,7 @@ export type PaymentGateway = 'Stripe' | 'PayPal' | 'Outro';
 
 export interface IAgent {
   _id?: string;
-  user?: string; // ID do usuário
+  user?: string;
   agentType: AgentType;
   companyName?: string;
   tradeName?: string;

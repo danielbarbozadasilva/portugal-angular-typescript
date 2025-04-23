@@ -1,6 +1,6 @@
 export interface ISolicitationCartItem {
   _id?: string;
-  activity: string; // ID de Activity
+  activity: string;
   name: string;
   description: string;
   shortDescription: string;

@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
@@ -30,7 +29,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const payload = this.registerForm.value;
+   // const payload = this.registerForm.value;
     // Exemplo: this.store.dispatch(createClient({ ...payload }));
     alert('Registro efetuado (exemplo). Implemente a lógica real.');
   }

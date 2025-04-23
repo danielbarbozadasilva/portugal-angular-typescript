@@ -1,0 +1,185 @@
+<div class="bg-[#0c1c59] text-white py-16 text-sm font-sans">
+  <div class="container mx-auto px-4">
+    <!-- Topo do Footer -->
+    <div class="border-b border-white/20 pb-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Col 1 -->
+      <div>
+        <h5 class="text-xl font-bold uppercase mb-2">{{ 'footer.top.title' | translate }}</h5>
+        <div class="w-10 h-1 bg-yellow-400 mb-3"></div>
+
+        <p class="text-gray-300 text-sm mb-1">
+          {{ 'footer.top.subtitle' | translate }} <strong>24/7</strong>
+        </p>
+
+        <!-- Phone -->
+        <div class="flex items-center gap-2 text-yellow-400 font-bold">
+          <!-- Ícone de telefone -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 5h2l3 5-2.2 2.2c.9 1.7 2.2 3.3 3.8 4.5l2.2-2.2 5 3v2c0 1.1-.9 2-2 2h-1C6.48 22 2 17.52 2 12V7c0-1.1.9-2 2-2z" />
+          </svg>
+          <span>{{ 'footer.top.phoneNumber' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Col 2 -->
+      <div>
+        <h5 class="text-xl font-bold uppercase mb-2">{{ 'footer.top.followUsTitle' | translate }}</h5>
+        <div class="w-10 h-1 bg-yellow-400 mb-3"></div>
+
+        <p class="text-gray-300 text-sm mb-3">
+          {{ 'footer.top.followUsText' | translate }}
+        </p>
+
+        <!-- Ícones Redes -->
+        <div class="flex gap-3">
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="#instagram">
+            IG
+          </a>
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="#twitter">
+            TW
+          </a>
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="#linkedin">
+            IN
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 3: Newsletter -->
+      <div class="bg-yellow-400 text-[#0c1c59] p-4 rounded flex flex-col justify-center">
+        <h6 class="font-bold mb-1 uppercase">
+          {{ 'footer.newsletter.title' | translate }}
+        </h6>
+        <p class="text-sm mb-2">
+          {{ 'footer.newsletter.subtitle' | translate }}
+        </p>
+
+        <form class="flex">
+          <input type="email" class="border-none rounded-l px-2 py-1 text-black w-full"
+                 [placeholder]="translate.instant('footer.newsletter.placeholder')" />
+          <button type="submit"
+                  class="bg-[#0c1c59] text-yellow-400 font-bold px-3 py-1 rounded-r hover:bg-white hover:text-[#0c1c59] transition">
+            {{ 'footer.newsletter.button' | translate }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Bottom do Footer -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Col 1: Contato -->
+      <div>
+        <h5 class="text-base font-bold uppercase mb-2">{{ 'footer.bottom.contactTitle' | translate }}</h5>
+        <div class="w-10 h-1 bg-yellow-400 mb-3"></div>
+        <p class="text-gray-300 text-sm leading-6">
+          {{ 'footer.bottom.contactAddressLine1' | translate }}<br>
+          {{ 'footer.bottom.contactAddressLine2' | translate }}
+        </p>
+        <p class="text-sm mt-2">
+          E-mail:
+          <a href="mailto:info@noropa.com" class="text-yellow-400 hover:underline">
+            {{ 'footer.bottom.contactEmail' | translate }}
+          </a>
+        </p>
+        <div class="flex gap-3 mt-2">
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="https://www.instagram.com/noropaviagenseturismo/" target="_blank">
+            IG
+          </a>
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="#twitter">
+            TW
+          </a>
+          <a class="border border-white rounded-full p-2 hover:bg-white hover:text-[#0c1c59] transition"
+             href="#linkedin">
+            IN
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Links Rápidos -->
+      <div>
+        <h5 class="text-base font-bold uppercase mb-2">
+          {{ 'footer.bottom.quickLinks' | translate }}
+        </h5>
+        <div class="w-10 h-1 bg-yellow-400 mb-3"></div>
+
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <ul class="space-y-2">
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#tour-search">
+                {{ 'footer.bottom.linkTourSearch' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#clients-say">
+                {{ 'footer.bottom.linkClientsSay' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#services">
+                {{ 'footer.bottom.linkServices' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#about-us">
+                {{ 'footer.bottom.linkAboutUs' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#orchid-grid">
+                {{ 'footer.bottom.linkGridView' | translate }}
+              </a>
+            </li>
+          </ul>
+          <ul class="space-y-2">
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#contact">
+                {{ 'footer.bottom.linkContact' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#team">
+                {{ 'footer.bottom.linkTeam' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#why-choose">
+                {{ 'footer.bottom.linkWhyChooseUs' | translate }}
+              </a>
+            </li>
+            <li>
+              <a class="text-gray-300 hover:text-yellow-400 transition" href="#home-tourism">
+                {{ 'footer.bottom.linkTourism' | translate }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Col 3: Instagram Fotos -->
+      <div>
+        <h5 class="text-base font-bold uppercase mb-2">
+          <a href="https://www.instagram.com/noropaviagenseturismo/" class="hover:text-yellow-400 transition"
+             target="_blank">
+            {{ 'footer.bottom.instagramTitle' | translate }}
+          </a>
+        </h5>
+        <div class="w-10 h-1 bg-yellow-400 mb-3"></div>
+        <!-- Grid de imagens "Instagram" -->
+        <div class="grid grid-cols-3 gap-2">
+          <img src="assets/img/1.png" alt="" class="w-full h-24 object-cover" />
+          <img src="assets/img/2.png" alt="" class="w-full h-24 object-cover" />
+          <img src="assets/img/4.png" alt="" class="w-full h-24 object-cover" />
+          <img src="assets/img/15.png" alt="" class="w-full h-24 object-cover" />
+          <img src="assets/img/19.png" alt="" class="w-full h-24 object-cover" />
+          <img src="assets/img/33.png" alt="" class="w-full h-24 object-cover" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

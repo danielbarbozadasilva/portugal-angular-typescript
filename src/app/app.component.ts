@@ -1,32 +1,42 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
+  standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  imports: [
+    CommonModule,   // para *ngIf, *ngFor, etc
+    RouterModule,   // para usar <router-outlet>
+    TranslateModule // para pipe 'translate'
+  ],
 })
 export class AppComponent {
-  title = 'atividades-turisticas-portugal';
+  // Propriedade usada no footer do template
+  public currentYear: number = new Date().getFullYear();
 
   constructor(private translate: TranslateService) {
-    // Idiomas suportados
+    // Define idiomas suportados
     this.translate.addLangs(['pt-BR', 'pt-PT', 'en-US', 'es-ES', 'fr-FR']);
-
-    // Define um idioma padrão
-    this.translate.setDefaultLang('en-US');
-
-    // Opcional: detecção automática do idioma do navegador
-    const browserLang = this.translate.getBrowserLang();
-    if (browserLang) {
-      // Ajuste aqui se quiser mapear 'pt' -> 'pt-BR' ou algo do tipo
-      this.translate.use(browserLang.match(/pt|en|es|fr/) ? browserLang : 'en-US');
-    } else {
-      this.translate.use('en-US');
-    }
+    // Idioma padrão
+    const defaultLang = 'en-US';
+    this.translate.setDefaultLang(defaultLang);
+    this.useLanguage(defaultLang);
   }
 
-  changeLanguage(lang: string) {
-    this.translate.use(lang);
+  /**
+   * Altera o idioma ativo da aplicação.
+   */
+  public useLanguage(lang: string): void {
+    this.translate.use(lang).subscribe({
+      next: () => {
+        console.log(`Idioma alterado para ${lang}`);
+      },
+      error: (err) => {
+        console.error(`Erro ao carregar idioma ${lang}:`, err);
+      },
+    });
   }
 }

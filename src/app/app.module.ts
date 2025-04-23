@@ -1,52 +1,113 @@
-import { NgModule } from '@angular/core';
+import { NgModule, DoBootstrap } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
-// NGRX
+/* NgRx Store + Effects */
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-// Nosso módulo de Store que consolida todos os reducers e effects
-import { AppStoreModule } from './core/store/app.store.module';
+/* ngx-translate */
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-// Authentication
-import { TokenInterceptor } from './core/authentication/token.interceptor';
+/* Reducers e Effects do seu projeto */
+import { reducers } from './core/store/reducers-map';
+import { AuthEffects } from './core/store/auth/auth.effects';
+import { ActivityEffects } from './core/store/activity/activity.effects';
+import { AgentEffects } from './core/store/agent/agent.effects';
+import { AuditLogEffects } from './core/store/auditlog/auditlog.effects';
+import { ClientEffects } from './core/store/client/client.effects';
+import { ContentPageEffects } from './core/store/content-page/content-page.effects';
+import { GroupEffects } from './core/store/group/group.effects';
+import { OrderEffects } from './core/store/order/order.effects';
+import { PaymentEffects } from './core/store/payment/payment.effects';
+import { PaymentMethodEffects } from './core/store/payment-method/payment-method.effects';
+import { RatingEffects } from './core/store/rating/rating.effects';
+import { SolicitationEffects } from './core/store/solicitation/solicitation.effects';
+import { SolicitationCartEffects } from './core/store/solicitation-cart/solicitation-cart.effects';
+import { UserEffects } from './core/store/user/user.effects';
 
-// Páginas
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
+/* Services */
+import {
+  ActivityService,
+  AgentService,
+  AuditLogService,
+  AuthService,
+  ClientService,
+  GroupService,
+  OrderService,
+  PaymentMethodService,
+  PaymentService,
+  RatingService,
+  SolicitationCartService,
+  SolicitationService,
+  UserService,
+} from './core/http/index';
 
-// Ambiente (pode adicionar environment.ts caso queira condicionar devtools)
-const environment = {
-  production: false
-};
+/**
+ * Configuração do loader para o ngx-translate
+ */
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../assets/languages/', '.json');
+}
 
+/**
+ * AppModule funciona como local para configurar NgRx, Translate, etc.
+ * Não declaramos componentes aqui porque estamos usando standalone.
+ */
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent
-  ],
+  declarations: [],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
-    // Módulo que consolida NGRX do app (reducers, effects)
-    AppStoreModule,
-    // DevTools
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+
+    /* NgRx */
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([
+      AuthEffects,
+      ActivityEffects,
+      AgentEffects,
+      AuditLogEffects,
+      ClientEffects,
+      ContentPageEffects,
+      GroupEffects,
+      OrderEffects,
+      PaymentEffects,
+      PaymentMethodEffects,
+      RatingEffects,
+      SolicitationEffects,
+      SolicitationCartEffects,
+      UserEffects,
+    ]),
+
+    /* ngx-translate */
+    TranslateModule.forRoot({
+      defaultLanguage: 'en-US',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    ActivityService,
+    AgentService,
+    AuditLogService,
+    AuthService,
+    ClientService,
+    GroupService,
+    OrderService,
+    UserService,
+    SolicitationService,
+    PaymentMethodService,
+    PaymentService,
+    RatingService,
+    SolicitationCartService,
   ],
-  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule implements DoBootstrap {
+  ngDoBootstrap() {
+    // Deixamos vazio porque o bootstrap é feito em main.ts com bootstrapApplication
+  }
+}

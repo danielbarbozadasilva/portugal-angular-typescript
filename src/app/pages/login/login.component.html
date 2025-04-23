@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto mt-10 p-4 border border-gray-300 bg-white">
   <h2 class="text-2xl mb-4 font-bold">Login</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form>
     <label class="block mb-2">
       <span>E-mail</span>
       <input
@@ -29,8 +29,4 @@
       Entrar
     </button>
   </form>
-
-  <div class="mt-4 text-red-500" *ngIf="(error$ | async) as errorMsg">
-    Erro: {{ errorMsg }}
-  </div>
 </div>

@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environments';
   providedIn: 'root'
 })
 export class ContentPageService {
-  private baseUrl = `${environment.apiBaseUrl}/contentpage`; // Ajuste a rota
+  private baseUrl = `${environment.apiBaseUrl}/contentpage`;
 
   constructor(private http: HttpClient) {}
 

@@ -2,7 +2,7 @@ export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 
 export interface IPayment {
   _id?: string;
-  order: string; // ID do Order
+  order: string;
   price: number;
   type: string;
   installments: number;

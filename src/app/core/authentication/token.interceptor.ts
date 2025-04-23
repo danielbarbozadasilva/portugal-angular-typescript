@@ -6,7 +6,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from '../http/auth.service';
 import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -16,7 +16,8 @@ import { selectToken, selectCurrentUser } from '../store/auth/auth.selectors';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private token: string | null = null;
-  private userId: string | null = null;
+  private userId: string;
+
   constructor(
     private store: Store,
     private authService: AuthService
@@ -25,8 +26,8 @@ export class TokenInterceptor implements HttpInterceptor {
     this.store.select(selectToken).subscribe(tk => {
       this.token = tk;
     });
-    this.store.select(selectCurrentUser).subscribe(tk => {
-      this.userId = tk;
+    this.store.select(selectCurrentUser).subscribe(user => {
+      this.userId = user;
     });
   }
 
@@ -44,30 +45,27 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Exemplo de "refresh token" prático:
-          // 1) Chama um método do AuthService que retorna Observable<string> (o novo token)
-          return this.authService.refreshToken(this.userId).pipe(
-            switchMap((newToken: string) => {
-              // Dispara a action no store (opcional)
+          // Tenta "refresh token"
+          return this.authService.refreshTokenService(this.userId).pipe(
+            switchMap((newToken: any) => {
+              // Dispara a action no store
               this.store.dispatch(refreshTokenSuccess({ newToken }));
-              // Clona a requisição novamente com o novo token
+              // Clona novamente com o novo token
               const newAuthReq = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${newToken}`
-                }
+                setHeaders: { Authorization: `Bearer ${newToken}` }
               });
-              // Reenvia a requisição original com o token renovado
+              // Retenta a requisição original
               return next.handle(newAuthReq);
             }),
             catchError((refreshError) => {
-              // Se der falha no refresh, podemos dispatch de logout ou algo do tipo
+              // Se falhou, dispatch da falha
               this.store.dispatch(refreshTokenFailure({ error: refreshError }));
-              // Propaga o erro original
+              // Propaga o erro
               return throwError(() => refreshError);
             })
           );
         }
-        // Se não for 401, apenas propaga o erro
+        // Se não for 401, apenas propaga
         return throwError(() => error);
       })
     );

@@ -1,8 +1,18 @@
-import { createAction, props } from '@ngrx/store';
-import { IActivity } from '../../models/models.index';
+/**
+ * @file activity.actions.ts
+ * @description Define as ações (Actions) para o gerenciamento de estado de Atividades no NgRx.
+ */
 
+import { createAction, props } from '@ngrx/store';
+import { IActivity } from '../../models/models.activity';
+
+/**
+ * Ação para carregar atividades com filtros opcionais.
+ * @param filters - Objeto que pode conter filtros (keyword, category, price range, etc).
+ */
 export const loadActivities = createAction(
-  '[Activity] Load Activities'
+  '[Activity] Load Activities',
+  props<{ filters?: any }>()  // <-- adicionamos filters como opcional
 );
 
 export const loadActivitiesSuccess = createAction(

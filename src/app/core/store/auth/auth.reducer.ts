@@ -1,15 +1,21 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
-import { IAuthResponse } from '../../models/user.model';
 
+/**
+ * Interface do estado de autenticação.
+ * Ajuste a interface para seu modelo de usuário, se necessário.
+ */
 export interface AuthState {
   loading: boolean;
   token: string | null;
-  user: any; // aqui poderia usar a interface de usuário
+  user: any;  // Substitua "any" por uma interface específica do usuário, se houver.
   error: string | null;
   registered: boolean;
 }
 
+/**
+ * Estado inicial da feature de autenticação.
+ */
 const initialState: AuthState = {
   loading: false,
   token: null,
@@ -21,7 +27,9 @@ const initialState: AuthState = {
 export const authReducer = createReducer(
   initialState,
 
-  // SignIn
+  /**
+   * LOGIN (Sign In)
+   */
   on(AuthActions.signIn, (state) => ({
     ...state,
     loading: true,
@@ -30,9 +38,10 @@ export const authReducer = createReducer(
   on(AuthActions.signInSuccess, (state, { response }) => {
     let newToken = '';
     let userData: any = null;
+
     if (response && response.data) {
       newToken = response.data.token;
-      userData = response.data;
+      userData = response.data; // Se seu backend retorna também dados de usuário, ajusta aqui.
     }
 
     return {
@@ -51,7 +60,9 @@ export const authReducer = createReducer(
     registered: false
   })),
 
-  // Logout
+  /**
+   * LOGOUT
+   */
   on(AuthActions.logout, (state) => ({
     ...state,
     loading: true
@@ -70,7 +81,9 @@ export const authReducer = createReducer(
     error: error
   })),
 
-  // Refresh Token
+  /**
+   * REFRESH TOKEN
+   */
   on(AuthActions.refreshToken, (state) => ({
     ...state,
     loading: true
@@ -86,7 +99,9 @@ export const authReducer = createReducer(
     error: error
   })),
 
-  // Check Token
+  /**
+   * CHECK TOKEN
+   */
   on(AuthActions.checkToken, (state) => ({
     ...state,
     loading: true

@@ -5,8 +5,8 @@
 
   // Ignora padrões de arquivos/diretórios (alternativa ao .eslintignore)
   "ignorePatterns": [
-    "node_modules/",
-    "dist/",
+    "./node_modules",
+    "./dist",
     "**/generated/", // Adicione outros diretórios/arquivos que não devem ser lintados
     "*.config.js", // Arquivos de configuração comuns
     "*.conf.js"
@@ -67,7 +67,7 @@
         "@angular-eslint/no-input-rename": "error", // Proíbe renomear @Input aliases
         "@angular-eslint/no-output-rename": "error", // Proíbe renomear @Output aliases
         "@angular-eslint/use-lifecycle-interface": "warn", // Recomenda implementar interfaces de lifecycle (OnInit, etc.)
-        "@angular-eslint/use-pipe-transform-interface": "error", // Exige que Pipes implementem PipeTransform
+        "@angular-eslint/use-pipe-transform-interface": "error" // Exige que Pipes implementem PipeTransform
 
         // Adicione/ajuste outras regras conforme as necessidades da sua equipe
         // Lembre-se: Não adicione regras de ESTILO/FORMATAÇÃO aqui se estiver usando Prettier.
@@ -99,7 +99,7 @@
       "files": ["*.spec.ts"],
       "rules": {
         // Relaxar/ajustar regras em arquivos de teste, se necessário
-        "@typescript-eslint/no-explicit-any": "off", // Permite 'any' mais livremente em testes
+        "@typescript-eslint/no-explicit-any": "off" // Permite 'any' mais livremente em testes
         // Pode precisar de regras específicas dependendo do framework de teste (Jasmine, Jest)
       }
     }
