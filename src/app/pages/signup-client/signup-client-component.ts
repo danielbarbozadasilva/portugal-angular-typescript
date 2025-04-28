@@ -2,6 +2,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import moment from 'moment';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Estrutura do objeto 'IClient' conforme no React
@@ -30,8 +33,15 @@ export interface IClient {
 }
 
 @Component({
+  standalone: true, // Adicionar standalone
   selector: 'app-signup-client',
   templateUrl: './signup-client.component.html',
+  imports: [
+    // Adicionar imports necessários
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
 })
 export class SignUpClientComponent implements OnInit {
   @Input() loading = false; // similar ao state.auth.loading do React
