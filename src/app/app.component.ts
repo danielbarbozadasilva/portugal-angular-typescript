@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -9,6 +10,7 @@ import { LayoutComponent } from './components/layout/layout.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [
+    RouterOutlet,
     CommonModule, // para *ngIf, *ngFor, etc
     RouterModule, // para usar <router-outlet>
     TranslateModule, // para pipe 'translate'

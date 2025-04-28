@@ -1,18 +1,26 @@
-// src/app/app.config.ts
+/* src/app/app.config.ts */
+
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; // Importar withInterceptorsFromDi
 import { provideClientHydration } from '@angular/platform-browser';
+import {
+  provideRouter,
+  withEnabledBlockingInitialNavigation,
+  withPreloading,
+  PreloadAllModules,
+} from '@angular/router';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+  HTTP_INTERCEPTORS,
+  HttpClient,
+} from '@angular/common/http';
+
+/* Rotas do app */
+import { appRoutes } from './app.routes';
+
+/* NgRx - Store e Effects */
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from '@angular/common/http';
-
-// Importa as rotas "client-side"
-import { routes } from './app.routes';
-
-// Importar reducers e effects
 import { reducers } from './core/store/reducers-map';
 import { AuthEffects } from './core/store/auth/auth.effects';
 import { ActivityEffects } from './core/store/activity/activity.effects';
@@ -29,7 +37,7 @@ import { SolicitationEffects } from './core/store/solicitation/solicitation.effe
 import { SolicitationCartEffects } from './core/store/solicitation-cart/solicitation-cart.effects';
 import { UserEffects } from './core/store/user/user.effects';
 
-// Importar Serviços
+/* Serviços (injeção direta de classes) */
 import {
   ActivityService,
   AgentService,
@@ -44,13 +52,18 @@ import {
   SolicitationCartService,
   SolicitationService,
   UserService,
-} from './core/http/index';
+} from './core/http';
 
-// Importar Interceptor
+/* Interceptor de Autenticação */
 import { TokenInterceptor } from './core/authentication/token.interceptor';
 
+/* i18n (ngx-translate) */
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 /**
- * Configuração do loader para o ngx-translate (igual ao AppModule)
+ * Função 'factory' para ngx-translate,
+ * carregando arquivos de idioma em ../assets/languages/*.json
  */
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/languages/', '.json');
@@ -58,21 +71,21 @@ export function createTranslateLoader(http: HttpClient) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Roteamento padrão
-    provideRouter(routes),
+    // Roteamento no cliente, com SSR + pré-carregamento.
+    provideRouter(
+      appRoutes,
+      withEnabledBlockingInitialNavigation(),
+      withPreloading(PreloadAllModules)
+    ),
 
-    // HTTP client com Interceptor (usando DI para interceptor baseado em classe)
+    // HTTP client + Interceptores via DI
     provideHttpClient(withInterceptorsFromDi()),
 
-    /**
-     * Hidratação do lado do cliente (para SSR)
-     */
+    // Hidratação do lado do cliente (para SSR)
     provideClientHydration(),
 
-    // Configuração NgRx Store
+    // NgRx: Store + Effects
     provideStore(reducers),
-
-    // Configuração NgRx Effects
     provideEffects([
       AuthEffects,
       ActivityEffects,
@@ -90,7 +103,7 @@ export const appConfig: ApplicationConfig = {
       UserEffects,
     ]),
 
-    // Configuração ngx-translate (usando importProvidersFrom)
+    // ngx-translate (forRoot) via importProvidersFrom
     importProvidersFrom(
       TranslateModule.forRoot({
         defaultLanguage: 'en-US',
@@ -102,10 +115,14 @@ export const appConfig: ApplicationConfig = {
       })
     ),
 
-    // Prover Interceptor baseado em classe
-    TokenInterceptor,
+    // Registro do interceptor no chain de HTTP_INTERCEPTORS
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
 
-    // Prover Serviços diretamente
+    // Demais serviços (injeção direta)
     ActivityService,
     AgentService,
     AuditLogService,
@@ -113,11 +130,11 @@ export const appConfig: ApplicationConfig = {
     ClientService,
     GroupService,
     OrderService,
-    UserService,
-    SolicitationService,
     PaymentMethodService,
     PaymentService,
     RatingService,
     SolicitationCartService,
+    SolicitationService,
+    UserService,
   ],
 };

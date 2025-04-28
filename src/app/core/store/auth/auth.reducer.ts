@@ -3,12 +3,12 @@ import * as AuthActions from './auth.actions';
 
 /**
  * Interface do estado de autenticação.
- * Ajuste a interface para seu modelo de usuário, se necessário.
+ * Ajuste conforme o modelo do seu usuário, se necessário.
  */
 export interface AuthState {
   loading: boolean;
   token: string | null;
-  user: any;  // Substitua "any" por uma interface específica do usuário, se houver.
+  user: any; // Substitua "any" por uma interface real do usuário.
   error: string | null;
   registered: boolean;
 }
@@ -21,19 +21,17 @@ const initialState: AuthState = {
   token: null,
   user: null,
   error: null,
-  registered: false
+  registered: false,
 };
 
 export const authReducer = createReducer(
   initialState,
 
-  /**
-   * LOGIN (Sign In)
-   */
+  // LOGIN (Sign In)
   on(AuthActions.signIn, (state) => ({
     ...state,
     loading: true,
-    error: null
+    error: null,
   })),
   on(AuthActions.signInSuccess, (state, { response }) => {
     let newToken = '';
@@ -41,7 +39,7 @@ export const authReducer = createReducer(
 
     if (response && response.data) {
       newToken = response.data.token;
-      userData = response.data; // Se seu backend retorna também dados de usuário, ajusta aqui.
+      userData = response.data; // Ajuste se o backend tiver outra estrutura.
     }
 
     return {
@@ -50,22 +48,20 @@ export const authReducer = createReducer(
       token: newToken,
       user: userData,
       error: null,
-      registered: true
+      registered: true,
     };
   }),
   on(AuthActions.signInFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error,
-    registered: false
+    error,
+    registered: false,
   })),
 
-  /**
-   * LOGOUT
-   */
+  // LOGOUT
   on(AuthActions.logout, (state) => ({
     ...state,
-    loading: true
+    loading: true,
   })),
   on(AuthActions.logoutSuccess, (state) => ({
     ...state,
@@ -73,47 +69,43 @@ export const authReducer = createReducer(
     token: null,
     user: null,
     error: null,
-    registered: false
+    registered: false,
   })),
   on(AuthActions.logoutFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error,
   })),
 
-  /**
-   * REFRESH TOKEN
-   */
+  // REFRESH TOKEN
   on(AuthActions.refreshToken, (state) => ({
     ...state,
-    loading: true
+    loading: true,
   })),
   on(AuthActions.refreshTokenSuccess, (state, { newToken }) => ({
     ...state,
     loading: false,
-    token: newToken
+    token: newToken,
   })),
   on(AuthActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error,
   })),
 
-  /**
-   * CHECK TOKEN
-   */
+  // CHECK TOKEN
   on(AuthActions.checkToken, (state) => ({
     ...state,
-    loading: true
+    loading: true,
   })),
   on(AuthActions.checkTokenSuccess, (state, { valid }) => ({
     ...state,
     loading: false,
-    error: valid ? null : 'Token inválido ou expirado'
+    error: valid ? null : 'Token inválido ou expirado',
   })),
   on(AuthActions.checkTokenFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error,
   }))
 );

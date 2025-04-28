@@ -1,25 +1,29 @@
 // src/app/app.routes.server.ts
 import { ServerRoute, RenderMode } from '@angular/ssr';
 
-/**
- * Rotas específicas para o lado do servidor,
- * definindo como o Angular vai pré-renderizar cada rota.
- */
 export const serverRoutes: ServerRoute[] = [
-  // Rota raiz
-  { path: '', renderMode: RenderMode.Server },
+  {
+    path: '',  // Rota raiz
+    renderMode: RenderMode.Prerender,  // Sinaliza que esta rota pode ser pré-renderizada (SSG) durante o build
+  },
+  {
+    path: 'admin',
+    renderMode: RenderMode.Server,     // Esta rota será renderizada sob demanda no servidor (SSR a cada request)
+  },
+  // Podemos repetir para outras rotas se quisermos explicitar modos. 
+  // Rota sem especificação explícita tipicamente será SSR por padrão, exceto se detectada como SSG pelo builder.
 
-  // Rotas sob /home
-  { path: 'home', renderMode: RenderMode.Server },
-  { path: 'home/portal', renderMode: RenderMode.Server },
-  { path: 'home/sign-in', renderMode: RenderMode.Server },
-  { path: 'home/signup-client', renderMode: RenderMode.Server },
-  { path: 'home/signup-agent', renderMode: RenderMode.Server },
-  { path: 'home/agent/edit/:id', renderMode: RenderMode.Server },
+  // Exemplo de rota de API ou rotas que desejamos apenas CSR (não SSR):
+  // { path: 'relatorio', renderMode: RenderMode.Client }, // renderizada apenas no cliente (SSR ignora)
 
-  // Rota admin
-  { path: 'admin/dashboard', renderMode: RenderMode.Server },
+  // Redirecionamento ou tratamento especial (exemplo):
+  // { path: 'legacy', renderMode: RenderMode.Server, status: 301, redirectTo: 'novopath' },
 
-  // Curinga wildcard
-  { path: '**', renderMode: RenderMode.Server },
+  {
+    path: '**',  // Wildcard no servidor - lida com rotas não encontradas
+    renderMode: RenderMode.Server,   // Renderiza via SSR mesmo caminho desconhecido para retornar página 404
+    status: 404,                     // Define status HTTP 404 Not Found para essa rota
+    // Poderíamos também definir cabeçalhos específicos, se necessário, por exemplo:
+    // headers: { 'Cache-Control': 'no-cache' },
+  },
 ];

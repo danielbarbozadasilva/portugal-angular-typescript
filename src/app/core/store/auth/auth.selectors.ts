@@ -2,14 +2,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from './auth.reducer';
 
 /**
- * Cria um "Feature Selector" para o estado de 'auth'.
- * Certifique-se de que o nome 'auth' corresponde ao que você
- * utilizou em StoreModule.forRoot({ auth: authReducer }) ou forFeature.
+ * Cria um feature selector para o estado de 'auth'.
+ * Certifique-se de que o nome 'auth' corresponde ao usado em StoreModule.forRoot({ auth: authReducer })
+ * ou forFeature('auth', authReducer).
  */
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 
 /**
- * Retorna true/false indicando se há um token no estado.
+ * Retorna true/false indicando se há um token no estado (usuário logado).
  */
 export const selectIsLoggedIn = createSelector(
   selectAuthState,

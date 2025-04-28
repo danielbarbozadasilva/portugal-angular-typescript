@@ -10,7 +10,7 @@ function createApp() {
   // Configura o engine de renderização Angular Universal:
   server.engine('html', ngExpressEngine({ bootstrap }));
   server.set('view engine', 'html');
-  server.set('views', 'dist/seu-projeto/browser');
+  server.set('views', 'dist/atividades-turisticas-portugal/browser');
 
   // Rota default
   server.get('*', (req, res) => {

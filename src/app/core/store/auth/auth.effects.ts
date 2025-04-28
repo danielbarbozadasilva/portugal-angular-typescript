@@ -3,9 +3,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AuthService } from '../../http/auth.service'; // Correct path
+import { AuthService } from '../../http/auth.service'; // Ajuste o path
 import * as AuthActions from './auth.actions';
-import { IResponseError, IAuthResponse, ITokenResponse, IDataResponse } from '../../models/models.auth'; // Import response types
+import {
+  IResponseError,
+  IAuthResponse,
+  ITokenResponse,
+  IDataResponse,
+} from '../../models/models.auth';
 
 @Injectable()
 export class AuthEffects {
@@ -15,7 +20,11 @@ export class AuthEffects {
     private router: Router
   ) {}
 
-  // Effect for Sign In
+  /**
+   * Efeito para login (signIn).
+   * Chama o service, e em caso de sucesso, dispara signInSuccess,
+   * caso contrário, signInFailure.
+   */
   signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.signIn),
@@ -28,66 +37,77 @@ export class AuthEffects {
     )
   );
 
-  // Effect after successful Sign In -> Navigate to dashboard
+  /**
+   * Efeito após login bem-sucedido.
+   * Navega para "/admin/dashboard" ao receber signInSuccess.
+   */
   signInSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.signInSuccess),
-        tap(() => this.router.navigate(['/admin/dashboard'])) // Navigate on success
+        tap(() => this.router.navigate(['/admin/dashboard']))
       ),
-    { dispatch: false } // No further action needed
+    { dispatch: false }
   );
 
-  // Effect for Logout
+  /**
+   * Efeito para logout.
+   * Chama o service logoutService, em caso de sucesso dispara logoutSuccess,
+   * senão logoutFailure.
+   */
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
       switchMap((action) =>
         this.authService.logoutService({ _id: action.userId }).pipe(
-          map((_response: IDataResponse) => AuthActions.logoutSuccess()), // Prefix unused variable
+          map((_response: IDataResponse) => AuthActions.logoutSuccess()),
           catchError((error: IResponseError) => of(AuthActions.logoutFailure({ error })))
         )
       )
     )
   );
 
-  // Effect after successful Logout -> Navigate to signin
+  /**
+   * Após logout bem-sucedido, navega para "/signin".
+   */
   logoutSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logoutSuccess),
-        tap(() => this.router.navigate(['/signin'])) // Navigate on success
+        tap(() => this.router.navigate(['/signin']))
       ),
-    { dispatch: false } // No further action needed
+    { dispatch: false }
   );
 
-  // Effect for Refresh Token
+  /**
+   * Efeito para renovação de token (refreshToken).
+   */
   refreshToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.refreshToken),
       switchMap((action) =>
         this.authService.refreshTokenService(action.userId).pipe(
-          map((response: ITokenResponse) => AuthActions.refreshTokenSuccess({ newToken: response.token! })), // Assert token exists on success
+          map((response: ITokenResponse) => AuthActions.refreshTokenSuccess({ newToken: response.token! })),
           catchError((error: IResponseError) => of(AuthActions.refreshTokenFailure({ error })))
         )
       )
     )
   );
 
-  // Effect for Check Token
+  /**
+   * Efeito para checar validade de token (checkToken).
+   */
   checkToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkToken),
       switchMap((action) =>
         this.authService.checkTokenService({ token: action.token }).pipe(
-          map((response: ITokenResponse) => AuthActions.checkTokenSuccess({ valid: response.success })), // Use success flag from response
+          map((response: ITokenResponse) => AuthActions.checkTokenSuccess({ valid: response.success })),
           catchError((error: IResponseError) => of(AuthActions.checkTokenFailure({ error })))
         )
       )
     )
   );
 
-  // Add effects for password recovery/reset if actions exist
-  // passwordRecovery$ = createEffect(() => ... );
-  // resetPassword$ = createEffect(() => ... );
+  // Efeitos adicionais para recuperação de senha ou reset, se existirem ações correspondentes.
 }

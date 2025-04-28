@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 /**
  * Ação para iniciar o processo de login (sign in).
- * Espera um e-mail e senha.
+ * Recebe e-mail e senha.
  */
 export const signIn = createAction(
   '[Auth] SignIn',
@@ -20,7 +20,7 @@ export const signInSuccess = createAction(
 
 /**
  * Ação disparada quando o login (sign in) falha.
- * Recebe o objeto de erro (IResponseError ou algo similar).
+ * Recebe um objeto de erro.
  */
 export const signInFailure = createAction(
   '[Auth] SignIn Failure',
@@ -29,7 +29,7 @@ export const signInFailure = createAction(
 
 /**
  * Ação para iniciar o processo de logout.
- * Recebe o ID do usuário que vai deslogar.
+ * Recebe o ID do usuário que realizará o logout.
  */
 export const logout = createAction(
   '[Auth] Logout',
@@ -45,7 +45,6 @@ export const logoutSuccess = createAction(
 
 /**
  * Ação disparada quando o logout falha.
- * Recebe o objeto de erro (IResponseError ou algo similar).
  */
 export const logoutFailure = createAction(
   '[Auth] Logout Failure',
@@ -62,7 +61,7 @@ export const refreshToken = createAction(
 );
 
 /**
- * Ação disparada quando a renovação de token (refresh token) é bem-sucedida.
+ * Ação disparada quando a renovação de token é bem-sucedida.
  * Recebe o novo token.
  */
 export const refreshTokenSuccess = createAction(
@@ -89,7 +88,7 @@ export const checkToken = createAction(
 
 /**
  * Ação disparada quando a checagem de token é bem-sucedida.
- * Indica se o token é válido (boolean).
+ * Indica se o token é válido.
  */
 export const checkTokenSuccess = createAction(
   '[Auth] Check Token Success',

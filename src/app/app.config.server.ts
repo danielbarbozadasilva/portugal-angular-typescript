@@ -1,21 +1,15 @@
 // src/app/app.config.server.ts
-import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
-import { provideServerRouting } from '@angular/ssr';
-import { provideClientHydration } from '@angular/platform-browser';
-
-import { appConfig } from './app.config';
+import { ApplicationConfig, mergeApplicationConfig } from '@angular/core';
+import { provideServerRouting } from '@angular/ssr';  // OK
 import { serverRoutes } from './app.routes.server';
 
-export const appServerConfig: ApplicationConfig = mergeApplicationConfig(appConfig, {
+import { appConfig } from './app.config';
+
+// Configuração adicional para SSR (servidor)
+const serverAppConfig: ApplicationConfig = {
   providers: [
-    // SSR do Angular
-    provideServerRendering(),
-
-    // Rotas especiais do lado do servidor
     provideServerRouting(serverRoutes),
-
-    // Hidratação (marcações no HTML) - caso queira
-    provideClientHydration(),
   ],
-});
+};
+
+export const serverConfig: ApplicationConfig = mergeApplicationConfig(appConfig, serverAppConfig);

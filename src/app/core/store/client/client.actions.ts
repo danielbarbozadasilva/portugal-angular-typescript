@@ -1,73 +1,41 @@
 import { createAction, props } from '@ngrx/store';
-import { IClient } from '../../models/models.index';
 
-export const loadClients = createAction(
-  '[Client] Load Clients'
+export interface Address {
+  street: string;
+  city: string;
+  country: string;
+}
+
+export interface Client {
+  id: number;
+  name: string;
+  email: string;
+  address: Address;
+  phones: string[];
+}
+
+export interface SignUpData {
+  name: string;
+  email: string;
+  password: string;
+  address: Address;
+  phones: string[];
+}
+
+// Ação para iniciar o processo de cadastro de cliente
+export const signUpClient = createAction(
+  '[Client] Sign Up Client',
+  props<{ data: SignUpData }>()
 );
 
-export const loadClientsSuccess = createAction(
-  '[Client] Load Clients Success',
-  props<{ clients: IClient[] }>()
+// Ação disparada em caso de sucesso no cadastro
+export const signUpClientSuccess = createAction(
+  '[Client] Sign Up Client Success',
+  props<{ client: Client }>()
 );
 
-export const loadClientsFailure = createAction(
-  '[Client] Load Clients Failure',
-  props<{ error: any }>()
-);
-
-export const loadClientById = createAction(
-  '[Client] Load Client By ID',
-  props<{ id: string }>()
-);
-
-export const loadClientByIdSuccess = createAction(
-  '[Client] Load Client By ID Success',
-  props<{ client: IClient }>()
-);
-
-export const loadClientByIdFailure = createAction(
-  '[Client] Load Client By ID Failure',
-  props<{ error: any }>()
-);
-
-export const createClient = createAction(
-  '[Client] Create Client',
-  props<{ client: Partial<IClient> }>()
-);
-
-export const createClientSuccess = createAction(
-  '[Client] Create Client Success'
-);
-
-export const createClientFailure = createAction(
-  '[Client] Create Client Failure',
-  props<{ error: any }>()
-);
-
-export const updateClient = createAction(
-  '[Client] Update Client',
-  props<{ id: string; data: Partial<IClient> }>()
-);
-
-export const updateClientSuccess = createAction(
-  '[Client] Update Client Success'
-);
-
-export const updateClientFailure = createAction(
-  '[Client] Update Client Failure',
-  props<{ error: any }>()
-);
-
-export const deleteClient = createAction(
-  '[Client] Delete Client',
-  props<{ id: string }>()
-);
-
-export const deleteClientSuccess = createAction(
-  '[Client] Delete Client Success'
-);
-
-export const deleteClientFailure = createAction(
-  '[Client] Delete Client Failure',
-  props<{ error: any }>()
+// Ação disparada em caso de falha no cadastro
+export const signUpClientFailure = createAction(
+  '[Client] Sign Up Client Failure',
+  props<{ error: string }>()
 );

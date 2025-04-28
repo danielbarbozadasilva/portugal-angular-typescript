@@ -1,37 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  // IAgent, // IAgent might not be needed directly here if only using IAgentRequest
-  IAgentRequest,
-} from '../../core/models/models.agent';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+
+/* Modelos, validações e Store */
+import { IAgentRequest } from '../../core/models/models.agent';
 import { formatDocByCountry, formatPhoneByCountry, isNotValid } from '../../validations/validations-signup';
-import { Store } from '@ngrx/store'; // Import Store
-import * as AgentActions from '../../core/store/agent/agent.actions'; // Import Agent Actions
+import { Store } from '@ngrx/store';
+import * as AgentActions from '../../core/store/agent/agent.actions';
 
 @Component({
+  // Diz ao Angular que este é um componente standalone
+  standalone: true,
   selector: 'app-signup-agent',
-  templateUrl: './signup-agent-component.html', // Corrected path
-  styleUrls: ['./signup-agent.component.css'], // Corrected path if it exists, or remove/change extension
+  templateUrl: './signup-agent-component.html',
+  styleUrls: ['./signup-agent.component.css'],
+
+  // Importa os módulos necessários para pipes e forms
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule, // Necessário para o pipe 'translate'
+  ],
 })
 export class SignupAgentComponent implements OnInit {
   public signupForm!: FormGroup;
-  public loading = false; // simulando loading
+  public loading = false;
   public showPassword = false;
   public showConfirmPassword = false;
 
-  // Exemplo com defaults
   public initialFormData: IAgentRequest = {
-    id: '', // id might not be needed for creation request
+    id: '',
     name: '',
     email: '',
-    password: '', // Keep password fields for the request model
-    confirmPassword: '', // Keep password fields for the request model
+    password: '',
+    confirmPassword: '',
     agentType: 'Pessoa Física',
     companyName: '',
     tradeName: '',
     cpf: '',
     cnpj: '',
-    birthDate: new Date(), // Ensure birthDate is initialized correctly if needed by IAgentRequest
+    birthDate: new Date(),
     mobilePhone: '',
     whatsapp: '',
     zipCode: '',
@@ -50,21 +59,20 @@ export class SignupAgentComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store // Inject Store
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
   }
 
-  buildForm(): void {
+  private buildForm(): void {
     this.signupForm = this.fb.group({
       name: [this.initialFormData.name, [Validators.required]],
       email: [this.initialFormData.email, [Validators.required, Validators.email]],
-      password: [this.initialFormData.password, [Validators.required]], // Use initialFormData.password
-      confirmPassword: [this.initialFormData.confirmPassword, [Validators.required]], // Use initialFormData.confirmPassword
+      password: [this.initialFormData.password, [Validators.required]],
+      confirmPassword: [this.initialFormData.confirmPassword, [Validators.required]],
       agentType: [this.initialFormData.agentType, [Validators.required]],
-      // ... rest of the form controls ...
       cpf: [this.initialFormData.cpf],
       cnpj: [this.initialFormData.cnpj],
       companyName: [this.initialFormData.companyName],
@@ -86,15 +94,14 @@ export class SignupAgentComponent implements OnInit {
     });
   }
 
-  toggleShowPassword() {
+  toggleShowPassword(): void {
     this.showPassword = !this.showPassword;
   }
-
-  toggleShowConfirmPassword() {
+  toggleShowConfirmPassword(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  onBlur(fieldName: string) {
+  onBlur(fieldName: string): void {
     const value = this.signupForm.controls[fieldName].value;
     const country = this.signupForm.value.country;
     const agentType = this.signupForm.value.agentType;
@@ -110,34 +117,27 @@ export class SignupAgentComponent implements OnInit {
   }
 
   submitForm(): void {
-    // Mark all fields as touched to display validation errors
     this.signupForm.markAllAsTouched();
-
     if (this.signupForm.invalid || isNotValid(this.signupForm.value)) {
       console.error('Form is invalid:', this.signupForm.errors);
-      // Optionally iterate through controls to find specific errors
+      // Debug de erros
       Object.keys(this.signupForm.controls).forEach((key) => {
         const controlErrors = this.signupForm.get(key)?.errors;
-        if (controlErrors != null) {
+        if (controlErrors) {
           console.error('Key = ' + key + ', errors = ' + JSON.stringify(controlErrors));
         }
       });
       return;
     }
 
-    this.loading = true; // Start loading indicator
-
-    // Use IAgentRequest for the data type
+    this.loading = true;
     const agentData: IAgentRequest = this.signupForm.value;
-
-    // Dispatch the createAgent action
     this.store.dispatch(AgentActions.createAgent({ agent: agentData }));
-
-    // Handle success/failure (e.g., subscribe to relevant selectors or listen for actions)
-    // For simplicity, just log here. In a real app, navigate or show messages.
     console.log('Form submitted, dispatching createAgent action:', agentData);
 
-    // Reset loading state - ideally based on success/failure actions
-    // setTimeout(() => this.loading = false, 1000); // Simulate async operation end
+    // Exemplo de simulação de fim de loading; substitua por listening a actions do NgRx
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   }
 }

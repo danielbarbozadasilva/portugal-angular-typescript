@@ -1,24 +1,23 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ClientState } from './client.reducer';
+import { clientFeatureKey, ClientState } from './client.reducer';
 
-export const selectClientState = createFeatureSelector<ClientState>('client');
+// Selector para obter todo o estado de cliente
+export const selectClientState = createFeatureSelector<ClientState>(clientFeatureKey);
 
-export const selectClientLoading = createSelector(
+// Selector para o cliente cadastrado (objeto Client ou null)
+export const selectClient = createSelector(
   selectClientState,
-  (state) => state.loading
+  (state: ClientState) => state.client
 );
 
-export const selectAllClients = createSelector(
+// Selector para o status de carregamento (loading) do cadastro
+export const selectLoading = createSelector(
   selectClientState,
-  (state) => state.all
+  (state: ClientState) => state.loading
 );
 
-export const selectSelectedClient = createSelector(
+// Selector para a mensagem de erro (se houver) do cadastro
+export const selectError = createSelector(
   selectClientState,
-  (state) => state.selected
-);
-
-export const selectClientError = createSelector(
-  selectClientState,
-  (state) => state.error
+  (state: ClientState) => state.error
 );
