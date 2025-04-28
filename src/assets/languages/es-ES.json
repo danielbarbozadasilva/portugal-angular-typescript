@@ -82,6 +82,9 @@
     "foodFrancesinhaText": "Un sándwich único de Oporto, rico en sabores y perfecto para los amantes de la carne.",
     "foodBacalhauTitle": "Bacalao a Brás",
     "foodBacalhauText": "Una de las muchas maneras de saborear el bacalao, un clásico reinventado.",
+    "foodPastelNataAlt": "Fotografía de un Pastel de Nata",
+    "foodFrancesinhaAlt": "Fotografía de una Francesinha",
+    "foodBacalhauAlt": "Fotografía de Bacalhau à Brás",
     "specialOfferBadge": "Oferta especial",
     "priceNote": "Los precios varían según el tamaño del grupo",
     "joinButton": "Participar",
@@ -97,6 +100,8 @@
     "showcase3Lead": "La región vinícola del Duero, Patrimonio de la Humanidad por la UNESCO, produce vinos desde hace miles de años...",
     "showcase3Btn": "Visitar Oporto",
     "activitiesSectionTitle": "Actividades Turísticas",
+    "activityLocationLabel": "Ubicación",
+    "activityPriceLabel": "Precio",
     "filters": {
       "keywordPlaceholder": "Palabra clave",
       "categoryPlaceholder": "Categoría",
@@ -247,5 +252,11 @@
     "ourGalleryTitle": "Nuestra Galería",
     "ourGallerySubtitle": "Momentos capturados de aventuras increíbles",
     "viewAllGallery": "Ver Toda la Galería"
-  }
+  },
+  "loadingText": "Cargando...",
+  "newPasswordLabel": "Nueva Contraseña",
+  "newPasswordPlaceholder": "Ingrese la nueva contraseña",
+  "confirmNewPasswordLabel": "Confirmar Contraseña",
+  "confirmNewPasswordPlaceholder": "Confirme la nueva contraseña",
+  "changePasswordButton": "Cambiar Contraseña"
 }

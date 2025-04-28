@@ -82,6 +82,9 @@
     "foodFrancesinhaText": "Um sanduíche único do Porto, rico em sabores e perfeito para os amantes de carne.",
     "foodBacalhauTitle": "Bacalhau à Brás",
     "foodBacalhauText": "Uma das mil e uma maneiras de saborear o bacalhau, um clássico reinventado.",
+    "foodPastelNataAlt": "Fotografia de um Pastel de Nata",
+    "foodFrancesinhaAlt": "Fotografia de uma Francesinha",
+    "foodBacalhauAlt": "Fotografia de Bacalhau à Brás",
     "specialOfferBadge": "Oferta especial",
     "priceNote": "Os preços variam dependendo do tamanho do grupo",
     "joinButton": "Participar",
@@ -97,6 +100,8 @@
     "showcase3Lead": "A região vinícola do Douro, Património Mundial da UNESCO, produz vinhos há milhares de anos...",
     "showcase3Btn": "Visitar Porto",
     "activitiesSectionTitle": "Atividades Turísticas",
+    "activityLocationLabel": "Localização",
+    "activityPriceLabel": "Preço",
     "filters": {
       "keywordPlaceholder": "Palavra-chave",
       "categoryPlaceholder": "Categoria",
@@ -235,7 +240,12 @@
       "birthDateFuture": "Data de nascimento não pode ser futura.",
       "birthDateUnder18": "É preciso ter pelo menos 18 anos.",
       "countryEmpty": "Selecione um país."
-    }
+    },
+    "nameRequired": "O nome é obrigatório.",
+    "passwordRequired": "A senha é obrigatória.",
+    "passwordConfirmRequired": "A confirmação de senha é obrigatória.",
+    "agentTypeRequired": "O tipo de agente é obrigatório.",
+    "cnpjInvalid": "CNPJ inválido. Deve conter 14 dígitos."
   },
   "aboutPage": {
     "pageTitle": "Sobre Nós",
@@ -259,5 +269,11 @@
     "ourGalleryTitle": "Nossa Galeria",
     "ourGallerySubtitle": "Momentos capturados de aventuras incríveis",
     "viewAllGallery": "Ver Toda a Galeria"
-  }
+  },
+  "loadingText": "Carregando...",
+  "newPasswordLabel": "Nova Senha",
+  "newPasswordPlaceholder": "Digite a nova senha",
+  "confirmNewPasswordLabel": "Confirmar Senha",
+  "confirmNewPasswordPlaceholder": "Confirme a nova senha",
+  "changePasswordButton": "Alterar Senha"
 }

@@ -1,0 +1,397 @@
+<div
+  class="max-w-4xl mx-auto my-8 p-8 border border-gray-200 rounded-lg bg-white shadow-sm hover:shadow-md transition-all"
+  [formGroup]="signupForm"
+  autocomplete="off"
+>
+  <!-- Título -->
+  <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">
+    {{ 'signup' | translate }}
+  </h2>
+
+  <!-- Linha Nome + Email -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="flex-1">
+      <label class="block text-gray-700 font-medium mb-1">
+        <span class="text-red-500">*</span> {{ 'name' | translate }}:
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="{{ 'placeholder.name' | translate }}"
+        [disabled]="loading"
+        formControlName="name"
+        (blur)="onBlur('name')"
+      />
+      <div
+        class="text-red-500 text-sm mt-1"
+        *ngIf="signupForm.get('name')?.touched && signupForm.get('name')?.invalid"
+      >
+        <!-- Exemplo simples de erro. Se tiver erro, exiba. -->
+        {{ 'name' | translate }} é obrigatório
+      </div>
+    </div>
+
+    <div class="flex-1">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'email' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="email"
+        class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="{{ 'placeholder.email' | translate }}"
+        [disabled]="loading"
+        formControlName="email"
+        (blur)="onBlur('email')"
+      />
+      <div
+        class="text-red-500 text-sm mt-1"
+        *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid"
+      >
+        {{ 'email' | translate }} inválido
+      </div>
+    </div>
+  </div>
+
+  <!-- Linha Password + ConfirmPassword -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="flex-1">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'password' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <div class="relative">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="{{ 'placeholder.password' | translate }}"
+          [disabled]="loading"
+          formControlName="password"
+          (blur)="onBlur('password')"
+        />
+        <span
+          class="absolute right-2 top-2 cursor-pointer text-blue-600"
+          (click)="toggleShowPassword()"
+        >
+          {{ showPassword ? ('hide' | translate) : ('show' | translate) }}
+        </span>
+      </div>
+    </div>
+
+    <div class="flex-1">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'confirmPassword' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <div class="relative">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="{{ 'placeholder.confirmPassword' | translate }}"
+          [disabled]="loading"
+          formControlName="confirmPassword"
+          (blur)="onBlur('confirmPassword')"
+        />
+        <span
+          class="absolute right-2 top-2 cursor-pointer text-blue-600"
+          (click)="toggleShowConfirmPassword()"
+        >
+          {{ showConfirmPassword ? ('hide' | translate) : ('show' | translate) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Linha AgentType + CPF + CNPJ -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'agentType' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <select
+        class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+        [disabled]="loading"
+        formControlName="agentType"
+        (blur)="onBlur('agentType')"
+      >
+        <option value="Pessoa Física">{{ 'agent.person' | translate }}</option>
+        <option value="Pessoa Jurídica">{{ 'agent.company' | translate }}</option>
+      </select>
+    </div>
+
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'cpf' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="000.000.000-00"
+        [disabled]="loading"
+        formControlName="cpf"
+        (blur)="onBlur('cpf')"
+      />
+    </div>
+
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'cnpj' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="00.000.000/0000-00"
+        [disabled]="loading"
+        formControlName="cnpj"
+        (blur)="onBlur('cnpj')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha companyName + tradeName -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/2">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'companyName' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="companyName"
+        placeholder="{{ 'placeholder.companyName' | translate }}"
+        (blur)="onBlur('companyName')"
+      />
+    </div>
+    <div class="w-full md:w-1/2">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'tradeName' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="tradeName"
+        placeholder="{{ 'placeholder.tradeName' | translate }}"
+        (blur)="onBlur('tradeName')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha country + mobilePhone + whatsapp -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'country' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <select
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="country"
+        (blur)="onBlur('country')"
+      >
+        <option value="Portugal">Portugal</option>
+        <option value="Brazil">Brazil</option>
+        <option value="England">England</option>
+        <option value="US">United States</option>
+        <option value="FR">France</option>
+        <option value="ES">Spain</option>
+        <option value="UK">United Kingdom</option>
+      </select>
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'mobilePhone' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="tel"
+        class="w-full border rounded p-2"
+        placeholder="{{ 'placeholder.mainPhone' | translate }}"
+        [disabled]="loading"
+        formControlName="mobilePhone"
+        (blur)="onBlur('mobilePhone')"
+      />
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'whatsapp' | translate }}
+      </label>
+      <input
+        type="tel"
+        class="w-full border rounded p-2"
+        placeholder="{{ 'placeholder.optionalPhone' | translate }}"
+        [disabled]="loading"
+        formControlName="whatsapp"
+        (blur)="onBlur('whatsapp')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha zipCode + street -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'zipCode' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="zipCode"
+        (blur)="onBlur('zipCode')"
+      />
+    </div>
+    <div class="w-full md:w-2/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'street' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="street"
+        (blur)="onBlur('street')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha number + complement -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'number' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="number"
+        (blur)="onBlur('number')"
+      />
+    </div>
+    <div class="w-full md:w-2/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'complement' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="complement"
+        (blur)="onBlur('complement')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha neighborhood + city + state -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'neighborhood' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="neighborhood"
+        (blur)="onBlur('neighborhood')"
+      />
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'city' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="city"
+        (blur)="onBlur('city')"
+      />
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'state' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="state"
+        (blur)="onBlur('state')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha bank + bankAgency + bankAccount -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'bank' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="bank"
+        (blur)="onBlur('bank')"
+      />
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'bankAgency' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="bankAgency"
+        (blur)="onBlur('bankAgency')"
+      />
+    </div>
+    <div class="w-full md:w-1/3">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'bankAccount' | translate }}
+      </label>
+      <input
+        type="text"
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="bankAccount"
+        (blur)="onBlur('bankAccount')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha accountType -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <div class="w-full">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'accountType' | translate }}
+      </label>
+      <select
+        class="w-full border rounded p-2"
+        [disabled]="loading"
+        formControlName="accountType"
+        (blur)="onBlur('accountType')"
+      >
+        <option value="Conta Corrente">{{ 'accountTypeChecking' | translate }}</option>
+        <option value="Poupança">{{ 'accountTypeSaving' | translate }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Botão de Enviar -->
+  <div class="text-center mt-4">
+    <button
+      class="bg-blue-600 text-white rounded px-6 py-2 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+      (click)="submitForm()"
+      [disabled]="loading || signupForm.invalid"
+    >
+      {{ 'submit' | translate }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="mt-4 text-center text-blue-500">
+    <p>Carregando...</p>
+    <!-- ou um spinner de Tailwind, se preferir -->
+  </div>
+</div>

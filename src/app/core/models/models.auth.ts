@@ -1,91 +1,45 @@
-export type UserType = 'administrator' | 'client' | 'agent' | 'manager' | 'support' | 'developer';
+import { IUser } from './models.user'; // Import IUser
 
-export interface IAuth {
-  status: number;
-  success: boolean;
-  message: string;
-  data: {
-    resultUserMapper: UserMapper;
-    resultGenerateToken: TokenResult;
-  };
-}
-
-export interface UserMapper {
-  _id: string;
-  username: string;
-  name: string;
-  email: string;
-  permissions: string;
-}
-
-export interface TokenResult {
-  auth: boolean;
-  token: string;
-  refreshToken: string;
-}
-
-export interface IAuthResponse {
-  _id?: string;
-  name: string;
-  email: string;
-  username: string;
-  permissions: UserType[];
-  hash?: string;
-  salt?: string;
-  recovery?: {
-    token?: string;
-    date?: Date;
-  };
-  refreshToken?: {
-    data: string;
-    expiresIn: number;
-    iv: string;
-  };
-  createdAt?: Date;
-  updatedAt?: Date;
-  passwordRecoveryCode?: string;
-}
-
-export interface IAuthParams {
-  email: string;
-  recoveryCode: string;
-  newPassword: string;
-}
-
-export interface IDataResponse {
-  status: number;
-  success: boolean;
-  message: string;
-  data: Record<string, unknown>;
-}
-
-export interface IAuthResponse {
-  status: number;
-  success: boolean;
-  message: string;
-  data: {
-    token: string;
-    username: string;
-    name: string;
-    email: string;
-    permissions: string;
-  };
-}
-
+// Interface for generic API responses (can be shared)
 export interface IResponseError {
   success: boolean;
+  message: string;
 }
 
-export interface ITokenResponse {
-  status: number;
+// Interface for responses that contain data (can be shared)
+export interface IDataResponse {
   success: boolean;
-  message: string;
-  data: {
-    token: string;
-    refreshToken: {
-      data: string;
-      expiresIn: number;
-      iv: string;
-    };
-  };
+  message?: string;
+  data?: any; // Use a specific type if possible
+}
+
+// Interface for login/logout response data
+export interface IAuthData {
+  token: string;
+  user: IUser; // Use the specific IUser interface
+  // Add other relevant fields like expiration, refresh token info, etc.
+}
+
+// Interface for the full login/logout response
+export interface IAuthResponse extends IDataResponse {
+  data: IAuthData;
+}
+
+// Interface for token-related responses (refresh, check)
+export interface ITokenResponse {
+  success: boolean;
+  message?: string;
+  token?: string; // For refresh token response
+  valid?: boolean; // For check token response
+}
+
+// Interface for parameters used in auth service methods
+export interface IAuthParams {
+  email?: string;
+  password?: string;
+  _id?: string;
+  token?: string;
+  recoveryCode?: string;
+  newPassword?: string;
+  // Add other params as needed
 }

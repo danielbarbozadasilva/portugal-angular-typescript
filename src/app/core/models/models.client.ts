@@ -23,3 +23,8 @@ export interface IClient {
   paymentMethods?: string[];
   interests?: string[];
 }
+
+export interface IResponse<T> {
+  data: T;
+  message?: string;
+}

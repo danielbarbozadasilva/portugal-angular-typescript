@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuditLogService } from '../../../core/http/audit-log.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { AuditLogService } from '../../http/audit-log.service'; // Correct path
 import * as AuditLogActions from './auditlog.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class AuditLogEffects {
@@ -11,13 +13,13 @@ export class AuditLogEffects {
     private auditLogService: AuditLogService
   ) {}
 
-  loadAuditLogs$ = createEffect(() =>
+  loadAllAuditLogs$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuditLogActions.loadAuditLogs),
+      ofType(AuditLogActions.loadAllAuditLogs),
       mergeMap(() =>
         this.auditLogService.getAllAuditLogs().pipe(
-          map(logs => AuditLogActions.loadAuditLogsSuccess({ logs })),
-          catchError(error => of(AuditLogActions.loadAuditLogsFailure({ error })))
+          map((logs) => AuditLogActions.loadAllAuditLogsSuccess({ logs })),
+          catchError((error: IResponseError) => of(AuditLogActions.loadAllAuditLogsFailure({ error })))
         )
       )
     )
@@ -26,12 +28,15 @@ export class AuditLogEffects {
   loadAuditLogById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuditLogActions.loadAuditLogById),
-      mergeMap(({ id }) =>
-        this.auditLogService.getAuditLog(id).pipe(
-          map(log => AuditLogActions.loadAuditLogByIdSuccess({ log })),
-          catchError(error => of(AuditLogActions.loadAuditLogByIdFailure({ error })))
+      switchMap((action) =>
+        this.auditLogService.getAuditLog(action.id).pipe(
+          map((log) => AuditLogActions.loadAuditLogByIdSuccess({ log })),
+          catchError((error: IResponseError) => of(AuditLogActions.loadAuditLogByIdFailure({ error })))
         )
       )
     )
   );
+
+  // Add create effect if create action/service method exists
+  // createAuditLog$ = createEffect(() => ... );
 }

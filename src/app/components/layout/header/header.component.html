@@ -1,100 +1,153 @@
+<!-- src/app/shared/layout/header-footer.component.html -->
+
+<!-- TOPO: barra amarela -->
 <div class="bg-yellow-400 text-black text-sm py-2 px-4">
   <div class="flex flex-col md:flex-row items-center justify-between gap-2 container mx-auto">
     <!-- Esquerda -->
     <div class="flex items-center gap-4">
-      <!-- Label "Language" -->
       <span class="font-medium">Language:</span>
       <app-language-selector></app-language-selector>
-
-      <!-- E-mail -->
       <div class="flex items-center gap-1">
-        <!-- Ícone Email (exemplo) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M16 12l-4-4-4 4m8 0l-4 4-4-4" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M16 12l-4-4-4 4m8 0l-4 4-4-4"
+          />
         </svg>
-        <h6 title="info@oropoviagens.com"></h6>
+        <!-- @ escapado como &#64; -->
+        <h6 title="info&#64;oropoviagens.com">
+          info&#64;oropoviagens.com
+        </h6>
       </div>
     </div>
 
     <!-- Centro -->
     <div class="flex items-center gap-3">
-      <!-- "Share" -->
       <span class="font-bold text-lg">Share</span>
-      <!-- "Follow us" -->
       <span>{{ 'followUs' | translate }}:</span>
-
-      <!-- Ícones de Rede Social -->
-      <a class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full hover:bg-black hover:text-yellow-300 transition"
-         href="#facebook">
-        FB
-      </a>
-      <a class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full hover:bg-black hover:text-yellow-300 transition"
-         href="#twitter">
-        TW
-      </a>
-      <a class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full hover:bg-black hover:text-yellow-300 transition"
-         href="#instagram">
-        IG
-      </a>
+      <a
+        class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full
+               hover:bg-black hover:text-yellow-300 transition"
+        href="#facebook"
+        >FB</a
+      >
+      <a
+        class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full
+               hover:bg-black hover:text-yellow-300 transition"
+        href="#twitter"
+        >TW</a
+      >
+      <a
+        class="w-8 h-8 bg-yellow-200 text-black flex items-center justify-center rounded-full
+               hover:bg-black hover:text-yellow-300 transition"
+        href="#instagram"
+        >IG</a
+      >
     </div>
 
     <!-- Direita -->
     <div class="flex items-center gap-3">
-      <a class="flex items-center gap-1 hover:text-gray-700 transition" href="#signin">
+      <a
+        class="flex items-center gap-1 hover:text-gray-700 transition"
+        [routerLink]="['/home', 'sign-in']"
+      >
         <span>{{ 'signIn' | translate }}</span>
       </a>
-      <a class="flex items-center gap-1 hover:text-gray-700 transition" href="#signup-client">
+      <a
+        class="flex items-center gap-1 hover:text-gray-700 transition"
+        [routerLink]="['/home', 'signup-client']"
+      >
         <span>{{ 'registerClient' | translate }}</span>
       </a>
-      <a class="flex items-center gap-1 hover:text-gray-700 transition" href="#signup-agent">
+      <a
+        class="flex items-center gap-1 hover:text-gray-700 transition"
+        [routerLink]="['/home', 'signup-agent']"
+      >
         <span>{{ 'registerAgent' | translate }}</span>
       </a>
     </div>
   </div>
 </div>
 
-<!-- Barra inferior -->
+<!-- INFERIOR: barra branca -->
 <div class="bg-white text-gray-600 py-4 px-4">
   <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
     <!-- Logo -->
     <div class="mb-2 md:mb-0 text-center md:text-left">
-      <img src="assets/img/logo.jpg" alt="{{ 'siteLogoAlt' | translate }}" class="h-16 mx-auto md:mx-0" />
+      <img
+        src="assets/img/logo.jpg"
+        alt="{{ 'siteLogoAlt' | translate }}"
+        class="h-16 mx-auto md:mx-0"
+      />
     </div>
 
-    <!-- Nav -->
+    <!-- Navegação principal -->
     <ul class="flex gap-5 flex-wrap justify-center md:justify-start mb-2 md:mb-0">
       <li>
-        <a class="hover:text-yellow-500 transition" href="#home">{{ 'homePage' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'portal']"
+          >{{ 'homePage' | translate }}</a
+        >
       </li>
       <li>
-        <a class="hover:text-yellow-500 transition" href="#about">{{ 'about' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'about']"
+          >{{ 'about' | translate }}</a
+        >
       </li>
       <li>
-        <a class="hover:text-yellow-500 transition" href="#tours">{{ 'tours' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'tours']"
+          >{{ 'tours' | translate }}</a
+        >
       </li>
       <li>
-        <a class="hover:text-yellow-500 transition" href="#pricing">{{ 'prices' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'pricing']"
+          >{{ 'prices' | translate }}</a
+        >
       </li>
       <li>
-        <a class="hover:text-yellow-500 transition" href="#destinations">{{ 'destinations' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'destinations']"
+          >{{ 'destinations' | translate }}</a
+        >
       </li>
       <li>
-        <a class="hover:text-yellow-500 transition" href="#contact">{{ 'contact' | translate }}</a>
+        <a
+          class="hover:text-yellow-500 transition"
+          [routerLink]="['/home', 'contact']"
+          >{{ 'contact' | translate }}</a
+        >
       </li>
     </ul>
 
-    <!-- Helpline + Botão Book Tour -->
+    <!-- Helpline e botão -->
     <div class="flex items-center gap-4">
       <div class="text-right">
-        <small class="uppercase text-xs block">{{ 'helpline' | translate }}:</small>
-        <span class="text-yellow-500 font-bold text-sm">
-          +111-888-000
-        </span>
+        <small class="uppercase text-xs block">
+          {{ 'helpline' | translate }}:
+        </small>
+        <span class="text-yellow-500 font-bold text-sm">+111-888-000</span>
       </div>
       <button
-        class="bg-yellow-400 text-blue-900 font-bold py-2 px-4 rounded-full hover:bg-white hover:text-blue-900 transition">
+        class="bg-yellow-400 text-blue-900 font-bold py-2 px-4 rounded-full
+               hover:bg-white hover:text-blue-900 transition"
+        (click)="onBookTour()"
+      >
         {{ 'bookTour' | translate }}
       </button>
     </div>

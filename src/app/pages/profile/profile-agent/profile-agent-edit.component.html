@@ -1,0 +1,333 @@
+<div class="max-w-5xl mx-auto mt-8 p-6 bg-white rounded shadow-lg hover:shadow-2xl hover:-translate-y-1 transition">
+  <h2 class="text-2xl font-bold uppercase text-center mb-6">
+    {{ 'profileAgent' | translate }}
+  </h2>
+
+  <!-- Linha 1: Nome / E-mail -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'name' | translate }}: </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.name' | translate }}"
+        [(ngModel)]="agent.name"
+        (blur)="onBlur('name')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.name">
+        {{ formErrors.name }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'email' | translate }}: </label>
+      <input
+        type="email"
+        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.email' | translate }}"
+        [(ngModel)]="agent.email"
+        (blur)="onBlur('email')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.email">
+        {{ formErrors.email }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Linha 2: Tipo de Agente / CPF / CNPJ -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <!-- Tipo de Agente -->
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'agentType' | translate }} </label>
+      <select
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.agentType"
+        (blur)="onBlur('agentType')"
+      >
+        <option value="Pessoa Física">{{ 'agent.person' | translate }}</option>
+        <option value="Pessoa Jurídica">{{ 'agent.company' | translate }}</option>
+      </select>
+      <p class="text-red-600 text-sm" *ngIf="formErrors.agentType">
+        {{ formErrors.agentType }}
+      </p>
+    </div>
+
+    <!-- CPF -->
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'cpf' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="000.000.000-00"
+        [(ngModel)]="agent.cpf"
+        (blur)="onBlur('cpf')"
+      />
+    </div>
+
+    <!-- CNPJ -->
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'cnpj' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="00.000.000/0000-00"
+        [(ngModel)]="agent.cnpj"
+        (blur)="onBlur('cnpj')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha 3: Razão Social / Nome Fantasia -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'companyName' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.companyName' | translate }}"
+        [(ngModel)]="agent.companyName"
+        (blur)="onBlur('companyName')"
+      />
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'tradeName' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.tradeName' | translate }}"
+        [(ngModel)]="agent.tradeName"
+        (blur)="onBlur('tradeName')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha 4: País / Telefone / WhatsApp -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'country' | translate }} </label>
+      <select
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.country"
+        (blur)="onBlur('country')"
+      >
+        <option value="Portugal">{{ 'country' | translate }}</option>
+        <option value="Brazil">{{ 'country' | translate }} - Brazil</option>
+        <option value="England">{{ 'country' | translate }} - England</option>
+        <option value="United States">{{ 'country' | translate }} - United States</option>
+        <option value="France">{{ 'country' | translate }} - France</option>
+        <option value="Spain">{{ 'country' | translate }} - Spain</option>
+        <option value="United Kingdom">{{ 'country' | translate }} - United Kingdom</option>
+      </select>
+      <p class="text-red-600 text-sm" *ngIf="formErrors.country">
+        {{ formErrors.country }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'mainPhone' | translate }} </label>
+      <input
+        type="tel"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.mainPhone' | translate }}"
+        [(ngModel)]="agent.mobilePhone"
+        (blur)="onBlur('mobilePhone')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.mobilePhone">
+        {{ formErrors.mobilePhone }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'whatsapp' | translate }}</label>
+      <input
+        type="tel"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        placeholder="{{ 'placeholder.optionalPhone' | translate }}"
+        [(ngModel)]="agent.whatsapp"
+        (blur)="onBlur('whatsapp')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha 5: CEP / Rua -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'zipCode' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.zipCode"
+        (blur)="onBlur('zipCode')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.zipCode">
+        {{ formErrors.zipCode }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'street' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.street"
+        (blur)="onBlur('street')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.street">
+        {{ formErrors.street }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Linha 6: Número / Complemento -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'number' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.number"
+        (blur)="onBlur('number')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.number">
+        {{ formErrors.number }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'complement' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.complement"
+        (blur)="onBlur('complement')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha 7: Bairro / Cidade / Estado -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'district' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.neighborhood"
+        (blur)="onBlur('neighborhood')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.neighborhood">
+        {{ formErrors.neighborhood }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'city' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.city"
+        (blur)="onBlur('city')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.city">
+        {{ formErrors.city }}
+      </p>
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1"> <span class="text-red-600">*</span> {{ 'stateUF' | translate }} </label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.state"
+        (blur)="onBlur('state')"
+      />
+      <p class="text-red-600 text-sm" *ngIf="formErrors.state">
+        {{ formErrors.state }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Linha 8: Banco / Agência / Conta -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'bank' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.bank"
+        (blur)="onBlur('bank')"
+      />
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'bankAgency' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.bankAgency"
+        (blur)="onBlur('bankAgency')"
+      />
+    </div>
+
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'bankAccount' | translate }}</label>
+      <input
+        type="text"
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.bankAccount"
+        (blur)="onBlur('bankAccount')"
+      />
+    </div>
+  </div>
+
+  <!-- Linha 9: Tipo de Conta -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <label class="block font-medium mb-1">{{ 'accountType' | translate }}</label>
+      <select
+        class="w-full border border-gray-300 rounded px-3 py-2"
+        [disabled]="loading"
+        [(ngModel)]="agent.accountType"
+        (blur)="onBlur('accountType')"
+      >
+        <option value="Conta Corrente">{{ 'accountTypeChecking' | translate }}</option>
+        <option value="Poupança">{{ 'accountTypeSaving' | translate }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Botão Salvar ou Loading -->
+  <div class="mt-8 text-center">
+    <div *ngIf="loading">
+      <app-loading></app-loading>
+    </div>
+    <button
+      *ngIf="!loading"
+      class="bg-blue-500 text-white font-semibold px-6 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 transition"
+      (click)="onSubmit()"
+      [disabled]="isNotValid()"
+    >
+      {{ 'saveChanges' | translate }}
+    </button>
+  </div>
+</div>

@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LayoutComponent } from './components/layout/layout.component';
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [
-    CommonModule,   // para *ngIf, *ngFor, etc
-    RouterModule,   // para usar <router-outlet>
-    TranslateModule // para pipe 'translate'
+    CommonModule, // para *ngIf, *ngFor, etc
+    RouterModule, // para usar <router-outlet>
+    TranslateModule, // para pipe 'translate'
+    LayoutComponent, // Adicionar LayoutComponent
   ],
 })
 export class AppComponent {

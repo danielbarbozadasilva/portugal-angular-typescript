@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IClient } from '../models/models.client';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { IClient, IResponse, IResponseError } from '../models/models.index';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environments';
 
 @Injectable({
@@ -13,22 +14,47 @@ export class ClientService {
   constructor(private http: HttpClient) {}
 
   public getAllClients(): Observable<IClient[]> {
-    return this.http.get<IClient[]>(this.baseUrl);
+    return this.http.get<IResponse<IClient[]>>(this.baseUrl).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   public getClient(id: string): Observable<IClient> {
-    return this.http.get<IClient>(`${this.baseUrl}/${id}`);
+    return this.http.get<IResponse<IClient>>(`${this.baseUrl}/${id}`).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
-  public createClient(client: Partial<IClient>): Observable<any> {
-    return this.http.post<any>(this.baseUrl, client);
+  public createClient(client: Partial<IClient>): Observable<IClient> {
+    return this.http.post<IResponse<IClient>>(this.baseUrl, client).pipe(
+      map((res) => res.data),
+      catchError(this.handleError)
+    );
   }
 
-  public updateClient(id: string, data: Partial<IClient>): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, data);
+  public updateClient(id: string, data: Partial<IClient>): Observable<IClient> {
+    return this.http.put<IResponse<IClient>>(`${this.baseUrl}/${id}`, data).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
-  public deleteClient(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`);
+  public deleteClient(id: string): Observable<{ id: string }> {
+    return this.http.delete<IResponse<any>>(`${this.baseUrl}/${id}`).pipe(
+      map(() => ({ id })),
+      catchError(this.handleError)
+    );
+  }
+
+  // Generic error handler
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('ClientService Error:', error);
+    const errorResponse: IResponseError = {
+      success: false,
+      message: error.error?.message || error.message || 'An unknown error occurred'
+    };
+    return throwError(() => errorResponse);
   }
 }

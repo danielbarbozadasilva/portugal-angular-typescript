@@ -1,65 +1,31 @@
-/**
- * server.ts - Responsável por subir o servidor Node que servirá
- * sua aplicação Angular SSR + eventuais APIs REST no front.
- */
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
-
+// server.ts (exemplo de Express)
+import 'zone.js/node';
 import express from 'express';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import dotenv from 'dotenv';
+import { ngExpressEngine } from '@nguniversal/express-engine';
+import bootstrap from './main.server';
 
-dotenv.config({
-  path: process.env.APP_NODE_ENV === 'development' ? '.env.test' : '.env',
-});
+function createApp() {
+  const server = express();
 
-const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-const browserDistFolder = resolve(serverDistFolder, '../atividades-turisticas-portugal');
+  // Configura o engine de renderização Angular Universal:
+  server.engine('html', ngExpressEngine({ bootstrap }));
+  server.set('view engine', 'html');
+  server.set('views', 'dist/seu-projeto/browser');
 
-// Cria a instância do Express
-const app = express();
+  // Rota default
+  server.get('*', (req, res) => {
+    res.render('index', { req });
+  });
 
-// Cria a instância do Angular SSR Engine
-const angularApp = new AngularNodeAppEngine();
+  return server;
+}
 
-app.get('/v1/auth/check-token', (res: Response) : any => {
-  console.log(res.status);
-});
-
-// Serve arquivos estáticos da pasta ../browser
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: false,
-    redirect: false,
-  })
-);
-
-// Para qualquer outra rota, delega para o Angular SSR
-app.use('/**', (req, res, next) => {
-  angularApp
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next()
-    )
-    .catch(next);
-});
-
-/**
- * Se este arquivo for executado diretamente (node server.ts),
- * inicia servidor na porta process.env.PORT ou 4000
- */
-if (isMainModule(import.meta.url)) {
+function run() {
   const port = process.env['PORT'] || 4000;
+  const app = createApp();
   app.listen(port, () => {
-    console.warn(`Angular SSR server rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando em http://localhost:${port}`);
   });
 }
 
-// Exporta o request handler para uso em dev-server ou funções serverless
-export const reqHandler = createNodeRequestHandler(app);
+run();

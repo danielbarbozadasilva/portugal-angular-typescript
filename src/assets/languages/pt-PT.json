@@ -82,6 +82,9 @@
     "foodFrancesinhaText": "Um sanduíche único do Porto, rico em sabores e perfeito para os amantes de carne.",
     "foodBacalhauTitle": "Bacalhau à Brás",
     "foodBacalhauText": "Uma das mil e uma maneiras de saborear o bacalhau, um clássico reinventado.",
+    "foodPastelNataAlt": "Fotografia de um Pastel de Nata",
+    "foodFrancesinhaAlt": "Fotografia de uma Francesinha",
+    "foodBacalhauAlt": "Fotografia de Bacalhau à Brás",
     "specialOfferBadge": "Oferta especial",
     "priceNote": "Os preços variam dependendo do tamanho do grupo",
     "joinButton": "Participar",
@@ -97,6 +100,8 @@
     "showcase3Lead": "A região vinícola do Douro, Património Mundial da UNESCO, produz vinhos há milhares de anos...",
     "showcase3Btn": "Visitar Porto",
     "activitiesSectionTitle": "Atividades Turísticas",
+    "activityLocationLabel": "Localização",
+    "activityPriceLabel": "Preço",
     "filters": {
       "keywordPlaceholder": "Palavra-chave",
       "categoryPlaceholder": "Categoria",
@@ -219,7 +224,23 @@
     "fieldRequired": "Este campo é obrigatório.",
     "passwordMin6": "A palavra-passe deve ter pelo menos 6 caracteres.",
     "passwordMax50": "A palavra-passe deve ter no máximo 50 caracteres.",
-    "passwordsNoMatch": "As palavras-passe não coincidem."
+    "passwordsNoMatch": "As palavras-passe não coincidem.",
+    "nameRequired": "O nome é obrigatório.",
+    "passwordRequired": "A palavra-passe é obrigatória.",
+    "passwordConfirmRequired": "A confirmação da palavra-passe é obrigatória.",
+    "agentTypeRequired": "O tipo de agente é obrigatório.",
+    "cnpjInvalid": "CNPJ inválido. Deve conter 14 dígitos.",
+    "client": {
+      "notFound": "Cliente não encontrado.",
+      "inactive": "Cliente inativo.",
+      "blocked": "Cliente bloqueado.",
+      "successRegister": "Cliente registado com sucesso.",
+      "successUpdate": "Cliente atualizado com sucesso.",
+      "successRemove": "Cliente removido com sucesso.",
+      "errorRegister": "Erro ao registar cliente.",
+      "errorUpdate": "Erro ao atualizar cliente.",
+      "errorRemove": "Erro ao remover cliente."
+    }
   },
   "aboutPage": {
     "pageTitle": "Sobre Nós",
@@ -243,5 +264,11 @@
     "ourGalleryTitle": "A Nossa Galeria",
     "ourGallerySubtitle": "Momentos captados de aventuras incríveis",
     "viewAllGallery": "Ver Toda a Galeria"
-  }
+  },
+  "loadingText": "A carregar...",
+  "newPasswordLabel": "Nova Palavra-passe",
+  "newPasswordPlaceholder": "Digite a nova palavra-passe",
+  "confirmNewPasswordLabel": "Confirmar Palavra-passe",
+  "confirmNewPasswordPlaceholder": "Confirme a nova palavra-passe",
+  "changePasswordButton": "Alterar Palavra-passe"
 }

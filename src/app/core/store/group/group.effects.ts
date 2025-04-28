@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { GroupService } from '../../../core/http/group.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { GroupService } from '../../http/group.service'; // Correct path
 import * as GroupActions from './group.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class GroupEffects {
@@ -16,8 +18,8 @@ export class GroupEffects {
       ofType(GroupActions.loadGroups),
       mergeMap(() =>
         this.groupService.getAllGroups().pipe(
-          map(groups => GroupActions.loadGroupsSuccess({ groups })),
-          catchError(error => of(GroupActions.loadGroupsFailure({ error })))
+          map((groups) => GroupActions.loadGroupsSuccess({ groups })),
+          catchError((error: IResponseError) => of(GroupActions.loadGroupsFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class GroupEffects {
   loadGroupById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GroupActions.loadGroupById),
-      mergeMap(({ id }) =>
-        this.groupService.getGroup(id).pipe(
-          map(group => GroupActions.loadGroupByIdSuccess({ group })),
-          catchError(error => of(GroupActions.loadGroupByIdFailure({ error })))
+      switchMap((action) =>
+        this.groupService.getGroup(action.id).pipe(
+          map((group) => GroupActions.loadGroupByIdSuccess({ group })),
+          catchError((error: IResponseError) => of(GroupActions.loadGroupByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,11 @@ export class GroupEffects {
   updateGroup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GroupActions.updateGroup),
-      mergeMap(({ id, data }) =>
-        this.groupService.updateGroup(id, data).pipe(
+      mergeMap((action) =>
+        this.groupService.updateGroup(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated group
           map(() => GroupActions.updateGroupSuccess()),
-          catchError(error => of(GroupActions.updateGroupFailure({ error })))
+          catchError((error: IResponseError) => of(GroupActions.updateGroupFailure({ error })))
         )
       )
     )
@@ -50,12 +53,16 @@ export class GroupEffects {
   removeGroup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GroupActions.removeGroup),
-      mergeMap(({ id }) =>
-        this.groupService.deleteGroup(id).pipe(
+      mergeMap((action) =>
+        this.groupService.deleteGroup(action.id).pipe(
+          // Assuming success action doesn't need the id
           map(() => GroupActions.removeGroupSuccess()),
-          catchError(error => of(GroupActions.removeGroupFailure({ error })))
+          catchError((error: IResponseError) => of(GroupActions.removeGroupFailure({ error })))
         )
       )
     )
   );
+
+  // Add create effect if create action/service method exists
+  // createGroup$ = createEffect(() => ... );
 }

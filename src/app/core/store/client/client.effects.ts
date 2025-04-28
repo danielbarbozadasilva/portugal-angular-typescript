@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { ClientService } from '../../http/client.service'; // Correct path
 import * as ClientActions from './client.actions';
-import { ClientService } from '../../../core/http/client.service';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class ClientEffects {
@@ -16,8 +18,8 @@ export class ClientEffects {
       ofType(ClientActions.loadClients),
       mergeMap(() =>
         this.clientService.getAllClients().pipe(
-          map(clients => ClientActions.loadClientsSuccess({ clients })),
-          catchError(error => of(ClientActions.loadClientsFailure({ error })))
+          map((clients) => ClientActions.loadClientsSuccess({ clients })),
+          catchError((error: IResponseError) => of(ClientActions.loadClientsFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class ClientEffects {
   loadClientById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.loadClientById),
-      mergeMap(({ id }) =>
-        this.clientService.getClient(id).pipe(
-          map(client => ClientActions.loadClientByIdSuccess({ client })),
-          catchError(error => of(ClientActions.loadClientByIdFailure({ error })))
+      switchMap((action) =>
+        this.clientService.getClient(action.id).pipe(
+          map((client) => ClientActions.loadClientByIdSuccess({ client })),
+          catchError((error: IResponseError) => of(ClientActions.loadClientByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,12 @@ export class ClientEffects {
   createClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.createClient),
-      mergeMap(({ client }) =>
-        this.clientService.createClient(client).pipe(
+      mergeMap((action) =>
+        this.clientService.createClient(action.client).pipe(
+          // Assuming success action doesn't need the created client
           map(() => ClientActions.createClientSuccess()),
-          catchError(error => of(ClientActions.createClientFailure({ error })))
+          // Optionally dispatch loadClients again or navigate
+          catchError((error: IResponseError) => of(ClientActions.createClientFailure({ error })))
         )
       )
     )
@@ -50,10 +54,11 @@ export class ClientEffects {
   updateClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.updateClient),
-      mergeMap(({ id, data }) =>
-        this.clientService.updateClient(id, data).pipe(
+      mergeMap((action) =>
+        this.clientService.updateClient(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated client
           map(() => ClientActions.updateClientSuccess()),
-          catchError(error => of(ClientActions.updateClientFailure({ error })))
+          catchError((error: IResponseError) => of(ClientActions.updateClientFailure({ error })))
         )
       )
     )
@@ -62,10 +67,11 @@ export class ClientEffects {
   deleteClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.deleteClient),
-      mergeMap(({ id }) =>
-        this.clientService.deleteClient(id).pipe(
+      mergeMap((action) =>
+        this.clientService.deleteClient(action.id).pipe(
+          // Assuming success action doesn't need the id
           map(() => ClientActions.deleteClientSuccess()),
-          catchError(error => of(ClientActions.deleteClientFailure({ error })))
+          catchError((error: IResponseError) => of(ClientActions.deleteClientFailure({ error })))
         )
       )
     )

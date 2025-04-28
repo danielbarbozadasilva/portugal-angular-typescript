@@ -1,46 +1,59 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router'; // Import Router
 import {
-  IAuthParams,
   IAuthResponse,
-  IDataResponse,
+  // IResponse, // Removed unused import
   IResponseError,
-  ITokenResponse
-} from '../models/models.auth';
-import { Observable, catchError, throwError, map } from 'rxjs';
-import { environment } from '../../../environments/environments'; // Ajuste conforme seu path real
+  IDataResponse, // Add missing import
+  ITokenResponse, // Add missing import
+  IAuthParams, // Add missing import
+} from '../models/models.index';
+import { environment } from '../../../environments/environments';
+import { Observable, catchError, throwError, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = `${environment.apiBaseUrl}/auth`;
+  private readonly TOKEN_KEY = 'authToken'; // Key for storing token in localStorage
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {} // Inject Router
 
   /**
    * Realiza login com e-mail e senha.
    * @param credentials objeto contendo { email, password }
    * @returns Observable<IAuthResponse | IResponseError>
    */
-  public loginService(credentials: { email: string; password: string }): Observable<IAuthResponse | IResponseError> {
+  public loginService(credentials: { email: string; password: string }): Observable<IAuthResponse> {
+    // Return IAuthResponse on success
     const url = `${this.baseUrl}/login`;
     return this.http.post<IAuthResponse>(url, credentials).pipe(
-      map(response => response),
-      catchError(error => this.handleError(error, 'Erro no login'))
+      tap((response) => {
+        // Store token on successful login
+        if (response?.data?.token) {
+          this.storeToken(response.data.token);
+        }
+      }),
+      catchError(this.handleError) // Use generic handler
     );
   }
 
   /**
    * Realiza logout para o usuário.
    * @param credentials objeto contendo { _id }
-   * @returns Observable<IAuthResponse | IResponseError>
+   * @returns Observable<IDataResponse | IResponseError> - Adjust response type if needed
    */
-  public logoutService(credentials: { _id: string }): Observable<IAuthResponse | IResponseError> {
+  public logoutService(credentials: { _id: string }): Observable<IDataResponse> {
+    // Return IDataResponse on success
     const url = `${this.baseUrl}/logout`;
-    return this.http.post<IAuthResponse>(url, credentials).pipe(
-      map(response => response),
-      catchError(error => this.handleError(error, 'Erro ao efetuar logout'))
+    return this.http.post<IDataResponse>(url, credentials).pipe(
+      tap(() => this.removeToken()), // Remove token on logout
+      catchError(this.handleError) // Use generic handler
     );
   }
 
@@ -49,11 +62,17 @@ export class AuthService {
    * @param id ID do usuário.
    * @returns Observable<ITokenResponse | IResponseError>
    */
-  public refreshTokenService(id: string): Observable<ITokenResponse | IResponseError> {
+  public refreshTokenService(id: string): Observable<ITokenResponse> {
+    // Return ITokenResponse on success
     const url = `${this.baseUrl}/refresh-token`;
     return this.http.post<ITokenResponse>(url, { _id: id }).pipe(
-      map(response => response),
-      catchError(error => this.handleError(error, 'Erro ao renovar token'))
+      tap((response) => {
+        // Store the new token on successful refresh
+        if (response?.token) {
+          this.storeToken(response.token);
+        }
+      }),
+      catchError(this.handleError) // Use generic handler
     );
   }
 
@@ -62,15 +81,12 @@ export class AuthService {
    * @param credentials objeto contendo { token }
    * @returns Observable<ITokenResponse | IResponseError>
    */
-  public checkTokenService(credentials: { token: string }): Observable<ITokenResponse | IResponseError> {
+  public checkTokenService(credentials: { token: string }): Observable<ITokenResponse> {
+    // Return ITokenResponse on success
     const url = `${this.baseUrl}/check-token`;
     return this.http.post<ITokenResponse>(url, credentials).pipe(
-      map(response => {
-        // Se o back-end retornar { success: true/false, ... }
-        // Podemos retornar algo que contenha success. Ajuste conforme sua API.
-        return { success: response.success } as IResponseError;
-      }),
-      catchError(error => this.handleError(error, 'Token inválido'))
+      // No specific mapping needed if backend returns { success: true/false }
+      catchError(this.handleError) // Use generic handler
     );
   }
 
@@ -79,11 +95,11 @@ export class AuthService {
    * @param credentials objeto contendo { email, recoveryCode, newPassword }
    * @returns Observable<IDataResponse | IResponseError>
    */
-  public resetPasswordService(credentials: IAuthParams): Observable<IDataResponse | IResponseError> {
+  public resetPasswordService(credentials: IAuthParams): Observable<IDataResponse> {
+    // Return IDataResponse on success
     const url = `${this.baseUrl}/reset-password`;
-    return this.http.put<IDataResponse | IResponseError>(url, credentials).pipe(
-      map(response => response),
-      catchError(error => this.handleError(error, 'Erro ao redefinir senha'))
+    return this.http.put<IDataResponse>(url, credentials).pipe(
+      catchError(this.handleError) // Use generic handler
     );
   }
 
@@ -92,22 +108,54 @@ export class AuthService {
    * @param credentials objeto contendo { email }
    * @returns Observable<IDataResponse | IResponseError>
    */
-  public passwordRecoveryService(credentials: { email: string }): Observable<IDataResponse | IResponseError> {
+  public passwordRecoveryService(credentials: { email: string }): Observable<IDataResponse> {
+    // Return IDataResponse on success
     const url = `${this.baseUrl}/password-recovery`;
-    return this.http.post<IDataResponse | IResponseError>(url, credentials).pipe(
-      map(response => response),
-      catchError(error => this.handleError(error, 'Erro ao solicitar recuperação de senha'))
+    return this.http.post<IDataResponse>(url, credentials).pipe(
+      catchError(this.handleError) // Use generic handler
     );
   }
+
+  // --- Token Management ---
+
+  /** Stores the token in localStorage. */
+  private storeToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  /** Retrieves the token from localStorage. */
+  public getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  /** Removes the token from localStorage. */
+  private removeToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  /** Checks if a token exists. */
+  public hasToken(): boolean {
+    return !!this.getToken();
+  }
+
+  // --- Error Handling ---
 
   /**
    * Método genérico de tratamento de erro.
    * @param error erro recebido do HttpClient
-   * @param customMessage mensagem de fallback
-   * @returns Observable<IResponseError>
+   * @returns Observable<never> that throws IResponseError
    */
-  private handleError(error: HttpErrorResponse, customMessage: string): Observable<IResponseError> {
-    const msg = error?.error?.message || customMessage || 'Erro desconhecido';
-    return throwError(() => ({ success: false, message: msg } as IResponseError));
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('AuthService Error:', error);
+    // Handle 401 Unauthorized specifically (e.g., redirect to login)
+    if (error.status === 401) {
+      this.removeToken(); // Ensure token is removed
+      this.router.navigate(['/signin']); // Redirect to login
+    }
+    const errorResponse: IResponseError = {
+      success: false,
+      message: error.error?.message || error.message || 'An unknown authentication error occurred',
+    };
+    return throwError(() => errorResponse);
   }
 }

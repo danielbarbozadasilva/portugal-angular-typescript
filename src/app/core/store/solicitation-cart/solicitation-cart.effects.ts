@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SolicitationCartService } from '../../../core/http/solicitationsCartItem.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { SolicitationCartService } from '../../http/solicitationsCartItem.service'; // Correct path
 import * as SolicitationCartActions from './solicitation-cart.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class SolicitationCartEffects {
   constructor(
     private actions$: Actions,
     private solicitationCartService: SolicitationCartService
-  ) { }
+  ) {}
 
   loadAllItems$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationCartActions.loadAllSolicitationCartItems),
       mergeMap(() =>
-        this.solicitationCartService.getAllSolicitationsCartItem().pipe(
+        this.solicitationCartService.getAllSolicitationCartItems().pipe(
           map((items) => SolicitationCartActions.loadAllSolicitationCartItemsSuccess({ items })),
-          catchError((error) => of(SolicitationCartActions.loadAllSolicitationCartItemsFailure({ error })))
+          catchError((error: IResponseError) =>
+            of(SolicitationCartActions.loadAllSolicitationCartItemsFailure({ error }))
+          )
         )
       )
     )
@@ -26,10 +30,12 @@ export class SolicitationCartEffects {
   loadItemById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationCartActions.loadSolicitationCartItemById),
-      mergeMap(({ id }) =>
-        this.solicitationCartService.getSolicitationCartItem(id).pipe(
+      switchMap((action) =>
+        this.solicitationCartService.getSolicitationCartItemById(action.id).pipe(
           map((item) => SolicitationCartActions.loadSolicitationCartItemByIdSuccess({ item })),
-          catchError((error) => of(SolicitationCartActions.loadSolicitationCartItemByIdFailure({ error })))
+          catchError((error: IResponseError) =>
+            of(SolicitationCartActions.loadSolicitationCartItemByIdFailure({ error }))
+          )
         )
       )
     )
@@ -38,10 +44,13 @@ export class SolicitationCartEffects {
   updateItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationCartActions.updateSolicitationCartItem),
-      mergeMap(({ id, data }) =>
-        this.solicitationCartService.updateSolicitationCartItem(id, data).pipe(
+      mergeMap((action) =>
+        this.solicitationCartService.updateSolicitationCartItem(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated item, adjust if needed
           map(() => SolicitationCartActions.updateSolicitationCartItemSuccess()),
-          catchError((error) => of(SolicitationCartActions.updateSolicitationCartItemFailure({ error })))
+          catchError((error: IResponseError) =>
+            of(SolicitationCartActions.updateSolicitationCartItemFailure({ error }))
+          )
         )
       )
     )
@@ -50,12 +59,18 @@ export class SolicitationCartEffects {
   removeItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationCartActions.removeSolicitationCartItem),
-      mergeMap(({ id }) =>
-        this.solicitationCartService.deleteSolicitationCartItem(id).pipe(
+      mergeMap((action) =>
+        this.solicitationCartService.removeSolicitationCartItem(action.id).pipe(
+          // Assuming success action doesn't need the id, adjust if needed
           map(() => SolicitationCartActions.removeSolicitationCartItemSuccess()),
-          catchError((error) => of(SolicitationCartActions.removeSolicitationCartItemFailure({ error })))
+          catchError((error: IResponseError) =>
+            of(SolicitationCartActions.removeSolicitationCartItemFailure({ error }))
+          )
         )
       )
     )
   );
+
+  // Add create effect if create action/service method exists
+  // createItem$ = createEffect(() => ... );
 }

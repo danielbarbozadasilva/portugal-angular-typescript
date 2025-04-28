@@ -19,21 +19,35 @@
     <nav>
       <ul>
         <li class="mb-2">
-          <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen">
+          <a
+            [routerLink]="['admin/dashboard']"
+            class="flex items-center p-2 rounded hover:bg-gray-700"
+            [class.justify-center]="!isSidebarOpen"
+          >
             <span class="material-icons mr-3" [class.mr-0]="!isSidebarOpen">home</span>
-            <span [class.hidden]="!isSidebarOpen">Início</span>
+            <span [class.hidden]="!isSidebarOpen">{{ 'homePage' | translate }}</span>
           </a>
         </li>
         <li class="mb-2">
-          <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen">
+          <a
+            [routerLink]="['admin/dashboard']"
+            fragment="stats"
+            class="flex items-center p-2 rounded hover:bg-gray-700"
+            [class.justify-center]="!isSidebarOpen"
+          >
             <span class="material-icons mr-3" [class.mr-0]="!isSidebarOpen">bar_chart</span>
-            <span [class.hidden]="!isSidebarOpen">Estatísticas</span>
+            <span [class.hidden]="!isSidebarOpen">{{ 'dashboard.stats' | translate }}</span>
           </a>
         </li>
         <li class="mb-2">
-          <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen">
+          <a
+            [routerLink]="['admin/dashboard']"
+            fragment="settings"
+            class="flex items-center p-2 rounded hover:bg-gray-700"
+            [class.justify-center]="!isSidebarOpen"
+          >
             <span class="material-icons mr-3" [class.mr-0]="!isSidebarOpen">settings</span>
-            <span [class.hidden]="!isSidebarOpen">Configurações</span>
+            <span [class.hidden]="!isSidebarOpen">{{ 'dashboard.settings' | translate }}</span>
           </a>
         </li>
         <!-- Adicione mais itens de menu conforme necessário -->

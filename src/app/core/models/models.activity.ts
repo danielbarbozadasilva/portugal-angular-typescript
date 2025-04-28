@@ -22,14 +22,19 @@ export interface IActivity {
   available: boolean;
   notes: string;
   category: string;
+  // TODO: Consider defining specific interfaces instead of using any[]
   agent: any[];
   shareCount: number;
   allowedPaymentMethods: string[];
   createdAt: string;
   updatedAt: string;
+  // TODO: Consider defining specific interfaces instead of using any[]
   rating: any[];
+  // TODO: Consider defining specific interfaces instead of using any[]
   likes: any[];
+  // TODO: Consider defining specific interfaces instead of using any[]
   client: any[];
+  // TODO: Consider defining specific interfaces instead of using any[]
   groups: any[];
   averageRating: number;
 }

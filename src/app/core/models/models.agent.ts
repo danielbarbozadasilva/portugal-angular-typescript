@@ -1,22 +1,13 @@
-export type AgentType = 'Pessoa Física' | 'Pessoa Jurídica';
-export type AgentStatus = 'Ativo' | 'Inativo' | 'Pendente';
-export type AccountType = 'Conta Corrente' | 'Poupança';
-export type PaymentGateway = 'Stripe' | 'PayPal' | 'Outro';
-
 export interface IAgent {
-  _id?: string;
-  user?: string;
-  agentType: AgentType;
+  _id: string;
+  name: string;
+  email: string;
+  agentType: 'Pessoa Física' | 'Pessoa Jurídica' | string; // Use specific types or string
+  cpf?: string;
+  cnpj?: string;
   companyName?: string;
   tradeName?: string;
-  cnpj?: string;
-  fullName?: string;
-  cpf?: string;
-  rg?: string;
-  birthDate?: Date;
-  primaryEmail: string;
-  secondaryEmail?: string;
-  landlinePhone?: string;
+  country: string;
   mobilePhone: string;
   whatsapp?: string;
   zipCode: string;
@@ -26,25 +17,45 @@ export interface IAgent {
   neighborhood: string;
   city: string;
   state: string;
-  country: string;
-  cadastur?: string;
-  defaultCommission: number;
-  agentStatus: AgentStatus;
-  approved?: boolean;
-  specialty?: string;
-  contact?: string;
-  notes?: string;
   bank?: string;
   bankAgency?: string;
   bankAccount?: string;
-  accountType?: AccountType;
-  accountHolder?: string;
-  paymentPreferences?: {
-    preferredGateway?: PaymentGateway;
-    accountDetails?: {
-      [key: string]: any;
-    };
-  };
+  accountType?: 'Conta Corrente' | 'Poupança' | string;
+  // Add other fields from IUser if agents are also users, or relate them via userId
+  userId?: string; // Example relation
   createdAt?: Date;
   updatedAt?: Date;
+  averageRating?: number;
+}
+
+export interface IAgentRequest {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  birthDate: Date;
+  agentType: 'Pessoa Física' | 'Pessoa Jurídica' | string;
+  cpf?: string;
+  cnpj?: string;
+  companyName?: string;
+  tradeName?: string;
+  country: string;
+  mobilePhone: string;
+  whatsapp?: string;
+  zipCode: string;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  bank?: string;
+  bankAgency?: string;
+  bankAccount?: string;
+  accountType?: 'Conta Corrente' | 'Poupança' | string;
+  userId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  averageRating?: number;
 }

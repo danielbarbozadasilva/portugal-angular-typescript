@@ -6,88 +6,82 @@
 
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of } from 'rxjs';
-
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { ActivityService } from '../../http/activity.service'; // Correct path
 import * as ActivityActions from './activity.actions';
-import { ActivityService } from '../../../core/http/activity.service';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class ActivityEffects {
   constructor(
     private actions$: Actions,
     private activityService: ActivityService
-  ) { }
+  ) {}
 
-  /**
-   * Efeito para carregar atividades (com ou sem filtros).
-   */
   loadActivities$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ActivityActions.loadActivities),
-      mergeMap(({ filters }) =>
-        this.activityService.getAllActivities(filters).pipe(
+      // Use switchMap if you want to cancel previous load requests when filters change quickly
+      // Use mergeMap if you want all requests to complete (e.g., loading different pages)
+      switchMap((action) =>
+        this.activityService.getAllActivities(action.filters).pipe(
+          // TODO: If pagination metadata is needed, map the full response here
+          // and dispatch a success action containing both activities and metadata.
           map((activities) => ActivityActions.loadActivitiesSuccess({ activities })),
-          catchError((error) => of(ActivityActions.loadActivitiesFailure({ error })))
+          catchError((error: IResponseError) => of(ActivityActions.loadActivitiesFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para carregar uma atividade pelo ID.
-   */
   loadActivityById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ActivityActions.loadActivityById),
-      mergeMap(({ id }) =>
-        this.activityService.getActivity(id).pipe(
+      switchMap((action) =>
+        this.activityService.getActivity(action.id).pipe(
           map((activity) => ActivityActions.loadActivityByIdSuccess({ activity })),
-          catchError((error) => of(ActivityActions.loadActivityByIdFailure({ error })))
+          catchError((error: IResponseError) => of(ActivityActions.loadActivityByIdFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para criar uma nova atividade.
-   */
   createActivity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ActivityActions.createActivity),
-      mergeMap(({ activity }) =>
-        this.activityService.createActivity(activity).pipe(
+      mergeMap((action) =>
+        this.activityService.createActivity(action.activity).pipe(
+          // Assuming success action doesn't need the created activity
           map(() => ActivityActions.createActivitySuccess()),
-          catchError((error) => of(ActivityActions.createActivityFailure({ error })))
+          // Optionally dispatch loadActivities again
+          catchError((error: IResponseError) => of(ActivityActions.createActivityFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para atualizar uma atividade existente.
-   */
   updateActivity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ActivityActions.updateActivity),
-      mergeMap(({ id, data }) =>
-        this.activityService.updateActivity(id, data).pipe(
+      mergeMap((action) =>
+        this.activityService.updateActivity(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated activity
           map(() => ActivityActions.updateActivitySuccess()),
-          catchError((error) => of(ActivityActions.updateActivityFailure({ error })))
+          catchError((error: IResponseError) => of(ActivityActions.updateActivityFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para deletar uma atividade existente.
-   */
   deleteActivity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ActivityActions.deleteActivity),
-      mergeMap(({ id }) =>
-        this.activityService.deleteActivity(id).pipe(
+      mergeMap((action) =>
+        this.activityService.deleteActivity(action.id).pipe(
+          // Assuming success action doesn't need the id
           map(() => ActivityActions.deleteActivitySuccess()),
-          catchError((error) => of(ActivityActions.deleteActivityFailure({ error })))
+          catchError((error: IResponseError) => of(ActivityActions.deleteActivityFailure({ error })))
         )
       )
     )

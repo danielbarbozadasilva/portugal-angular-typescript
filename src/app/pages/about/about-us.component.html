@@ -1,790 +1,1044 @@
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ 'aboutPage.pageTitle' | translate }} - Tailwind CSS Aprimorado</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ 'aboutPage.pageTitle' | translate }} - Tailwind CSS Aprimorado</title>
+    <!-- Estilos customizados (unidos de arquivo01 e arquivo02) -->
+    <style>
+      :root {
+        --main-color: #c4082f;
+        --main-color-two: #b0072a;
+        --dark-text-color: #222222;
+        --text-color: #666666;
+        --font-family-exo: 'Exo 2', sans-serif;
+        --font-family-barlow: 'Barlow', sans-serif;
+      }
 
+      body {
+        font-family: var(--font-family-exo), sans-serif;
+        color: var(--text-color);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-family-exo), sans-serif;
+        color: var(--dark-text-color);
+        font-weight: 700;
+      }
 
-  <!-- Estilos customizados (unidos de arquivo01 e arquivo02) -->
-  <style>
-    :root {
-      --main-color: #c4082f;
-      --main-color-two: #b0072a;
-      --dark-text-color: #222222;
-      --text-color: #666666;
-      --font-family-exo: "Exo 2", sans-serif;
-      --font-family-barlow: "Barlow", sans-serif;
-    }
+      .section-title h2 {
+        font-weight: 800;
+        line-height: 1.2;
+        text-transform: uppercase;
+        color: var(--dark-text-color);
+      }
 
-    body {
-      font-family: var(--font-family-exo), sans-serif;
-      color: var(--text-color);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+      .section-title .subtitle {
+        color: var(--text-color);
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+      }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: var(--font-family-exo), sans-serif;
-      color: var(--dark-text-color);
-      font-weight: 700;
-    }
+      .section-title .separator {
+        width: 60px;
+        height: 4px;
+        background-color: var(--main-color);
+        margin: 20px auto 0;
+        border-radius: 2px;
+      }
 
-    .section-title h2 {
-      font-weight: 800;
-      line-height: 1.2;
-      text-transform: uppercase;
-      color: var(--dark-text-color);
-    }
+      /* Equipe */
+      .team-card .team-card__image:hover .team-card__social-overlay {
+        opacity: 1;
+        transform: scale(1);
+      }
 
-    .section-title .subtitle {
-      color: var(--text-color);
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-    }
+      .team-card__social-overlay {
+        opacity: 0;
+        transform: scale(0.9);
+        transition:
+          opacity 0.4s ease-in-out,
+          transform 0.4s ease-in-out;
+      }
 
-    .section-title .separator {
-      width: 60px;
-      height: 4px;
-      background-color: var(--main-color);
-      margin: 20px auto 0;
-      border-radius: 2px;
-    }
+      .team-card__social-link {
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+      }
 
-    /* Equipe */
-    .team-card .team-card__image:hover .team-card__social-overlay {
-      opacity: 1;
-      transform: scale(1);
-    }
+      .team-card__social-link:hover {
+        background-color: var(--dark-text-color);
+        transform: scale(1.1);
+      }
 
-    .team-card__social-overlay {
-      opacity: 0;
-      transform: scale(0.9);
-      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    }
+      /* Cartão de Benefícios (Confidence) */
+      .usp-card {
+        transition:
+          transform 0.3s ease-in-out,
+          box-shadow 0.3s ease-in-out,
+          border-color 0.3s ease-in-out;
+      }
 
-    .team-card__social-link {
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
+      .usp-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        border-color: var(--main-color);
+      }
 
-    .team-card__social-link:hover {
-      background-color: var(--dark-text-color);
-      transform: scale(1.1);
-    }
+      .usp-card i img {
+        filter: brightness(0) saturate(100%) invert(13%) sepia(86%) saturate(3809%) hue-rotate(340deg) brightness(98%)
+          contrast(102%);
+        transition: transform 0.3s ease;
+      }
 
-    /* Cartão de Benefícios (Confidence) */
-    .usp-card {
-      transition: transform 0.3s ease-in-out,
-        box-shadow 0.3s ease-in-out,
-        border-color 0.3s ease-in-out;
-    }
+      .usp-card:hover i img {
+        transform: scale(0.9);
+      }
 
-    .usp-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-      border-color: var(--main-color);
-    }
+      /* Galeria */
+      .gallery-item .overlay-box {
+        transition: opacity 0.4s ease-in-out;
+      }
 
-    .usp-card i img {
-      filter: brightness(0) saturate(100%) invert(13%) sepia(86%) saturate(3809%) hue-rotate(340deg) brightness(98%) contrast(102%);
-      transition: transform 0.3s ease;
-    }
+      .gallery-item:hover .overlay-box {
+        opacity: 1;
+      }
 
-    .usp-card:hover i img {
-      transform: scale(0.9);
-    }
+      .gallery-item .image img {
+        transition: transform 0.5s ease-in-out;
+      }
 
-    /* Galeria */
-    .gallery-item .overlay-box {
-      transition: opacity 0.4s ease-in-out;
-    }
+      .gallery-item:hover .image img {
+        transform: scale(1.08);
+      }
 
-    .gallery-item:hover .overlay-box {
-      opacity: 1;
-    }
+      .gallery-item .overlay-box a {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--dark-text-color);
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease,
+          transform 0.3s ease;
+        transform: scale(0.8);
+        opacity: 0;
+      }
 
-    .gallery-item .image img {
-      transition: transform 0.5s ease-in-out;
-    }
+      .gallery-item:hover .overlay-box a {
+        transform: scale(1);
+        opacity: 1;
+      }
 
-    .gallery-item:hover .image img {
-      transform: scale(1.08);
-    }
+      .gallery-item .overlay-box a:hover {
+        background-color: var(--main-color);
+        color: white;
+        transform: scale(1.1);
+      }
 
-    .gallery-item .overlay-box a {
-      background-color: rgba(255, 255, 255, 0.9);
-      color: var(--dark-text-color);
-      transition: background-color 0.3s ease, color 0.3s ease,
-        transform 0.3s ease;
-      transform: scale(0.8);
-      opacity: 0;
-    }
+      /* Ripple Container */
+      .ripple-container a span {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+      }
 
-    .gallery-item:hover .overlay-box a {
-      transform: scale(1);
-      opacity: 1;
-    }
+      .ripple-container a span:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.1);
+      }
 
-    .gallery-item .overlay-box a:hover {
-      background-color: var(--main-color);
-      color: white;
-      transform: scale(1.1);
-    }
+      .ripple-container a i {
+        color: white;
+        font-size: 1.5rem;
+      }
 
-    /* Ripple Container */
-    .ripple-container a span {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
+      /* Botão Primário */
+      .primary-button {
+        transition:
+          background-color 0.4s ease,
+          color 0.4s ease,
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
 
-    .ripple-container a span:hover {
-      background-color: rgba(255, 255, 255, 0.5);
-      transform: scale(1.1);
-    }
+      .primary-button:hover {
+        background-color: var(--custom-dark-text);
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
 
-    .ripple-container a i {
-      color: white;
-      font-size: 1.5rem;
-    }
+      .primary-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(196, 8, 47, 0.4);
+      }
+    </style>
 
-    /* Botão Primário */
-    .primary-button {
-      transition: background-color 0.4s ease, color 0.4s ease,
-        transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .primary-button:hover {
-      background-color: var(--custom-dark-text);
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .primary-button:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(196, 8, 47, 0.4);
-    }
-  </style>
-
-  <!-- Configuração extra do Tailwind (opcional) -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            "custom-main": "#c4082f",
-            "custom-main-two": "#b0072a",
-            "custom-dark-text": "#222222",
-            "custom-text": "#666666",
-            "custom-gray-light": "#f4f4f4",
-          },
-          fontFamily: {
-            exo: ['"Exo 2"', "sans-serif"],
-            barlow: ["Barlow", "sans-serif"],
-          },
-          spacing: {
-            "55px": "55px",
-            "70px": "70px",
-            "100px": "100px",
-            "210px": "210px",
-            "45px": "45px",
+    <!-- Configuração extra do Tailwind (opcional) -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'custom-main': '#c4082f',
+              'custom-main-two': '#b0072a',
+              'custom-dark-text': '#222222',
+              'custom-text': '#666666',
+              'custom-gray-light': '#f4f4f4',
+            },
+            fontFamily: {
+              exo: ['"Exo 2"', 'sans-serif'],
+              barlow: ['Barlow', 'sans-serif'],
+            },
+            spacing: {
+              '55px': '55px',
+              '70px': '70px',
+              '100px': '100px',
+              '210px': '210px',
+              '45px': '45px',
+            },
           },
         },
-      },
-    };
-  </script>
-</head>
+      };
+    </script>
+  </head>
 
-<body class="font-exo text-custom-text text-base leading-relaxed font-normal bg-white">
-
-  <!-- SEÇÃO HERO + BREADCRUMB -->
-  <section class="w-full pt-210px pb-70px relative bg-gradient-to-b from-black/50 via-black/70 to-black/80">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-      style="background-image: url('https://via.placeholder.com/1920x800.png?text=Scenic+Background'); z-index: -1;">
-    </div>
-    <div class="container mx-auto px-4">
-      <div class="text-center w-full">
-        <div class="inline-block">
-          <h1 class="mb-2 text-5xl lg:text-6xl font-extrabold text-white leading-tight" itemprop="headline">
-            {{ 'aboutPage.pageTitle' | translate }}
-          </h1>
-          <ol
-            class="mt-4 flex justify-center space-x-2 text-sm text-gray-200 backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full">
-            <li>
-              <a href="#" class="hover:text-white hover:underline transition duration-300">{{ 'aboutPage.breadcrumbHome'
-                | translate }}</a>
-            </li>
-            <li class="text-gray-400">/</li>
-            <li class="text-white font-medium" aria-current="page">
-              {{ 'aboutPage.breadcrumbCurrent' | translate }}
-            </li>
-          </ol>
+  <body class="font-exo text-custom-text text-base leading-relaxed font-normal bg-white">
+    <!-- SEÇÃO HERO + BREADCRUMB -->
+    <section class="w-full pt-210px pb-70px relative bg-gradient-to-b from-black/50 via-black/70 to-black/80">
+      <div
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+        style="background-image: url('https://via.placeholder.com/1920x800.png?text=Scenic+Background'); z-index: -1"
+      ></div>
+      <div class="container mx-auto px-4">
+        <div class="text-center w-full">
+          <div class="inline-block">
+            <h1 class="mb-2 text-5xl lg:text-6xl font-extrabold text-white leading-tight" itemprop="headline">
+              {{ 'aboutPage.pageTitle' | translate }}
+            </h1>
+            <ol
+              class="mt-4 flex justify-center space-x-2 text-sm text-gray-200 backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full"
+            >
+              <li>
+                <a [routerLink]="['/']" class="hover:text-white hover:underline transition duration-300">{{
+                  'aboutPage.breadcrumbHome' | translate
+                }}</a>
+              </li>
+              <li class="text-gray-400">/</li>
+              <li class="text-white font-medium" aria-current="page">
+                {{ 'aboutPage.breadcrumbCurrent' | translate }}
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main id="main-content" class="w-full relative">
-    <div class="container mx-auto px-4">
-      <div class="page-wrapper py-16 md:py-24">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main id="main-content" class="w-full relative">
+      <div class="container mx-auto px-4">
+        <div class="page-wrapper py-16 md:py-24">
+          <!-- SEÇÃO EQUIPE (TEAM) -->
+          <section class="team-section w-full pt-100px pb-55px relative">
+            <div class="container mx-auto px-4">
+              <div class="section-title text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl">
+                  {{ 'aboutPage.teamMembersTitle' | translate }}
+                </h2>
+                <p class="subtitle mt-3 text-lg">
+                  {{ 'aboutPage.teamMembersSubtitle' | translate }}
+                </p>
+                <div class="separator"></div>
+              </div>
 
-        <!-- SEÇÃO EQUIPE (TEAM) -->
-        <section class="team-section w-full pt-100px pb-55px relative">
-          <div class="container mx-auto px-4">
-            <div class="section-title text-center mb-16">
-              <h2 class="text-4xl lg:text-5xl">
-                {{ 'aboutPage.teamMembersTitle' | translate }}
-              </h2>
-              <p class="subtitle mt-3 text-lg">
-                {{ 'aboutPage.teamMembersSubtitle' | translate }}
-              </p>
-              <div class="separator"></div>
-            </div>
-
-            <ul class="list-none mb-0 flex flex-wrap justify-center gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16 w-full">
-              <!-- Card 1 -->
-              <li
-                class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group">
-                <div
-                  class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
-                  <img decoding="async" class="rounded-full w-full h-full object-cover"
-                    src="https://via.placeholder.com/270x270.png?text=Nelson+Field" alt="Nelson Field" />
+              <ul class="list-none mb-0 flex flex-wrap justify-center gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16 w-full">
+                <!-- Card 1 -->
+                <li
+                  class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group"
+                >
                   <div
-                    class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full">
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
-                <div class="team-card__info w-full mt-4">
-                  <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">
-                    Nelson Field
-                  </h3>
-                  <span class="block text-custom-text text-sm mt-1">Environmental Steward</span>
-                </div>
-              </li>
-
-              <!-- Card 2 -->
-              <li
-                class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group">
-                <div
-                  class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
-                  <img decoding="async" class="rounded-full w-full h-full object-cover"
-                    src="https://via.placeholder.com/270x270.png?text=Fisher+Strong" alt="Fisher Strong" />
-                  <div
-                    class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full">
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
-                <div class="team-card__info w-full mt-4">
-                  <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">
-                    Fisher Strong
-                  </h3>
-                  <span class="block text-custom-text text-sm mt-1">Camping Gear Specialist</span>
-                </div>
-              </li>
-
-              <!-- Card 3 -->
-              <li
-                class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group">
-                <div
-                  class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
-                  <img decoding="async" class="rounded-full w-full h-full object-cover"
-                    src="https://via.placeholder.com/270x270.png?text=Channing+Hew" alt="Channing Hew" />
-                  <div
-                    class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full">
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
-                <div class="team-card__info w-full mt-4">
-                  <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">
-                    Channing Hew
-                  </h3>
-                  <span class="block text-custom-text text-sm mt-1">Outdoor Adventure Guide</span>
-                </div>
-              </li>
-
-              <!-- Card 4 -->
-              <li
-                class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group">
-                <div
-                  class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
-                  <img decoding="async" class="rounded-full w-full h-full object-cover"
-                    src="https://via.placeholder.com/270x270.png?text=Miskin+Shaw" alt="Miskin Shaw" />
-                  <div
-                    class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full">
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
-                <div class="team-card__info w-full mt-4">
-                  <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">
-                    Miskin Shaw
-                  </h3>
-                  <span class="block text-custom-text text-sm mt-1">Eco-friendly Camper</span>
-                </div>
-              </li>
-
-              <!-- Card 5 -->
-              <li
-                class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group">
-                <div
-                  class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
-                  <img decoding="async" class="rounded-full w-full h-full object-cover"
-                    src="https://via.placeholder.com/270x270.png?text=Riffiy+ElDoe" alt="Riffiy ElDoe" />
-                  <div
-                    class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full">
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
-                      href="#" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
-                <div class="team-card__info w-full mt-4">
-                  <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">
-                    Riffiy ElDoe
-                  </h3>
-                  <span class="block text-custom-text text-sm mt-1">Wildlife Conservationist</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- SEÇÃO FEATURE/VIDEO -->
-        <section class="feature-section w-full overflow-hidden my-16 md:my-24">
-          <div class="flex flex-col md:flex-row">
-            <!-- Imagem -->
-            <div
-              class="feature-section__image-col relative md:w-1/2 min-h-[450px] lg:min-h-[600px] bg-cover bg-center flex items-center justify-center group"
-              style="background-image:url(https://via.placeholder.com/900x700.png?text=Feature+Image+2)">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              <a href="#"
-                class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 ripple-container"
-                aria-label="Play Video">
-                <span><i class="fas fa-play"></i></span>
-              </a>
-            </div>
-
-            <!-- Conteúdo -->
-            <div
-              class="feature-section__content-col md:w-1/2 py-10 px-6 md:py-16 md:px-12 lg:py-24 lg:px-20 bg-gray-50">
-              <div class="inner-content">
-                <div class="heading text-left">
-                  <h3 class="text-custom-main font-semibold uppercase tracking-wider text-base">
-                    {{ 'aboutPage.featureVideoTitle' | translate }}
-                  </h3>
-                  <h2 class="mb-4 pt-1 text-3xl lg:text-4xl font-extrabold mt-2 text-custom-dark-text leading-tight">
-                    {{ 'aboutPage.featureVideoHeading' | translate }}
-                  </h2>
-                  <span class="block mt-5">
-                    <p class="text-custom-text leading-relaxed text-base md:text-lg">
-                      {{ 'aboutPage.featureVideoParagraph' | translate }}
-                    </p>
-                  </span>
-                </div>
-
-                <div class="btn-box mt-8 flex flex-wrap gap-4">
-                  <a href="#"
-                    class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main-two py-4 px-10 rounded-lg">
-                    {{ 'aboutPage.featureButtonContact' | translate }}
-                  </a>
-                  <a href="#"
-                    class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main py-4 px-10 rounded-lg">
-                    {{ 'aboutPage.featureButtonBook' | translate }}
-                  </a>
-                </div>
-
-                <div class="video-thumbnails-container mt-10 lg:mt-16 relative bg-white p-6 rounded-lg shadow-lg">
-                  <div class="box-inner">
+                    class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl"
+                  >
+                    <img
+                      decoding="async"
+                      class="rounded-full w-full h-full object-cover"
+                      src="https://via.placeholder.com/270x270.png?text=Nelson+Field"
+                      alt="Nelson Field"
+                    />
                     <div
-                      class="flex space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-custom-main scrollbar-track-gray-200">
-                      <!-- Thumb 1 -->
-                      <div class="flex-shrink-0 w-52 group">
-                        <div class="relative overflow-hidden rounded-md shadow-md">
-                          <img decoding="async" src="https://via.placeholder.com/230x150.png?text=Video+Thumb+1"
-                            alt="Video 1"
-                            class="block w-full transition-transform duration-300 group-hover:scale-105" />
-                          <a href="#"
-                            class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            aria-label="Play Video 1">
-                            <i
-                              class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"></i>
-                          </a>
+                      class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full"
+                    >
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Facebook"
+                        ><i class="fab fa-facebook-f"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Twitter"
+                        ><i class="fab fa-twitter"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Linkedin"
+                        ><i class="fab fa-linkedin-in"></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="team-card__info w-full mt-4">
+                    <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">Nelson Field</h3>
+                    <span class="block text-custom-text text-sm mt-1">Environmental Steward</span>
+                  </div>
+                </li>
+
+                <!-- Card 2 -->
+                <li
+                  class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group"
+                >
+                  <div
+                    class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl"
+                  >
+                    <img
+                      decoding="async"
+                      class="rounded-full w-full h-full object-cover"
+                      src="https://via.placeholder.com/270x270.png?text=Fisher+Strong"
+                      alt="Fisher Strong"
+                    />
+                    <div
+                      class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full"
+                    >
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Facebook"
+                        ><i class="fab fa-facebook-f"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Twitter"
+                        ><i class="fab fa-twitter"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Linkedin"
+                        ><i class="fab fa-linkedin-in"></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="team-card__info w-full mt-4">
+                    <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">Fisher Strong</h3>
+                    <span class="block text-custom-text text-sm mt-1">Camping Gear Specialist</span>
+                  </div>
+                </li>
+
+                <!-- Card 3 -->
+                <li
+                  class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group"
+                >
+                  <div
+                    class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl"
+                  >
+                    <img
+                      decoding="async"
+                      class="rounded-full w-full h-full object-cover"
+                      src="https://via.placeholder.com/270x270.png?text=Channing+Hew"
+                      alt="Channing Hew"
+                    />
+                    <div
+                      class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full"
+                    >
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Facebook"
+                        ><i class="fab fa-facebook-f"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Twitter"
+                        ><i class="fab fa-twitter"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Linkedin"
+                        ><i class="fab fa-linkedin-in"></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="team-card__info w-full mt-4">
+                    <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">Channing Hew</h3>
+                    <span class="block text-custom-text text-sm mt-1">Outdoor Adventure Guide</span>
+                  </div>
+                </li>
+
+                <!-- Card 4 -->
+                <li
+                  class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group"
+                >
+                  <div
+                    class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl"
+                  >
+                    <img
+                      decoding="async"
+                      class="rounded-full w-full h-full object-cover"
+                      src="https://via.placeholder.com/270x270.png?text=Miskin+Shaw"
+                      alt="Miskin Shaw"
+                    />
+                    <div
+                      class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full"
+                    >
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Facebook"
+                        ><i class="fab fa-facebook-f"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Twitter"
+                        ><i class="fab fa-twitter"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Linkedin"
+                        ><i class="fab fa-linkedin-in"></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="team-card__info w-full mt-4">
+                    <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">Miskin Shaw</h3>
+                    <span class="block text-custom-text text-sm mt-1">Eco-friendly Camper</span>
+                  </div>
+                </li>
+
+                <!-- Card 5 -->
+                <li
+                  class="team-card text-center w-full sm:w-[calc(50%-1.5rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(20%-2rem)] group"
+                >
+                  <div
+                    class="team-card__image relative rounded-full overflow-hidden w-44 h-44 mx-auto mb-5 shadow-lg border-4 border-white transition duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl"
+                  >
+                    <img
+                      decoding="async"
+                      class="rounded-full w-full h-full object-cover"
+                      src="https://via.placeholder.com/270x270.png?text=Riffiy+ElDoe"
+                      alt="Riffiy ElDoe"
+                    />
+                    <div
+                      class="team-card__social-overlay absolute inset-0 flex items-center justify-center bg-custom-main/80 rounded-full"
+                    >
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Facebook"
+                        ><i class="fab fa-facebook-f"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Twitter"
+                        ><i class="fab fa-twitter"></i
+                      ></a>
+                      <a
+                        class="team-card__social-link rounded-full bg-white text-custom-main w-9 h-9 flex items-center justify-center mx-1"
+                        href="#"
+                        target="_blank"
+                        title="Linkedin"
+                        ><i class="fab fa-linkedin-in"></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="team-card__info w-full mt-4">
+                    <h3 class="mb-0 text-xl font-semibold text-custom-dark-text">Riffiy ElDoe</h3>
+                    <span class="block text-custom-text text-sm mt-1">Wildlife Conservationist</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- SEÇÃO FEATURE/VIDEO -->
+          <section class="feature-section w-full overflow-hidden my-16 md:my-24">
+            <div class="flex flex-col md:flex-row">
+              <!-- Imagem -->
+              <div
+                class="feature-section__image-col relative md:w-1/2 min-h-[450px] lg:min-h-[600px] bg-cover bg-center flex items-center justify-center group"
+                style="background-image: url(https://via.placeholder.com/900x700.png?text=Feature+Image+2)"
+              >
+                <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                <a
+                  href="#"
+                  class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 ripple-container"
+                  aria-label="Play Video"
+                >
+                  <span><i class="fas fa-play"></i></span>
+                </a>
+              </div>
+
+              <!-- Conteúdo -->
+              <div
+                class="feature-section__content-col md:w-1/2 py-10 px-6 md:py-16 md:px-12 lg:py-24 lg:px-20 bg-gray-50"
+              >
+                <div class="inner-content">
+                  <div class="heading text-left">
+                    <h3 class="text-custom-main font-semibold uppercase tracking-wider text-base">
+                      {{ 'aboutPage.featureVideoTitle' | translate }}
+                    </h3>
+                    <h2 class="mb-4 pt-1 text-3xl lg:text-4xl font-extrabold mt-2 text-custom-dark-text leading-tight">
+                      {{ 'aboutPage.featureVideoHeading' | translate }}
+                    </h2>
+                    <span class="block mt-5">
+                      <p class="text-custom-text leading-relaxed text-base md:text-lg">
+                        {{ 'aboutPage.featureVideoParagraph' | translate }}
+                      </p>
+                    </span>
+                  </div>
+
+                  <div class="btn-box mt-8 flex flex-wrap gap-4">
+                    <a
+                      [routerLink]="['contact']"
+                      class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main-two py-4 px-10 rounded-lg"
+                    >
+                      {{ 'aboutPage.featureButtonContact' | translate }}
+                    </a>
+                    <a
+                      [routerLink]="['tours']"
+                      class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main py-4 px-10 rounded-lg"
+                    >
+                      {{ 'aboutPage.featureButtonBook' | translate }}
+                    </a>
+                  </div>
+
+                  <div class="video-thumbnails-container mt-10 lg:mt-16 relative bg-white p-6 rounded-lg shadow-lg">
+                    <div class="box-inner">
+                      <div
+                        class="flex space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-custom-main scrollbar-track-gray-200"
+                      >
+                        <!-- Thumb 1 -->
+                        <div class="flex-shrink-0 w-52 group">
+                          <div class="relative overflow-hidden rounded-md shadow-md">
+                            <img
+                              decoding="async"
+                              src="https://via.placeholder.com/230x150.png?text=Video+Thumb+1"
+                              alt="Video 1"
+                              class="block w-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <a
+                              href="#"
+                              class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              aria-label="Play Video 1"
+                            >
+                              <i
+                                class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"
+                              ></i>
+                            </a>
+                          </div>
+                        </div>
+
+                        <!-- Thumb 2 -->
+                        <div class="flex-shrink-0 w-52 group">
+                          <div class="relative overflow-hidden rounded-md shadow-md">
+                            <img
+                              decoding="async"
+                              src="https://via.placeholder.com/230x150.png?text=Video+Thumb+2"
+                              alt="Video 2"
+                              class="block w-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <a
+                              href="#"
+                              class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              aria-label="Play Video 2"
+                            >
+                              <i
+                                class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"
+                              ></i>
+                            </a>
+                          </div>
+                        </div>
+
+                        <!-- Thumb 3 -->
+                        <div class="flex-shrink-0 w-52 group">
+                          <div class="relative overflow-hidden rounded-md shadow-md">
+                            <img
+                              decoding="async"
+                              src="https://via.placeholder.com/230x150.png?text=Video+Thumb+3"
+                              alt="Video 3"
+                              class="block w-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <a
+                              href="#"
+                              class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              aria-label="Play Video 3"
+                            >
+                              <i
+                                class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"
+                              ></i>
+                            </a>
+                          </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                      <!-- Thumb 2 -->
-                      <div class="flex-shrink-0 w-52 group">
-                        <div class="relative overflow-hidden rounded-md shadow-md">
-                          <img decoding="async" src="https://via.placeholder.com/230x150.png?text=Video+Thumb+2"
-                            alt="Video 2"
-                            class="block w-full transition-transform duration-300 group-hover:scale-105" />
-                          <a href="#"
-                            class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            aria-label="Play Video 2">
-                            <i
-                              class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"></i>
-                          </a>
-                        </div>
+          <!-- SEÇÃO WHY CHOOSE US -->
+          <section class="usp-section w-full bg-gradient-to-b from-white to-gray-100 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+              <div class="section-title text-center mb-16">
+                <h3 class="text-custom-main text-xl font-semibold uppercase tracking-widest">
+                  {{ 'aboutPage.whyChooseUsSubtitle' | translate }}
+                </h3>
+                <h2 class="text-4xl lg:text-5xl font-bold mt-3 text-custom-dark-text">
+                  {{ 'aboutPage.whyChooseUsTitle' | translate }}
+                </h2>
+                <p class="subtitle mt-3 text-lg">
+                  {{ 'aboutPage.whyChooseUsParagraph' | translate }}
+                </p>
+                <div class="separator"></div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
+                <!-- 6 Cartões de Benefícios -->
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+1"
+                        alt="Interest Free Monthly Payments"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
+                      Interest Free Monthly Payments
+                    </h3>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+2"
+                        alt="Travel with Confidence"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">Travel with Confidence</h3>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+3"
+                        alt="Accommodation hotel facilities"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
+                      Accommodation hotel facilities
+                    </h3>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+4"
+                        alt="Special honeymoon destinations"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
+                      Special honeymoon destinations
+                    </h3>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+5"
+                        alt="4.9/5 Customer Rating"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">4.9/5 Customer Rating</h3>
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start"
+                  >
+                    <i>
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/80x80.png?text=Icon+6"
+                        alt="Holiday pick and drop facility"
+                        class="mx-auto mb-5 h-16 w-auto"
+                      />
+                    </i>
+                    <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
+                      Holiday pick and drop facility
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SEÇÃO GALERIA -->
+          <section class="gallery-section w-full py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+              <div class="section-title text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl">
+                  {{ 'aboutPage.ourGalleryTitle' | translate }}
+                </h2>
+                <p class="subtitle mt-3 text-lg">
+                  {{ 'aboutPage.ourGallerySubtitle' | translate }}
+                </p>
+                <div class="separator"></div>
+              </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5 auto-rows-auto">
+                <!-- Gallery Item 1 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+1"
+                        alt="Gallery Image 1"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 1"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
                       </div>
+                    </div>
+                  </div>
+                </div>
 
-                      <!-- Thumb 3 -->
-                      <div class="flex-shrink-0 w-52 group">
-                        <div class="relative overflow-hidden rounded-md shadow-md">
-                          <img decoding="async" src="https://via.placeholder.com/230x150.png?text=Video+Thumb+3"
-                            alt="Video 3"
-                            class="block w-full transition-transform duration-300 group-hover:scale-105" />
-                          <a href="#"
-                            class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            aria-label="Play Video 3">
-                            <i
-                              class="fas fa-play text-white text-3xl transition-transform duration-300 group-hover:scale-125"></i>
-                          </a>
-                        </div>
+                <!-- Gallery Item 2 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+2"
+                        alt="Gallery Image 2"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 2"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 3 (maior col-span-2, row-span-2) -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-2 md:col-span-2 lg:col-span-2 row-span-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/800x800.png?text=Gallery+3"
+                        alt="Gallery Image 3"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 3"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+4"
+                        alt="Gallery Image 4"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 4"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+5"
+                        alt="Gallery Image 5"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 5"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+6"
+                        alt="Gallery Image 6"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 6"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 7 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+7"
+                        alt="Gallery Image 7"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 7"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 8 (maior) -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-2 md:col-span-2 lg:col-span-2 row-span-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/800x800.png?text=Gallery+8"
+                        alt="Gallery Image 8"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 8"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 9 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+9"
+                        alt="Gallery Image 9"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 9"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gallery Item 10 -->
+                <div
+                  class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]"
+                >
+                  <div class="inner-box h-full">
+                    <div class="image h-full">
+                      <img
+                        decoding="async"
+                        src="https://via.placeholder.com/400x400.png?text=Gallery+10"
+                        alt="Gallery Image 10"
+                        class="block w-full h-full object-cover"
+                      />
+                      <div
+                        class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0"
+                      >
+                        <a
+                          [routerLink]="['gallery']"
+                          class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
+                          aria-label="View Image 10"
+                        >
+                          <i class="fas fa-search-plus"></i>
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <!-- SEÇÃO WHY CHOOSE US -->
-        <section class="usp-section w-full bg-gradient-to-b from-white to-gray-100 py-16 md:py-24">
-          <div class="container mx-auto px-4">
-            <div class="section-title text-center mb-16">
-              <h3 class="text-custom-main text-xl font-semibold uppercase tracking-widest">
-                {{ 'aboutPage.whyChooseUsSubtitle' | translate }}
-              </h3>
-              <h2 class="text-4xl lg:text-5xl font-bold mt-3 text-custom-dark-text">
-                {{ 'aboutPage.whyChooseUsTitle' | translate }}
-              </h2>
-              <p class="subtitle mt-3 text-lg">
-                {{ 'aboutPage.whyChooseUsParagraph' | translate }}
-              </p>
-              <div class="separator"></div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
-              <!-- 6 Cartões de Benefícios -->
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+1"
-                      alt="Interest Free Monthly Payments" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    Interest Free Monthly Payments
-                  </h3>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+2"
-                      alt="Travel with Confidence" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    Travel with Confidence
-                  </h3>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+3"
-                      alt="Accommodation hotel facilities" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    Accommodation hotel facilities
-                  </h3>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+4"
-                      alt="Special honeymoon destinations" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    Special honeymoon destinations
-                  </h3>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+5"
-                      alt="4.9/5 Customer Rating" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    4.9/5 Customer Rating
-                  </h3>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <div
-                  class="usp-card text-center border border-gray-200 p-6 rounded-lg h-full bg-white flex flex-col items-center justify-start">
-                  <i>
-                    <img decoding="async" src="https://via.placeholder.com/80x80.png?text=Icon+6"
-                      alt="Holiday pick and drop facility" class="mx-auto mb-5 h-16 w-auto" />
-                  </i>
-                  <h3 class="text-base font-semibold text-gray-800 leading-snug mt-auto">
-                    Holiday pick and drop facility
-                  </h3>
-                </div>
+              <div class="btn-box text-center mt-16">
+                <a
+                  [routerLink]="['gallery']"
+                  class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main py-4 px-12 rounded-lg"
+                >
+                  {{ 'aboutPage.viewAllGallery' | translate }}
+                </a>
               </div>
             </div>
-          </div>
-        </section>
-
-        <!-- SEÇÃO GALERIA -->
-        <section class="gallery-section w-full py-16 md:py-24 bg-white">
-          <div class="container mx-auto px-4">
-            <div class="section-title text-center mb-16">
-              <h2 class="text-4xl lg:text-5xl">
-                {{ 'aboutPage.ourGalleryTitle' | translate }}
-              </h2>
-              <p class="subtitle mt-3 text-lg">
-                {{ 'aboutPage.ourGallerySubtitle' | translate }}
-              </p>
-              <div class="separator"></div>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5 auto-rows-auto">
-              <!-- Gallery Item 1 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+1"
-                      alt="Gallery Image 1" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 1">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 2 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+2"
-                      alt="Gallery Image 2" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 2">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 3 (maior col-span-2, row-span-2) -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-2 md:col-span-2 lg:col-span-2 row-span-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/800x800.png?text=Gallery+3"
-                      alt="Gallery Image 3" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 3">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 4 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+4"
-                      alt="Gallery Image 4" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 4">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 5 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+5"
-                      alt="Gallery Image 5" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 5">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 6 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+6"
-                      alt="Gallery Image 6" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 6">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 7 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+7"
-                      alt="Gallery Image 7" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 7">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 8 (maior) -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-2 md:col-span-2 lg:col-span-2 row-span-2 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/800x800.png?text=Gallery+8"
-                      alt="Gallery Image 8" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 8">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 9 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+9"
-                      alt="Gallery Image 9" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 9">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Gallery Item 10 -->
-              <div
-                class="gallery-item relative overflow-hidden rounded-lg group col-span-1 aspect-square shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:scale-[1.03]">
-                <div class="inner-box h-full">
-                  <div class="image h-full">
-                    <img decoding="async" src="https://via.placeholder.com/400x400.png?text=Gallery+10"
-                      alt="Gallery Image 10" class="block w-full h-full object-cover" />
-                    <div
-                      class="overlay-box absolute inset-0 bg-gradient-to-t from-custom-main/80 to-custom-main-two/70 flex items-center justify-center opacity-0">
-                      <a href="#" class="search-icon rounded-full w-12 h-12 flex items-center justify-center text-xl"
-                        aria-label="View Image 10">
-                        <i class="fas fa-search-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="btn-box text-center mt-16">
-              <a href="#"
-                class="primary-button inline-block text-base leading-tight text-white font-bold uppercase bg-custom-main py-4 px-12 rounded-lg">
-                {{ 'aboutPage.viewAllGallery' | translate }}
-              </a>
-            </div>
-          </div>
-        </section>
-
+          </section>
+        </div>
       </div>
-    </div>
-  </main>
-</body>
-
+    </main>
+  </body>
 </html>

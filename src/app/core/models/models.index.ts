@@ -1,31 +1,16 @@
-import { IActivity } from './models.activity';
-import { IAgent } from './models.agent';
-import { IClient } from './models.client';
-import { IOrder } from './models.order';
-import { IPayment } from './models.payment';
-import { IRating } from './models.rating';
-import { ISolicitation } from './models.solicitation';
-import { IUser } from './models.user';
-import { IGroup } from './models.group';
-import { IPaymentMethod } from './models.paymentMethod';
-import { IContentPage } from './models.contentPage';
-import { IAuditLog } from './models.auditLog';
-import { IAuth } from './models.auth';
-import { ISolicitationCartItem } from './models.solicitationCartItem';
-
-export type {
-  IActivity,
-  IAgent,
-  IClient,
-  IOrder,
-  IAuth,
-  IPayment,
-  IRating,
-  ISolicitation,
-  IUser,
-  IGroup,
-  IPaymentMethod,
-  IContentPage,
-  IAuditLog,
-  ISolicitationCartItem,
-};
+export * from './models.activity';
+export * from './models.agent';
+export * from './models.auditLog';
+export * from './models.auth';
+export * from './models.client';
+export * from './models.contentPage';
+export * from './models.group';
+export * from './models.order';
+export * from './models.payment';
+export * from './models.paymentMethod';
+export * from './models.rating';
+export * from './models.report';
+export * from './models.solicitation';
+export * from './models.solicitationCartItem';
+export * from './models.user';
+export type UserType = 'ADMIN' | 'AGENT' | 'CLIENT';

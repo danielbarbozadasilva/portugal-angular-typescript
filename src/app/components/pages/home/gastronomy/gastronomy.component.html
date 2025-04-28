@@ -8,9 +8,9 @@
     </p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div *ngFor="let t of testimonials" class="bg-white rounded-lg shadow p-6">
-        <img [src]="t.img" [alt]="t.alt" class="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
-        <h3 class="text-xl font-semibold mb-2">{{ t.name }}</h3>
-        <p class="text-gray-700">{{ t.text }}</p>
+        <img [src]="t.img" [alt]="t.alt | translate" class="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
+        <h3 class="text-xl font-semibold mb-2">{{ t.name | translate }}</h3>
+        <p class="text-gray-700">{{ t.text | translate }}</p>
       </div>
     </div>
   </div>

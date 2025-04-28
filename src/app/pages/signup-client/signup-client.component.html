@@ -1,0 +1,468 @@
+<!-- src/app/sign-up/sign-up-client.component.html -->
+<div
+  class="bg-white w-full max-w-5xl mx-auto my-8 p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+  [ngClass]="{ 'opacity-50 pointer-events-none': loading }"
+>
+  <!-- TÍTULO -->
+  <h2 class="text-2xl font-bold text-center uppercase tracking-wider mb-6">
+    {{ 'signup' | translate }}
+  </h2>
+
+  <!-- FORMULÁRIO REACTIVO -->
+  <form [formGroup]="signUpForm" autocomplete="off" (ngSubmit)="onSubmit()">
+    <!-- PRIMEIRA LINHA: name, username, email, birthDate -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <!-- name -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'name' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+          type="text"
+          formControlName="name"
+          [placeholder]="'placeholder.name' | translate"
+        />
+        <p class="text-red-500 text-sm mt-1" *ngIf="signUpForm.get('name')?.touched && signUpForm.get('name')?.invalid">
+          <!-- Exemplo de exibição de erro -->
+          <ng-container *ngIf="signUpForm.get('name')?.errors?.['required']">
+            {{ 'errors.nameBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('name')?.errors?.['nameNoNumbers']">
+            {{ 'errors.nameNoNumbers' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('name')?.errors?.['minlength']">
+            {{ 'errors.nameMin4' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('name')?.errors?.['maxlength']">
+            {{ 'errors.nameMax50' | translate }}
+          </ng-container>
+        </p>
+      </div>
+
+      <!-- username -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'username' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="text"
+          formControlName="username"
+          [placeholder]="'placeholder.username' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('username')?.touched && signUpForm.get('username')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('username')?.errors?.['required']">
+            {{ 'errors.client.userBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('username')?.errors?.['minlength']">
+            {{ 'errors.client.userMin4' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('username')?.errors?.['maxlength']">
+            {{ 'errors.client.userMax20' | translate }}
+          </ng-container>
+        </p>
+      </div>
+
+      <!-- email -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'email' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="email"
+          formControlName="email"
+          [placeholder]="'placeholder.email' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('email')?.errors?.['required']">
+            {{ 'errors.emailBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('email')?.errors?.['email']">
+            {{ 'errors.emailInvalid' | translate }}
+          </ng-container>
+        </p>
+      </div>
+
+      <!-- birthDate -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'birthDate' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="date"
+          formControlName="birthDate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('birthDate')?.touched && signUpForm.get('birthDate')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('birthDate')?.errors?.['required']">
+            {{ 'errors.client.birthDateBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('birthDate')?.errors?.['birthDateInvalid']">
+            {{ 'errors.client.birthDateInvalid' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('birthDate')?.errors?.['birthDateFuture']">
+            {{ 'errors.client.birthDateFuture' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('birthDate')?.errors?.['birthDateUnder18']">
+            {{ 'errors.client.birthDateUnder18' | translate }}
+          </ng-container>
+        </p>
+      </div>
+    </div>
+
+    <!-- SEGUNDA LINHA: country, documentType, documentValue -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <!-- country -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'country' | translate }}:
+        </label>
+        <select class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500" formControlName="country">
+          <option value="">{{ 'placeholder.country' | translate }}</option>
+          <option value="Portugal">{{ 'country' | translate }}</option>
+          <option value="Brazil">{{ 'country' | translate }} - Brazil</option>
+          <option value="England">{{ 'country' | translate }} - England</option>
+          <option value="United States">{{ 'country' | translate }} - United States</option>
+          <option value="France">{{ 'country' | translate }} - France</option>
+          <option value="Spain">{{ 'country' | translate }} - Spain</option>
+        </select>
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('country')?.touched && signUpForm.get('country')?.invalid"
+        >
+          {{ 'errors.client.countryEmpty' | translate }}
+        </p>
+      </div>
+
+      <!-- documentType -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'documentType' | translate }}:
+        </label>
+        <select
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          formControlName="documentType"
+          (change)="formatDocumentValue()"
+        >
+          <option value="">{{ 'placeholder.documentType' | translate }}</option>
+          <option value="CPF">CPF (Brasil)</option>
+          <option value="Passaporte">Passaporte</option>
+        </select>
+      </div>
+
+      <!-- documentValue -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'documentValue' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="text"
+          formControlName="documentValue"
+          [placeholder]="'placeholder.documentValue' | translate"
+          (blur)="formatDocumentValue()"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('documentValue')?.touched && signUpForm.get('documentValue')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('documentValue')?.errors?.['documentBlank']">
+            {{ 'errors.client.documentBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('documentValue')?.errors?.['cpfInvalid']">
+            {{ 'errors.client.cpfInvalid' | translate }}
+          </ng-container>
+        </p>
+      </div>
+    </div>
+
+    <!-- TERCEIRA LINHA: phones[0], phones[1] -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'mainPhone' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="tel"
+          [placeholder]="'placeholder.mainPhone' | translate"
+          [formControlName]="['phones', 0]"
+          (blur)="formatPhoneByCountry(0)"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('phones.0')?.touched && signUpForm.get('phones.0')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('phones.0')?.errors?.['required']">
+            {{ 'errors.client.phoneRequired' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('phones.0')?.errors?.['phoneInvalidRange']">
+            {{ 'errors.client.phoneInvalidRange' | translate }}
+          </ng-container>
+        </p>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700"> {{ 'optionalPhone' | translate }}: </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="tel"
+          [placeholder]="'placeholder.optionalPhone' | translate"
+          [formControlName]="['phones', 1]"
+          (blur)="formatPhoneByCountry(1)"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('phones.1')?.touched && signUpForm.get('phones.1')?.invalid"
+        >
+          {{ 'errors.client.phoneInvalidRange' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- QUARTA LINHA: CEP, rua, número, complemento, bairro, cidade, estado -->
+    <!-- Para não ficar muito longo na horizontal, dividi em várias colunas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <!-- zipCode -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'zipCode' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500"
+          type="text"
+          formControlName="address.zipCode"
+          [placeholder]="'placeholder.zipCode' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.zipCode')?.touched && signUpForm.get('address.zipCode')?.invalid"
+        >
+          {{ 'errors.zipCodeEmpty' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <!-- street -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'street' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.street"
+          [placeholder]="'placeholder.street' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.street')?.touched && signUpForm.get('address.street')?.invalid"
+        >
+          {{ 'errors.fieldRequired' | translate }}
+        </p>
+      </div>
+
+      <!-- number -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'number' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.number"
+          [placeholder]="'placeholder.number' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.number')?.touched && signUpForm.get('address.number')?.invalid"
+        >
+          {{ 'errors.fieldRequired' | translate }}
+        </p>
+      </div>
+
+      <!-- complement -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700"> {{ 'complement' | translate }}: </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.complement"
+          [placeholder]="'placeholder.complement' | translate"
+        />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <!-- district -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'district' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.district"
+          [placeholder]="'placeholder.district' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.district')?.touched && signUpForm.get('address.district')?.invalid"
+        >
+          {{ 'errors.fieldRequired' | translate }}
+        </p>
+      </div>
+
+      <!-- city -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'city' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.city"
+          [placeholder]="'placeholder.city' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.city')?.touched && signUpForm.get('address.city')?.invalid"
+        >
+          {{ 'errors.fieldRequired' | translate }}
+        </p>
+      </div>
+
+      <!-- state/UF -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'stateUF' | translate }}:
+        </label>
+        <input
+          class="mt-1 p-2 border rounded"
+          type="text"
+          formControlName="address.state"
+          [placeholder]="'placeholder.stateUF' | translate"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('address.state')?.touched && signUpForm.get('address.state')?.invalid"
+        >
+          {{ 'errors.fieldRequired' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- QUINTA LINHA: password, confirmPassword -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <!-- password -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'password' | translate }}:
+        </label>
+        <div class="relative flex items-center">
+          <input
+            class="mt-1 p-2 border rounded w-full focus:outline-none focus:border-blue-500"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            [placeholder]="'placeholder.password' | translate"
+          />
+          <span class="absolute right-2 top-2 text-blue-600 cursor-pointer" (click)="showPassword = !showPassword">
+            {{ showPassword ? ('hide' | translate) : ('show' | translate) }}
+          </span>
+        </div>
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('password')?.errors?.['required']">
+            {{ 'errors.passwordBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('password')?.errors?.['minlength']">
+            {{ 'errors.passwordMin6' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('password')?.errors?.['maxlength']">
+            {{ 'errors.passwordMax50' | translate }}
+          </ng-container>
+        </p>
+      </div>
+
+      <!-- confirmPassword -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-gray-700">
+          <span class="text-red-500">*</span> {{ 'confirmPassword' | translate }}:
+        </label>
+        <div class="relative flex items-center">
+          <input
+            class="mt-1 p-2 border rounded w-full focus:outline-none focus:border-blue-500"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            [placeholder]="'placeholder.confirmPassword' | translate"
+          />
+          <span
+            class="absolute right-2 top-2 text-blue-600 cursor-pointer"
+            (click)="showConfirmPassword = !showConfirmPassword"
+          >
+            {{ showConfirmPassword ? ('hide' | translate) : ('show' | translate) }}
+          </span>
+        </div>
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.invalid"
+        >
+          <ng-container *ngIf="signUpForm.get('confirmPassword')?.errors?.['required']">
+            {{ 'errors.passwordConfirmBlank' | translate }}
+          </ng-container>
+          <ng-container *ngIf="signUpForm.get('confirmPassword')?.errors?.['passwordsNoMatch']">
+            {{ 'errors.passwordsNoMatch' | translate }}
+          </ng-container>
+        </p>
+      </div>
+    </div>
+
+    <!-- SEXTA LINHA: interests -->
+    <div class="mb-4">
+      <label class="font-semibold text-gray-700">
+        {{ 'interests' | translate }} ({{ 'optionalPhone' | translate }}):
+      </label>
+      <div class="mt-2 flex flex-wrap gap-4">
+        <label *ngFor="let key of interestKeys" class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            [checked]="(signUpForm.get('interests')?.value || []).includes(key)"
+            (change)="toggleInterest(key)"
+          />
+          <span>{{ key | translate }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- BOTÃO DE SUBMIT e LOADING -->
+    <div class="mt-6">
+      <button
+        class="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 hover:shadow-md transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+        type="submit"
+        [disabled]="isFormInvalid() || loading"
+      >
+        {{ 'submit' | translate }}
+      </button>
+
+      <!-- Loading (opcional) -->
+      <div class="inline-block ml-4" *ngIf="loading">
+        <!-- Pode usar um spinner do Tailwind ou componente customizado -->
+        <span class="text-blue-600 font-semibold">Carregando...</span>
+      </div>
+    </div>
+  </form>
+</div>

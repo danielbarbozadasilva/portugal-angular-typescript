@@ -1,0 +1,8 @@
+/* signup-agent.component.css */
+
+/* Exemplo: sobrescrever alguma coisa do input no :focus */
+:host input:focus {
+  outline: none;
+}
+
+/* Se precisar de algo adicional, inserir aqui. */

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AgentService } from '../../../core/http/agent.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { AgentService } from '../../http/agent.service'; // Correct path
 import * as AgentActions from './agent.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class AgentEffects {
@@ -16,8 +18,8 @@ export class AgentEffects {
       ofType(AgentActions.loadAgents),
       mergeMap(() =>
         this.agentService.getAllAgents().pipe(
-          map(agents => AgentActions.loadAgentsSuccess({ agents })),
-          catchError(error => of(AgentActions.loadAgentsFailure({ error })))
+          map((agents) => AgentActions.loadAgentsSuccess({ agents })),
+          catchError((error: IResponseError) => of(AgentActions.loadAgentsFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class AgentEffects {
   loadAgentById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AgentActions.loadAgentById),
-      mergeMap(({ id }) =>
-        this.agentService.getAgent(id).pipe(
-          map(agent => AgentActions.loadAgentByIdSuccess({ agent })),
-          catchError(error => of(AgentActions.loadAgentByIdFailure({ error })))
+      switchMap((action) =>
+        this.agentService.getAgent(action.id).pipe(
+          map((agent) => AgentActions.loadAgentByIdSuccess({ agent })),
+          catchError((error: IResponseError) => of(AgentActions.loadAgentByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,11 @@ export class AgentEffects {
   createAgent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AgentActions.createAgent),
-      mergeMap(({ agent }) =>
-        this.agentService.createAgent(agent).pipe(
+      mergeMap((action) =>
+        this.agentService.createAgent(action.agent as any).pipe(
+          // Assuming success action doesn't need the created agent
           map(() => AgentActions.createAgentSuccess()),
-          catchError(error => of(AgentActions.createAgentFailure({ error })))
+          catchError((error: IResponseError) => of(AgentActions.createAgentFailure({ error })))
         )
       )
     )
@@ -50,10 +53,11 @@ export class AgentEffects {
   updateAgent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AgentActions.updateAgent),
-      mergeMap(({ id, data }) =>
-        this.agentService.updateAgent(id, data).pipe(
+      mergeMap((action) =>
+        this.agentService.updateAgent(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated agent
           map(() => AgentActions.updateAgentSuccess()),
-          catchError(error => of(AgentActions.updateAgentFailure({ error })))
+          catchError((error: IResponseError) => of(AgentActions.updateAgentFailure({ error })))
         )
       )
     )
@@ -62,10 +66,11 @@ export class AgentEffects {
   deleteAgent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AgentActions.deleteAgent),
-      mergeMap(({ id }) =>
-        this.agentService.deleteAgent(id).pipe(
+      mergeMap((action) =>
+        this.agentService.deleteAgent(action.id).pipe(
+          // Assuming success action doesn't need the id
           map(() => AgentActions.deleteAgentSuccess()),
-          catchError(error => of(AgentActions.deleteAgentFailure({ error })))
+          catchError((error: IResponseError) => of(AgentActions.deleteAgentFailure({ error })))
         )
       )
     )

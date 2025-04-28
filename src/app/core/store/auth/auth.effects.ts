@@ -1,106 +1,93 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AuthService } from '../../http/auth.service'; // Correct path
 import * as AuthActions from './auth.actions';
-import { AuthService } from '../../../core/http/auth.service';
-import { catchError, map, mergeMap, of } from 'rxjs';
-import { IResponseError, ITokenResponse } from '../../models/models.auth';
+import { IResponseError, IAuthResponse, ITokenResponse, IDataResponse } from '../../models/models.auth'; // Import response types
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private actions$: Actions,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  /**
-   * Efeito responsável por realizar o login (signIn).
-   * Dispara signInSuccess ou signInFailure.
-   */
+  // Effect for Sign In
   signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.signIn),
-      mergeMap(({ email, password }) =>
-        this.authService.loginService({ email, password }).pipe(
-          map((response: any) => {
-            return AuthActions.signInSuccess(response);
-          }),
-          catchError((error) =>
-            of(AuthActions.signInFailure({ error }))
-          )
+      switchMap((action) =>
+        this.authService.loginService({ email: action.email, password: action.password }).pipe(
+          map((response: IAuthResponse) => AuthActions.signInSuccess({ response })),
+          catchError((error: IResponseError) => of(AuthActions.signInFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito responsável pelo logout.
-   * Dispara logoutSuccess ou logoutFailure.
-   */
+  // Effect after successful Sign In -> Navigate to dashboard
+  signInSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.signInSuccess),
+        tap(() => this.router.navigate(['/admin/dashboard'])) // Navigate on success
+      ),
+    { dispatch: false } // No further action needed
+  );
+
+  // Effect for Logout
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
-      mergeMap(({ userId }) =>
-        this.authService.logoutService({ _id: userId }).pipe(
-          map(() => AuthActions.logoutSuccess()),
-          catchError((error) =>
-            of(AuthActions.logoutFailure({ error }))
-          )
+      switchMap((action) =>
+        this.authService.logoutService({ _id: action.userId }).pipe(
+          map((_response: IDataResponse) => AuthActions.logoutSuccess()), // Prefix unused variable
+          catchError((error: IResponseError) => of(AuthActions.logoutFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para renovar o token (refreshToken).
-   * Dispara refreshTokenSuccess ou refreshTokenFailure.
-   */
+  // Effect after successful Logout -> Navigate to signin
+  logoutSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logoutSuccess),
+        tap(() => this.router.navigate(['/signin'])) // Navigate on success
+      ),
+    { dispatch: false } // No further action needed
+  );
+
+  // Effect for Refresh Token
   refreshToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.refreshToken),
-      mergeMap(({ userId }) =>
-        this.authService.refreshTokenService(userId).pipe(
-          map((result: ITokenResponse | IResponseError) => {
-            if (result && 'success' in result && result.success) {
-              // Verifica se existe result.data e se há um token.
-              const tokenFound =
-                (result as ITokenResponse)?.data?.token || null;
-              if (tokenFound) {
-                return AuthActions.refreshTokenSuccess({ newToken: tokenFound });
-              }
-              return AuthActions.refreshTokenFailure({ error: 'Token não retornado' });
-            }
-            return AuthActions.refreshTokenFailure({ error: 'Falha ao renovar token' });
-          }),
-          catchError((error) =>
-            of(AuthActions.refreshTokenFailure({ error }))
-          )
+      switchMap((action) =>
+        this.authService.refreshTokenService(action.userId).pipe(
+          map((response: ITokenResponse) => AuthActions.refreshTokenSuccess({ newToken: response.token! })), // Assert token exists on success
+          catchError((error: IResponseError) => of(AuthActions.refreshTokenFailure({ error })))
         )
       )
     )
   );
 
-  /**
-   * Efeito para checar se um token ainda é válido.
-   * Dispara checkTokenSuccess ou checkTokenFailure.
-   */
+  // Effect for Check Token
   checkToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkToken),
-      mergeMap(({ token }) =>
-        this.authService.checkTokenService({ token }).pipe(
-          map((resp: ITokenResponse | IResponseError) => {
-            // Neste ponto, assumindo que a service retorne { success: boolean }
-            // se o token ainda é válido.
-            if ('success' in resp) {
-              return AuthActions.checkTokenSuccess({ valid: resp.success });
-            }
-            return AuthActions.checkTokenFailure({ error: 'Resposta inválida' });
-          }),
-          catchError((error) =>
-            of(AuthActions.checkTokenFailure({ error }))
-          )
+      switchMap((action) =>
+        this.authService.checkTokenService({ token: action.token }).pipe(
+          map((response: ITokenResponse) => AuthActions.checkTokenSuccess({ valid: response.success })), // Use success flag from response
+          catchError((error: IResponseError) => of(AuthActions.checkTokenFailure({ error })))
         )
       )
     )
   );
+
+  // Add effects for password recovery/reset if actions exist
+  // passwordRecovery$ = createEffect(() => ... );
+  // resetPassword$ = createEffect(() => ... );
 }

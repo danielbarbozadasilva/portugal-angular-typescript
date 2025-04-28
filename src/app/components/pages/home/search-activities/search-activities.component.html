@@ -5,25 +5,60 @@
     </h2>
 
     <form class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-      <input type="text" name="keyword" class="border p-2 rounded"
-        [placeholder]="translate.instant('home.filters.keywordPlaceholder')" [value]="filters.keyword"
-        (input)="handleFilterChange($event)" />
-      <input type="text" name="category" class="border p-2 rounded"
-        [placeholder]="translate.instant('home.filters.categoryPlaceholder')" [value]="filters.category"
-        (input)="handleFilterChange($event)" />
-      <input type="date" name="startDate" class="border p-2 rounded" [value]="filters.startDate"
-        (input)="handleFilterChange($event)" />
-      <input type="date" name="endDate" class="border p-2 rounded" [value]="filters.endDate"
-        (input)="handleFilterChange($event)" />
-      <input type="number" name="minPrice" class="border p-2 rounded"
-        [placeholder]="translate.instant('home.filters.minPricePlaceholder')" [value]="filters.minPrice"
-        (input)="handleFilterChange($event)" />
-      <input type="number" name="maxPrice" class="border p-2 rounded"
-        [placeholder]="translate.instant('home.filters.maxPricePlaceholder')" [value]="filters.maxPrice"
-        (input)="handleFilterChange($event)" />
-      <input type="text" name="language" class="border p-2 rounded"
-        [placeholder]="translate.instant('home.filters.languagePlaceholder')" [value]="filters.language"
-        (input)="handleFilterChange($event)" />
+      <input
+        type="text"
+        name="keyword"
+        class="border p-2 rounded"
+        [placeholder]="translate.instant('home.filters.keywordPlaceholder')"
+        [value]="filters.keyword"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="text"
+        name="category"
+        class="border p-2 rounded"
+        [placeholder]="translate.instant('home.filters.categoryPlaceholder')"
+        [value]="filters.category"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="date"
+        name="startDate"
+        class="border p-2 rounded"
+        [value]="filters.startDate"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="date"
+        name="endDate"
+        class="border p-2 rounded"
+        [value]="filters.endDate"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="number"
+        name="minPrice"
+        class="border p-2 rounded"
+        [placeholder]="translate.instant('home.filters.minPricePlaceholder')"
+        [value]="filters.minPrice"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="number"
+        name="maxPrice"
+        class="border p-2 rounded"
+        [placeholder]="translate.instant('home.filters.maxPricePlaceholder')"
+        [value]="filters.maxPrice"
+        (input)="handleFilterChange($event)"
+      />
+      <input
+        type="text"
+        name="language"
+        class="border p-2 rounded"
+        [placeholder]="translate.instant('home.filters.languagePlaceholder')"
+        [value]="filters.language"
+        (input)="handleFilterChange($event)"
+      />
 
       <select name="sort" class="border p-2 rounded" [value]="filters.sort" (change)="handleFilterChange($event)">
         <option value="">
@@ -55,8 +90,11 @@
         </option>
       </select>
 
-      <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition md:col-span-1"
-        (click)="handleSearchClick()">
+      <button
+        type="button"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition md:col-span-1"
+        (click)="handleSearchClick()"
+      >
         {{ 'home.filters.searchButton' | translate }}
       </button>
     </form>
@@ -67,11 +105,12 @@
         <h3 class="text-xl font-semibold mb-2">{{ activity.name }}</h3>
         <p class="text-gray-600 mb-1">{{ activity.shortDescription }}</p>
         <p class="mb-1">
-          <strong>{{ 'home.showcase1Lead' | translate }}:</strong>
+          <strong>{{ 'home.activityLocationLabel' | translate }}:</strong>
           {{ activity.location }}
         </p>
         <p class="mb-1">
-          <strong>Preço:</strong> {{ activity.price }}
+          <strong>{{ 'home.activityPriceLabel' | translate }}:</strong>
+          {{ activity.price }}
         </p>
         <p class="text-sm text-gray-500">{{ activity.description }}</p>
       </div>

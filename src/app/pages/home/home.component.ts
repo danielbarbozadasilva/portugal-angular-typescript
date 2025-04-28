@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 /* Modelos e Ações/Seletores */
 import { IActivity, IActivityFilters } from '../../core/models/models.activity';
 import { loadActivities } from '../../core/store/activity/activity.actions';
-import { selectAllActivities } from '../../core/store/activity/activity.selectors';
+import { selectAllActivities, selectActivityError } from '../../core/store/activity/activity.selectors'; // Importar selectActivityError
 
 /* Componentes standalone */
 import { SearchActivitiesComponent } from '../../components/pages/home/search-activities/search-activities.component';
@@ -15,7 +15,6 @@ import { HeroComponent } from '../../components/pages/home/hero/hero.component';
 import { ShowcaseComponent } from '../../components/pages/home/show-case/showcase.component';
 import { ApresentationComponent } from '../../components/pages/home/apresentation/apresentation.component';
 import { GastronomyComponent } from '../../components/pages/home/gastronomy/gastronomy.component';
-import { LayoutComponent } from '../../components/layout/layout.component';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -24,7 +23,6 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './home.component.html',
   imports: [
     CommonModule,
-    LayoutComponent,            // <-- Import do layout standalone
     SearchActivitiesComponent,
     HeroComponent,
     ShowcaseComponent,
@@ -55,7 +53,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store, private translate: TranslateService) {
+  constructor(
+    private store: Store,
+    private translate: TranslateService
+  ) {
     // Configurações iniciais do ngx-translate
     this.translate.addLangs(['pt-PT', 'pt-BR', 'en-US', 'es-ES', 'fr-FR']);
     this.translate.setDefaultLang('pt-BR');
@@ -67,9 +68,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       .select(selectAllActivities)
       .pipe(takeUntil(this.destroy$))
       .subscribe((activitiesFromStore) => {
+        console.log('[HomeComponent] Received activities from store:', activitiesFromStore); // Log das atividades recebidas
         this.activities = activitiesFromStore;
-        // Ajuste do total de páginas, se desejar paginar com base no length do array
-        this.totalPages = 1; // Exemplo fixo
+        // TODO: A lógica de totalPages provavelmente precisa ser ajustada
+        // com base na resposta da API (se ela retornar metadados de paginação)
+        // Se a API não retornar total, calcular com base no recebido (pode não ser o total real)
+        this.totalPages =
+          activitiesFromStore.length > 0 ? Math.ceil(activitiesFromStore.length / this.itemsPerPage) : 1; // Ajuste simples
+      });
+
+    // Adicionar subscrição para erros (opcional, mas útil para debug)
+    this.store
+      .select(selectActivityError)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((error) => {
+        if (error) {
+          console.error('[HomeComponent] Error from Activity Store:', error);
+          // Aqui você pode exibir uma mensagem de erro para o usuário, se desejar
+        }
       });
 
     this.fetchActivities();
@@ -82,8 +98,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   fetchActivities(): void {
-    // Despacha action para carregar atividades com base nos filtros
-    this.store.dispatch(loadActivities({ filters: this.filters }));
+    console.log('[HomeComponent] Fetching activities with filters:', this.filters); // Log antes de despachar
+    // Despacha action para carregar atividades com base nos filtros e paginação atual
+    // Nota: A API precisa suportar paginação via parâmetros (ex: page, limit)
+    // Se a API não suportar, a paginação terá que ser feita no frontend após receber *todos* os dados.
+    const filtersWithPagination = {
+      ...this.filters,
+      page: this.currentPage, // Exemplo: Adiciona página aos filtros
+      limit: this.itemsPerPage, // Exemplo: Adiciona limite aos filtros
+    };
+    this.store.dispatch(loadActivities({ filters: filtersWithPagination }));
   }
 
   handleFilterChange(name: string, value: string): void {
@@ -117,16 +141,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       // Atualiza quaisquer outros filtros
       this.filters = { ...this.filters, [name]: value };
+      // Não busca aqui, espera o clique no botão ou mudança de página
     }
   }
 
   handleSearch(): void {
-    this.currentPage = 1;
+    this.currentPage = 1; // Reseta para a primeira página ao buscar
     this.fetchActivities();
   }
 
   handlePageChange(page: number): void {
     this.currentPage = page;
-    this.fetchActivities();
+    this.fetchActivities(); // Busca a nova página
   }
 }

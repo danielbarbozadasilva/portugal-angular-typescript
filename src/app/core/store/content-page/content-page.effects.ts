@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { ContentPageService } from '../../../core/http/content-page.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { ContentPageService } from '../../http/content-page.service'; // Correct path
 import * as ContentPageActions from './content-page.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class ContentPageEffects {
@@ -16,8 +18,8 @@ export class ContentPageEffects {
       ofType(ContentPageActions.loadContentPages),
       mergeMap(() =>
         this.contentPageService.getAllContentPages().pipe(
-          map(pages => ContentPageActions.loadContentPagesSuccess({ pages })),
-          catchError(error => of(ContentPageActions.loadContentPagesFailure({ error })))
+          map((pages) => ContentPageActions.loadContentPagesSuccess({ pages })),
+          catchError((error: IResponseError) => of(ContentPageActions.loadContentPagesFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class ContentPageEffects {
   loadContentPageById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ContentPageActions.loadContentPageById),
-      mergeMap(({ id }) =>
-        this.contentPageService.getContentPage(id).pipe(
-          map(page => ContentPageActions.loadContentPageByIdSuccess({ page })),
-          catchError(error => of(ContentPageActions.loadContentPageByIdFailure({ error })))
+      switchMap((action) =>
+        this.contentPageService.getContentPage(action.id).pipe(
+          map((page) => ContentPageActions.loadContentPageByIdSuccess({ page })),
+          catchError((error: IResponseError) => of(ContentPageActions.loadContentPageByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,10 @@ export class ContentPageEffects {
   updateContentPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ContentPageActions.updateContentPage),
-      mergeMap(({ id, data }) =>
-        this.contentPageService.updateContentPage(id, data).pipe(
-          map(() => ContentPageActions.updateContentPageSuccess()),
-          catchError(error => of(ContentPageActions.updateContentPageFailure({ error })))
+      mergeMap((action) =>
+        this.contentPageService.updateContentPage(action.id, action.data).pipe(
+          map((page) => ContentPageActions.updateContentPageSuccess({ page })),
+          catchError((error: IResponseError) => of(ContentPageActions.updateContentPageFailure({ error })))
         )
       )
     )
@@ -50,12 +52,15 @@ export class ContentPageEffects {
   removeContentPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ContentPageActions.removeContentPage),
-      mergeMap(({ id }) =>
-        this.contentPageService.deleteContentPage(id).pipe(
-          map(() => ContentPageActions.removeContentPageSuccess()),
-          catchError(error => of(ContentPageActions.removeContentPageFailure({ error })))
+      mergeMap((action) =>
+        this.contentPageService.deleteContentPage(action.id).pipe(
+          map(({ id }) => ContentPageActions.removeContentPageSuccess({ id })),
+          catchError((error: IResponseError) => of(ContentPageActions.removeContentPageFailure({ error })))
         )
       )
     )
   );
+
+  // Add create effect if create action/service method exists
+  // createContentPage$ = createEffect(() => ... );
 }

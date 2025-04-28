@@ -43,6 +43,7 @@ import {
   SolicitationService,
   UserService,
 } from './core/http/index';
+import { SignUpClientComponent } from './pages/signup-client/signup-client-component';
 
 /**
  * Configuração do loader para o ngx-translate
@@ -56,7 +57,9 @@ export function createTranslateLoader(http: HttpClient) {
  * Não declaramos componentes aqui porque estamos usando standalone.
  */
 @NgModule({
-  declarations: [],
+  declarations: [
+    SignUpClientComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

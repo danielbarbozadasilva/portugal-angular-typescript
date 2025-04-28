@@ -1,8 +1,8 @@
-import { bootstrapApplication } from '@angular/platform-browser';
+// src/main.server.ts
+import { renderApplication } from '@angular/platform-server';
 import { AppComponent } from './app/app.component';
-import { config } from './app/app.config.server'; // se existir
+import { appServerConfig } from './app/app.config.server';
 
-const bootstrap = () => bootstrapApplication(AppComponent, config)
-  .catch(err => console.error(err));
-
-export default bootstrap;
+export default function(): Promise<any> {
+  return renderApplication(AppComponent as any, appServerConfig as any);
+}

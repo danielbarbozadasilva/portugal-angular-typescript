@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {OrderService} from '../../../core/http/order.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { OrderService } from '../../http/order.service'; // Correct path
 import * as OrderActions from './order.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class OrderEffects {
@@ -16,8 +18,8 @@ export class OrderEffects {
       ofType(OrderActions.loadOrders),
       mergeMap(() =>
         this.orderService.getAllOrders().pipe(
-          map(orders => OrderActions.loadOrdersSuccess({ orders })),
-          catchError(error => of(OrderActions.loadOrdersFailure({ error })))
+          map((orders) => OrderActions.loadOrdersSuccess({ orders })),
+          catchError((error: IResponseError) => of(OrderActions.loadOrdersFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class OrderEffects {
   loadOrderById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrderActions.loadOrderById),
-      mergeMap(({ id }) =>
-        this.orderService.getOrder(id).pipe(
-          map(order => OrderActions.loadOrderByIdSuccess({ order })),
-          catchError(error => of(OrderActions.loadOrderByIdFailure({ error })))
+      switchMap((action) =>
+        this.orderService.getOrderById(action.id).pipe(
+          map((order) => OrderActions.loadOrderByIdSuccess({ order })),
+          catchError((error: IResponseError) => of(OrderActions.loadOrderByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,11 @@ export class OrderEffects {
   updateOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrderActions.updateOrder),
-      mergeMap(({ id, data }) =>
-        this.orderService.updateOrder(id, data).pipe(
+      mergeMap((action) =>
+        this.orderService.updateOrder(action.id, action.data).pipe(
+          // Assuming success action doesn't need the updated order
           map(() => OrderActions.updateOrderSuccess()),
-          catchError(error => of(OrderActions.updateOrderFailure({ error })))
+          catchError((error: IResponseError) => of(OrderActions.updateOrderFailure({ error })))
         )
       )
     )
@@ -50,12 +53,16 @@ export class OrderEffects {
   removeOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrderActions.removeOrder),
-      mergeMap(({ id }) =>
-        this.orderService.deleteOrder(id).pipe(
+      mergeMap((action) =>
+        this.orderService.removeOrder(action.id).pipe(
+          // Assuming success action doesn't need the id
           map(() => OrderActions.removeOrderSuccess()),
-          catchError(error => of(OrderActions.removeOrderFailure({ error })))
+          catchError((error: IResponseError) => of(OrderActions.removeOrderFailure({ error })))
         )
       )
     )
   );
+
+  // Add create effect if create action/service method exists
+  // createOrder$ = createEffect(() => ... );
 }

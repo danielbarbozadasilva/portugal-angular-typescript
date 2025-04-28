@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SolicitationService } from '../../../core/http/solicitation.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { SolicitationService } from '../../http/solicitation.service'; // Correct path
 import * as SolicitationActions from './solicitation.actions';
-import { mergeMap, map, catchError, of } from 'rxjs';
+import { IResponseError } from '../../models/models.index';
 
 @Injectable()
 export class SolicitationEffects {
@@ -16,8 +18,8 @@ export class SolicitationEffects {
       ofType(SolicitationActions.loadAllSolicitations),
       mergeMap(() =>
         this.solicitationService.getAllSolicitations().pipe(
-          map(solicitations => SolicitationActions.loadAllSolicitationsSuccess({ solicitations })),
-          catchError(error => of(SolicitationActions.loadAllSolicitationsFailure({ error })))
+          map((solicitations) => SolicitationActions.loadAllSolicitationsSuccess({ solicitations })),
+          catchError((error: IResponseError) => of(SolicitationActions.loadAllSolicitationsFailure({ error })))
         )
       )
     )
@@ -26,10 +28,10 @@ export class SolicitationEffects {
   loadSolicitationById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationActions.loadSolicitationById),
-      mergeMap(({ id }) =>
-        this.solicitationService.getSolicitation(id).pipe(
-          map(solicitation => SolicitationActions.loadSolicitationByIdSuccess({ solicitation })),
-          catchError(error => of(SolicitationActions.loadSolicitationByIdFailure({ error })))
+      switchMap((action) =>
+        this.solicitationService.getSolicitationById(action.id).pipe(
+          map((solicitation) => SolicitationActions.loadSolicitationByIdSuccess({ solicitation })),
+          catchError((error: IResponseError) => of(SolicitationActions.loadSolicitationByIdFailure({ error })))
         )
       )
     )
@@ -38,10 +40,10 @@ export class SolicitationEffects {
   updateSolicitation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationActions.updateSolicitation),
-      mergeMap(({ id, data }) =>
-        this.solicitationService.updateSolicitation(id, data).pipe(
-          map(() => SolicitationActions.updateSolicitationSuccess()),
-          catchError(error => of(SolicitationActions.updateSolicitationFailure({ error })))
+      mergeMap((action) =>
+        this.solicitationService.updateSolicitation(action.id, action.data).pipe(
+          map((solicitation) => SolicitationActions.updateSolicitationSuccess({ solicitation })),
+          catchError((error: IResponseError) => of(SolicitationActions.updateSolicitationFailure({ error })))
         )
       )
     )
@@ -50,10 +52,10 @@ export class SolicitationEffects {
   removeSolicitation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SolicitationActions.removeSolicitation),
-      mergeMap(({ id }) =>
-        this.solicitationService.deleteSolicitation(id).pipe(
-          map(() => SolicitationActions.removeSolicitationSuccess()),
-          catchError(error => of(SolicitationActions.removeSolicitationFailure({ error })))
+      mergeMap((action) =>
+        this.solicitationService.removeSolicitation(action.id).pipe(
+          map(({ id }) => SolicitationActions.removeSolicitationSuccess({ id })),
+          catchError((error: IResponseError) => of(SolicitationActions.removeSolicitationFailure({ error })))
         )
       )
     )
