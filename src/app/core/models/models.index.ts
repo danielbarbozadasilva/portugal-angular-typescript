@@ -24,6 +24,16 @@ export interface IResponseError {
   error?: any;
 }
 
+export interface IAvailabilitySlot {
+  id: string;
+  activityId: string;
+  date: string; // Ou Date
+  time?: string; // Ou Date
+  availableSpots: number;
+  totalSpots: number;
+  price?: number; // Preço pode variar por slot
+}
+
 export {
   IActivity,
   ILocationCoordinates,

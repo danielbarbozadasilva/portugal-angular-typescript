@@ -1,0 +1,31 @@
+<!-- src/app/dashboard/layout/topbar/topbar.component.html -->
+<mat-toolbar
+  color="primary"
+  class="shadow-md flex justify-between items-center bg-indigo-600"
+>
+  <!-- Botão de menu, se quiser permitir recolher/expandir a sidebar -->
+  <button
+    mat-icon-button
+    class="text-white hover:text-gray-200 focus:outline-none mr-4"
+    (click)="onToggleSidebar()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Título / Branding do Topbar -->
+  <div class="flex items-center">
+    <h2 class="text-lg font-semibold text-white">
+      Bem-vindo ao Dashboard!
+    </h2>
+  </div>
+
+  <!-- Botões do canto direito (ex.: notificações, conta do usuário) -->
+  <div class="flex items-center">
+    <button mat-icon-button class="text-white hover:text-gray-200 focus:outline-none mr-4">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button class="text-white hover:text-gray-200 focus:outline-none mr-4">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

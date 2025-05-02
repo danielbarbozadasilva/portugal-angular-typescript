@@ -1,43 +1,39 @@
-import { Routes } from '@angular/router';
-import { AuthGuard } from '../../core/authentication/auth.guard';
-import { RoleGuard } from '../../core/authentication/role.guard';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { UserListComponent } from './users/user-list/user-list.component';
+import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
+import { AdminLayoutComponent } from './dashboard/layout/admin-layout.component';
 
-export const ADMIN_ROUTES: Routes = [
+const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN'] },
+    component: AdminLayoutComponent,
     children: [
       {
         path: 'dashboard',
-        loadComponent: () => import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
-        title: 'Admin Dashboard',
+        component: DashboardHomeComponent
       },
       {
         path: 'users',
-        loadChildren: () => import('./users/users.routes').then((m) => m.USERS_ROUTES),
-        title: 'Manage Users',
+        component: UserListComponent
       },
+      // Exemplo de rota para 'agents'
+      // {
+      //   path: 'agents',
+      //   component: AgentsComponent
+      // },
+      // E assim por diante...
       {
-        path: 'agents',
-        loadChildren: () => import('./agents/agents.routes').then((m) => m.AGENT_ROUTES),
-        title: 'Manage Agents',
-      },
-      {
-        path: 'consultants',
-        loadChildren: () => import('./consultants/consultant-list/consultant-list.component').then(m => m.ConsultantListComponent),
-        title: 'Manage Consultants'
-      },
-      {
-        path: 'activities',
-        loadChildren: () => import('./activities/activities.routes').then((m) => m.ACTIVITY_ROUTES),
-        title: 'Manage Activities',
-      },
-      {
-        path: '', 
+        path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
-    ],
-  },
+        pathMatch: 'full'
+      }
+    ]
+  }
 ];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AdminRoutingModule {}

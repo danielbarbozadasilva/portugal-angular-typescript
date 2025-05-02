@@ -73,6 +73,7 @@ export const solicitationReducer = createReducer(
     ...state,
     loading: true,
     error: null,
+    id: id,
   })),
   on(SolicitationActions.removeSolicitationSuccess, (state, { id }) => ({
     ...state,

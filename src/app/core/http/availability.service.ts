@@ -3,8 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environments';
-import { IResponse, IResponseError } from '../models/models.index'; // Assumindo que IAvailabilitySlot será adicionado a models.index
-import { IAvailabilitySlot } from '../models/availability.model'; // Criar este modelo
+import { IAvailabilitySlot, IResponse, IResponseError } from '../models/models.index';
 
 @Injectable({
   providedIn: 'root',
@@ -39,11 +38,6 @@ export class AvailabilityService {
     );
   }
 
-  // Métodos para CRUD de slots (se gerenciados pelo front-end/admin)
-  // createAvailabilitySlot(...)
-  // updateAvailabilitySlot(...)
-  // deleteAvailabilitySlot(...)
-
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('AvailabilityService Error:', error);
     const errorResponse: IResponseError = {
@@ -52,15 +46,4 @@ export class AvailabilityService {
     };
     return throwError(() => errorResponse);
   }
-}
-
-// Definição básica - Mover para models/availability.model.ts e models/models.index.ts
-export interface IAvailabilitySlot {
-  id: string;
-  activityId: string;
-  date: string; // Ou Date
-  time?: string; // Ou Date
-  availableSpots: number;
-  totalSpots: number;
-  price?: number; // Preço pode variar por slot
 }

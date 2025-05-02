@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environments';
 import { IResponse, IResponseError } from '../models/models.index';
-import { IGroup, IGroupMembership } from '../models/group.model';
+import { IGroup } from '../models/models.group';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +49,8 @@ export class GroupService {
     );
   }
 
-  addMember(groupId: string, userId: string): Observable<IGroupMembership> {
-    return this.http.post<IResponse<IGroupMembership>>(`${this.baseUrl}/${groupId}/members`, { userId }).pipe(
+  addMember(groupId: string, userId: string): Observable<any> {
+    return this.http.post<IResponse<any>>(`${this.baseUrl}/${groupId}/members`, { userId }).pipe(
       map((response) => response.data),
       catchError(this.handleError)
     );
