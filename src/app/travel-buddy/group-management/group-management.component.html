@@ -1,0 +1,22 @@
+<div class="p-6 max-w-2xl mx-auto">
+  <h2 class="text-lg font-semibold mb-4">Gerenciar Grupo/Evento</h2>
+  <form [formGroup]="form" class="bg-white rounded shadow p-4 flex flex-col gap-4 mb-6">
+    <div>
+      <label class="block mb-1">Nome do Grupo</label>
+      <input formControlName="groupName" type="text" class="border rounded px-3 py-2 w-full" />
+    </div>
+    <div>
+      <label class="inline-flex items-center">
+        <input formControlName="isPrivate" type="checkbox" class="mr-2" /> Privado
+      </label>
+    </div>
+    <div>
+      <label class="block mb-1">Descrição</label>
+      <textarea formControlName="description" class="border rounded px-3 py-2 w-full"></textarea>
+    </div>
+    <div class="flex justify-end">
+      <button type="submit" class="bg-primary text-white px-6 py-2 rounded">Salvar</button>
+    </div>
+  </form>
+  <div class="bg-white rounded shadow p-4 min-h-[80px]">Nenhum grupo criado.</div>
+</div>

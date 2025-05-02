@@ -1,24 +1,26 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SolicitationState } from './solicitation.reducer';
 
+// Feature selector for the solicitation state slice
 export const selectSolicitationState = createFeatureSelector<SolicitationState>('solicitation');
 
+// Selector for the loading status
 export const selectSolicitationLoading = createSelector(
   selectSolicitationState,
-  (state) => state.loading
+  (state: SolicitationState) => state.loading
 );
 
-export const selectAllSolicitations = createSelector(
-  selectSolicitationState,
-  (state) => state.all
-);
+// Selector for all solicitations
+export const selectAllSolicitations = createSelector(selectSolicitationState, (state: SolicitationState) => state.all);
 
+// Selector for the currently selected solicitation
 export const selectSelectedSolicitation = createSelector(
   selectSolicitationState,
-  (state) => state.selected
+  (state: SolicitationState) => state.selected
 );
 
+// Selector for any error messages
 export const selectSolicitationError = createSelector(
   selectSolicitationState,
-  (state) => state.error
+  (state: SolicitationState) => state.error
 );

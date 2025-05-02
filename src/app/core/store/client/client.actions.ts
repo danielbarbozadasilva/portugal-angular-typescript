@@ -1,41 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-
-export interface Address {
-  street: string;
-  city: string;
-  country: string;
-}
-
-export interface Client {
-  id: number;
-  name: string;
-  email: string;
-  address: Address;
-  phones: string[];
-}
-
-export interface SignUpData {
-  name: string;
-  email: string;
-  password: string;
-  address: Address;
-  phones: string[];
-}
+import { IClient } from '../../models/models.client';
+import { IResponseError } from '../../models/models.index';
 
 // Ação para iniciar o processo de cadastro de cliente
-export const signUpClient = createAction(
-  '[Client] Sign Up Client',
-  props<{ data: SignUpData }>()
-);
+export const signUpClient = createAction('[Client] Sign Up Client', props<{ data: IClient }>());
 
 // Ação disparada em caso de sucesso no cadastro
-export const signUpClientSuccess = createAction(
-  '[Client] Sign Up Client Success',
-  props<{ client: Client }>()
-);
+export const signUpClientSuccess = createAction('[Client] Sign Up Client Success', props<{ client: IClient }>());
 
 // Ação disparada em caso de falha no cadastro
 export const signUpClientFailure = createAction(
   '[Client] Sign Up Client Failure',
-  props<{ error: string }>()
+  props<{ error: IResponseError | string }>()
 );

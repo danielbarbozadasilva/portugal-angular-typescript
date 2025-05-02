@@ -1,28 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SignUpData, Client } from '../store/client/client.actions';
+import { IClient, IPaginatedResponse } from '../models/models.index';
+import { environment } from '../../../environments/environments';
+
+type IClientCreate = Omit<IClient, '_id' | 'createdAt' | 'updatedAt' | 'deleted'>;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientService {
+  private apiUrl = `${environment.apiBaseUrl}/clients`;
+
   constructor(private http: HttpClient) {}
 
-  // Realiza requisição de cadastro de novo cliente
-  signUp(data: SignUpData): Observable<Client> {
-    return this.http.post<Client>('/api/clients', data).pipe(
-      // Padroniza o erro em caso de falha na API
-      catchError(err => {
-        let errorMsg = 'Erro ao cadastrar cliente. Por favor, tente novamente.';
-        // Se a resposta de erro possuir uma mensagem, utiliza-a
-        if (err.error && err.error.message) {
-          errorMsg = err.error.message;
-        }
-        // Retorna um erro com mensagem padronizada (será capturado no effect NGRX)
-        return throwError(() => new Error(errorMsg));
-      })
-    );
+  getClients(page: number = 1, limit: number = 10): Observable<IPaginatedResponse<IClient>> {
+    return this.http
+      .get<IPaginatedResponse<IClient>>(`${this.apiUrl}?page=${page}&limit=${limit}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getClientById(id: string): Observable<IClient> {
+    return this.http.get<IClient>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
+  }
+
+  createClient(clientData: IClientCreate): Observable<IClient> {
+    return this.http.post<IClient>(this.apiUrl, clientData).pipe(catchError(this.handleError));
+  }
+
+  updateClient(id: string, clientData: Partial<IClient>): Observable<IClient> {
+    const { _id, createdAt, updatedAt, deleted, user, ...updateData } = clientData;
+    return this.http.patch<IClient>(`${this.apiUrl}/${id}`, updateData).pipe(catchError(this.handleError));
+  }
+
+  deleteClient(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('API Error:', error);
+    return throwError(() => new Error('Ocorreu um erro na comunicação com a API. Tente novamente mais tarde.'));
   }
 }

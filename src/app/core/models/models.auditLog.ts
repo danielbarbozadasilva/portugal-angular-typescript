@@ -1,10 +1,9 @@
+// Alinhado com o schema backend models.auditLog.ts
 export interface IAuditLog {
   _id: string;
-  userId: string; // ID of the user who performed the action
-  action: string; // e.g., 'CREATE_ACTIVITY', 'UPDATE_USER', 'LOGIN'
-  entity: string; // e.g., 'Activity', 'User', 'Auth'
-  entityId?: string; // ID of the entity affected (if applicable)
-  timestamp: Date;
-  details?: any; // Optional field for extra details
-  // Add other relevant fields based on your backend model
+  event: string; // Nome do evento registrado
+  user?: string; // ID do usuário que disparou o evento (opcional se for ação do sistema)
+  data?: any; // Dados adicionais relacionados ao evento
+  createdAt: Date | string; // Timestamp do evento
+  // Campos do frontend original removidos: userId, action, entity, entityId, timestamp, details
 }

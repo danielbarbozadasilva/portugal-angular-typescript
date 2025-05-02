@@ -1,0 +1,462 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-3xl p-8 space-y-8 bg-white rounded shadow-md">
+    <h2 class="text-2xl font-bold text-center text-gray-900">{{ 'signupAgentPage.title' | translate }}</h2>
+
+    <!-- Display Server Error Message -->
+    <div *ngIf="errorMessage()" class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+      {{ errorMessage() ?? '' | translate }}
+    </div>
+
+    <!-- Display Success Message -->
+    <div
+      *ngIf="successMessage() && !(loading$ | async)"
+      class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"
+      role="alert"
+    >
+      {{ successMessage() ?? '' | translate }}
+      <!-- Link to login -->
+      <a routerLink="/signIn" class="font-medium underline ml-2">{{ 'signupAgentPage.loginLink' | translate }}</a>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Account Info -->
+        <fieldset class="border p-4 rounded md:col-span-2">
+          <legend class="text-lg font-medium text-gray-900 px-2">
+            {{ 'signupAgentPage.accountInfoLegend' | translate }}
+          </legend>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.emailLabel' | translate
+              }}</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('email') }"
+              />
+              <div *ngIf="isInvalid('email')" class="input-error-message">
+                <span *ngIf="hasError('email', 'required')">{{ 'validation.required' | translate }}</span>
+                <span *ngIf="hasError('email', 'email')">{{ 'validation.emailInvalid' | translate }}</span>
+              </div>
+            </div>
+            <div></div>
+            <!-- Spacer -->
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.passwordLabel' | translate
+              }}</label>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('password') }"
+              />
+              <div *ngIf="isInvalid('password')" class="input-error-message">
+                <span *ngIf="hasError('password', 'required')">{{ 'validation.required' | translate }}</span>
+                <span *ngIf="hasError('password', 'minlength')">{{
+                  'validation.minLength' | translate: { requiredLength: 8 }
+                }}</span>
+                <span *ngIf="hasError('password', 'strongPassword')">{{
+                  'validation.strongPassword' | translate
+                }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.confirmPasswordLabel' | translate
+              }}</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                formControlName="confirmPassword"
+                required
+                class="input-field"
+                [ngClass]="{
+                  'input-error': isInvalid('confirmPassword') || hasError('confirmPassword', 'passwordMismatch'),
+                }"
+              />
+              <div
+                *ngIf="isInvalid('confirmPassword') || hasError('confirmPassword', 'passwordMismatch')"
+                class="input-error-message"
+              >
+                <span *ngIf="hasError('confirmPassword', 'required')">{{ 'validation.required' | translate }}</span>
+                <span *ngIf="hasError('confirmPassword', 'passwordMismatch')">{{
+                  'validation.passwordMismatch' | translate
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Agent Type & Conditional Fields -->
+        <fieldset class="border p-4 rounded md:col-span-2">
+          <legend class="text-lg font-medium text-gray-900 px-2">
+            {{ 'signupAgentPage.agentInfoLegend' | translate }}
+          </legend>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label for="agentType" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.agentTypeLabel' | translate
+              }}</label>
+              <select
+                id="agentType"
+                formControlName="agentType"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('agentType') }"
+              >
+                <option value="" disabled>{{ 'signupAgentPage.agentTypePlaceholder' | translate }}</option>
+                <option value="pessoa_fisica">{{ 'signupAgentPage.agentTypePF' | translate }}</option>
+                <option value="pessoa_juridica">{{ 'signupAgentPage.agentTypePJ' | translate }}</option>
+              </select>
+              <div *ngIf="isInvalid('agentType')" class="input-error-message">
+                <span *ngIf="hasError('agentType', 'required')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+
+            <!-- Conditional Fields -->
+            <div *ngIf="getControl('agentType')?.value === 'Pessoa Física'">
+              <label for="cpf" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.cpfLabel' | translate
+              }}</label>
+              <input
+                id="cpf"
+                type="text"
+                formControlName="cpf"
+                placeholder="000.000.000-00"
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('cpf') }"
+                (blur)="onBlur('cpf')"
+              />
+              <div *ngIf="isInvalid('cpf')" class="input-error-message">
+                <span *ngIf="hasError('cpf', 'required')">{{ 'validation.required' | translate }}</span>
+                <span *ngIf="hasError('cpf', 'cpfInvalid')">{{ 'validation.cpfInvalid' | translate }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="getControl('agentType')?.value === 'Pessoa Jurídica'">
+              <label for="cnpj" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.cnpjLabel' | translate
+              }}</label>
+              <input
+                id="cnpj"
+                type="text"
+                formControlName="cnpj"
+                placeholder="00.000.000/0000-00"
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('cnpj') }"
+                (blur)="onBlur('cnpj')"
+              />
+              <div *ngIf="isInvalid('cnpj')" class="input-error-message">
+                <span *ngIf="hasError('cnpj', 'required')">{{ 'validation.required' | translate }}</span>
+                <span *ngIf="hasError('cnpj', 'cnpjInvalid')">{{ 'validation.cnpjInvalid' | translate }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="getControl('agentType')?.value === 'Pessoa Jurídica'">
+              <label for="companyName" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.companyNameLabel' | translate
+              }}</label>
+              <input
+                id="companyName"
+                type="text"
+                formControlName="companyName"
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('companyName') }"
+              />
+              <div *ngIf="isInvalid('companyName')" class="input-error-message">
+                <span *ngIf="hasError('companyName', 'required')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Contact Info -->
+        <fieldset class="border p-4 rounded md:col-span-2" formGroupName="address">
+          <legend class="text-lg font-medium text-gray-900 px-2">
+            {{ 'signupAgentPage.contactInfoLegend' | translate }}
+          </legend>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.phoneLabel' | translate
+              }}</label>
+              <input
+                id="phone"
+                type="tel"
+                formControlName="phone"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('phone') }"
+              />
+              <div *ngIf="isInvalid('phone')" class="input-error-message">
+                <span *ngIf="hasError('phone', 'required')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="mobilePhone" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.mobilePhoneLabel' | translate
+              }}</label>
+              <input
+                id="mobilePhone"
+                type="tel"
+                formControlName="mobilePhone"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('mobilePhone') }"
+                (blur)="onBlur('mobilePhone')"
+              />
+              <div *ngIf="isInvalid('mobilePhone')" class="input-error-message">
+                <span *ngIf="hasError('mobilePhone', 'required')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="whatsapp" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.whatsappLabel' | translate
+              }}</label>
+              <input
+                id="whatsapp"
+                type="tel"
+                formControlName="whatsapp"
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('whatsapp') }"
+                (blur)="onBlur('whatsapp')"
+              />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Address Info -->
+        <fieldset class="border p-4 rounded md:col-span-2" formGroupName="address">
+          <legend class="text-lg font-medium text-gray-900 px-2">
+            {{ 'signupAgentPage.addressInfoLegend' | translate }}
+          </legend>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label for="zipCode" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.cepLabel' | translate
+              }}</label>
+              <input
+                id="zipCode"
+                type="text"
+                formControlName="zipCode"
+                placeholder="00000-000"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('zipCode', 'address') }"
+                (blur)="onBlur('zipCode', 'address')"
+              />
+              <div *ngIf="isInvalid('zipCode', 'address')" class="input-error-message">
+                <span *ngIf="hasError('zipCode', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div class="md:col-span-2">
+              <label for="street" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.streetLabel' | translate
+              }}</label>
+              <input
+                id="street"
+                type="text"
+                formControlName="street"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('street', 'address') }"
+              />
+              <div *ngIf="isInvalid('street', 'address')" class="input-error-message">
+                <span *ngIf="hasError('street', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="number" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.numberLabel' | translate
+              }}</label>
+              <input
+                id="number"
+                type="text"
+                formControlName="number"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('number', 'address') }"
+              />
+              <div *ngIf="isInvalid('number', 'address')" class="input-error-message">
+                <span *ngIf="hasError('number', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="complement" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.complementLabel' | translate
+              }}</label>
+              <input id="complement" type="text" formControlName="complement" class="input-field" />
+            </div>
+            <div>
+              <label for="neighborhood" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.neighborhoodLabel' | translate
+              }}</label>
+              <input
+                id="neighborhood"
+                type="text"
+                formControlName="neighborhood"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('neighborhood', 'address') }"
+              />
+              <div *ngIf="isInvalid('neighborhood', 'address')" class="input-error-message">
+                <span *ngIf="hasError('neighborhood', 'required', 'address')">{{
+                  'validation.required' | translate
+                }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="city" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.cityLabel' | translate
+              }}</label>
+              <input
+                id="city"
+                type="text"
+                formControlName="city"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('city', 'address') }"
+              />
+              <div *ngIf="isInvalid('city', 'address')" class="input-error-message">
+                <span *ngIf="hasError('city', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="state" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.stateLabel' | translate
+              }}</label>
+              <input
+                id="state"
+                type="text"
+                formControlName="state"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('state', 'address') }"
+              />
+              <div *ngIf="isInvalid('state', 'address')" class="input-error-message">
+                <span *ngIf="hasError('state', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+            <div>
+              <label for="country" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.countryLabel' | translate
+              }}</label>
+              <input
+                id="country"
+                type="text"
+                formControlName="country"
+                required
+                class="input-field"
+                [ngClass]="{ 'input-error': isInvalid('country', 'address') }"
+              />
+              <div *ngIf="isInvalid('country', 'address')" class="input-error-message">
+                <span *ngIf="hasError('country', 'required', 'address')">{{ 'validation.required' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Bank Details -->
+        <fieldset class="border p-4 rounded md:col-span-2" formGroupName="bankDetails">
+          <legend class="text-lg font-medium text-gray-900 px-2">
+            {{ 'signupAgentPage.bankInfoLegend' | translate }}
+          </legend>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label for="bank" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.bankLabel' | translate
+              }}</label>
+              <input id="bank" type="text" formControlName="bank" class="input-field" />
+            </div>
+            <div>
+              <label for="bankAgency" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.agencyLabel' | translate
+              }}</label>
+              <input id="bankAgency" type="text" formControlName="bankAgency" class="input-field" />
+            </div>
+            <div>
+              <label for="bankAccount" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.accountLabel' | translate
+              }}</label>
+              <input id="bankAccount" type="text" formControlName="bankAccount" class="input-field" />
+            </div>
+            <div>
+              <label for="accountType" class="block text-sm font-medium text-gray-700">{{
+                'signupAgentPage.accountTypeLabel' | translate
+              }}</label>
+              <select id="accountType" formControlName="accountType" class="input-field">
+                <option value="Conta Corrente">{{ 'signupAgentPage.checkingAccount' | translate }}</option>
+                <option value="Conta Poupança">{{ 'signupAgentPage.savingsAccount' | translate }}</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Terms -->
+        <div class="flex items-start md:col-span-2">
+          <div class="flex items-center h-5">
+            <input
+              id="termsAccepted"
+              formControlName="termsAccepted"
+              type="checkbox"
+              required
+              class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+            />
+          </div>
+          <div class="ml-3 text-sm">
+            <label for="termsAccepted" class="font-medium text-gray-700">{{
+              'signupAgentPage.termsLabel' | translate
+            }}</label>
+            <!-- Add link to terms page if available -->
+            <a href="/terms" target="_blank" class="text-indigo-600 hover:text-indigo-500">
+              {{ 'signupAgentPage.termsLink' | translate }}</a
+            >
+            <div *ngIf="isInvalid('termsAccepted')" class="input-error-message">
+              <span *ngIf="hasError('termsAccepted', 'required')">{{ 'validation.termsRequired' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="signupForm.invalid || (loading$ | async)"
+          class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!(loading$ | async)">{{ 'signupAgentPage.submitButton' | translate }}</span>
+          <span *ngIf="loading$ | async" class="flex items-center">
+            <svg
+              class="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            {{ 'signupAgentPage.loadingButton' | translate }}...
+          </span>
+        </button>
+      </div>
+
+      <p class="mt-4 text-sm text-center text-gray-600">
+        {{ 'signupAgentPage.alreadyAccountPrompt' | translate }}
+        <a routerLink="/signIn" class="font-medium text-indigo-600 hover:text-indigo-500">
+          {{ 'signupAgentPage.loginLink' | translate }}
+        </a>
+      </p>
+    </form>
+  </div>
+</div>

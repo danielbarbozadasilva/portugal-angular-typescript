@@ -1,36 +1,53 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-language-selector',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './language-selector.component.html',
-  imports: [
-    CommonModule,
-    TranslateModule
-  ]
 })
 export class LanguageSelectorComponent {
-  languages = ['en-US', 'es-ES', 'fr-FR', 'pt-BR', 'pt-PT'];
+  availableLangs: string[] = [];
+  currentLang: string = '';
+  showDropdown = false;
 
-  constructor(private translate: TranslateService) {}
-
-  /**
-   * Método chamado a cada mudança no <select>, recebendo o evento nativo.
-   */
-  onLanguageChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement | null;
-    if (selectElement) {
-      const selectedLang = selectElement.value;
-      this.changeLanguage(selectedLang);
-    }
+  constructor(public translate: TranslateService) {
+    this.availableLangs = translate.getLangs();
+    this.currentLang = translate.currentLang || translate.defaultLang;
+    translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', event.lang);
+      this.showDropdown = false;
+    });
   }
 
-  /**
-   * Altera o idioma usando o serviço do ngx-translate.
-   */
-  private changeLanguage(lang: string): void {
-    this.translate.use(lang);
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  changeLang(lang: string): void {
+    if (lang !== this.currentLang) {
+      this.translate.use(lang);
+    }
+    this.showDropdown = false;
+  }
+
+  getLangDisplay(lang: string): string {
+    switch (lang) {
+      case 'pt-PT':
+        return 'Português (PT)';
+      case 'pt-BR':
+        return 'Português (BR)';
+      case 'en-US':
+        return 'English (US)';
+      case 'es-ES':
+        return 'Español (ES)';
+      case 'fr-FR':
+        return 'Français (FR)';
+      default:
+        return lang;
+    }
   }
 }

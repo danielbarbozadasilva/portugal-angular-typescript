@@ -1,4 +1,86 @@
-import { IAgentRequest } from 'app/core/models/models.agent'; // Changed import
+import { AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
+
+export function cpfValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const cpf = control.value;
+    if (!cpf) {
+      return null; // Não valida se vazio (usar Validators.required para isso)
+    }
+    // Regex simples para formato XXX.XXX.XXX-XX
+    const cpfPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    return cpfPattern.test(cpf) ? null : { cpfInvalid: true };
+  };
+}
+
+// Validador simples para CNPJ (apenas formato básico) - MELHORAR com lógica real
+export function cnpjValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const cnpj = control.value;
+    if (!cnpj) {
+      return null; // Não valida se vazio
+    }
+    // Regex simples para formato XX.XXX.XXX/XXXX-XX
+    const cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+    return cnpjPattern.test(cnpj) ? null : { cnpjInvalid: true };
+  };
+}
+
+// Validador para verificar se as senhas coincidem
+export function passwordMatchValidator(controlName: string, matchingControlName: string): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    // Verifica se o controle passado é realmente um FormGroup
+    if (!(formGroup instanceof FormGroup)) {
+      console.error('passwordMatchValidator must be applied to a FormGroup.');
+      return null;
+    }
+
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (!control || !matchingControl) {
+      console.error(`Form controls not found: ${controlName}, ${matchingControlName}`);
+      return null; // Retorna nulo se os controles não existirem para evitar erros
+    }
+
+    // Define o erro no controle de confirmação se as senhas não coincidirem
+    if (matchingControl.errors && !matchingControl.errors['passwordMismatch']) {
+      // Retorna nulo se já houver outro erro (exceto o nosso)
+      return null;
+    }
+
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ ...matchingControl.errors, passwordMismatch: true });
+      return { passwordMismatch: true }; // Retorna o erro no nível do FormGroup também, se necessário
+    } else {
+      // Limpa o erro específico se as senhas coincidirem
+      const errors = { ...matchingControl.errors };
+      delete errors['passwordMismatch'];
+      // Define como null se não houver mais erros, ou mantém os outros erros
+      matchingControl.setErrors(Object.keys(errors).length === 0 ? null : errors);
+      return null;
+    }
+  };
+}
+
+// Outras validações podem ser adicionadas aqui...
+// Exemplo: Validador de força de senha
+export function strongPasswordValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) {
+      return null;
+    }
+    const hasUpperCase = /[A-Z]+/.test(value);
+    const hasLowerCase = /[a-z]+/.test(value);
+    const hasNumeric = /[0-9]+/.test(value);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value);
+    const isLongEnough = value.length >= 8;
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecial && isLongEnough;
+
+    return !passwordValid ? { strongPassword: true } : null;
+  };
+}
 
 // Exemplo fictício; adapte conforme suas regras
 export function fieldValidate(key: string, value: string): string | null {
@@ -77,20 +159,4 @@ export function formatPhoneByCountry(phone: string, country: string): string {
     default:
       return raw;
   }
-}
-
-export function isNotValid(agent: IAgentRequest, formErrors?: any): boolean {
-  // Changed type to IAgentRequest
-  // Checar se tem algum erro
-  // ou se algum campo é obrigatório e está vazio.
-  // Exemplo simplificado:
-  if (!agent.name || !agent.email || !agent.password) {
-    // Check fields from IAgentRequest
-    return true;
-  }
-  if (formErrors) {
-    // Se houver chaves de erro
-    return !!Object.keys(formErrors).length;
-  }
-  return false;
 }

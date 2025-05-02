@@ -1,29 +1,28 @@
 import { createReducer, on } from '@ngrx/store';
 import * as SolicitationActions from './solicitation.actions';
-import { ISolicitation, IResponseError } from '../../models/models.index'; // Import IResponseError
+import { ISolicitation, IResponseError } from '../../models/models.index';
 
 export interface SolicitationState {
   loading: boolean;
   all: ISolicitation[];
-  selected?: ISolicitation;
-  error?: IResponseError | string; // Allow IResponseError or string
+  selected: ISolicitation | null;
+  error: IResponseError | string | null;
 }
 
 const initialState: SolicitationState = {
   loading: false,
   all: [],
-  selected: undefined,
-  error: undefined,
+  selected: null,
+  error: null,
 };
 
 export const solicitationReducer = createReducer(
   initialState,
 
-  // Load All Solicitations
   on(SolicitationActions.loadAllSolicitations, (state) => ({
     ...state,
     loading: true,
-    error: undefined,
+    error: null,
   })),
   on(SolicitationActions.loadAllSolicitationsSuccess, (state, { solicitations }) => ({
     ...state,
@@ -33,13 +32,14 @@ export const solicitationReducer = createReducer(
   on(SolicitationActions.loadAllSolicitationsFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error.message || 'Failed to load solicitations', // Store error message or the object
+    error: error,
   })),
 
-  // Load Solicitation by ID
   on(SolicitationActions.loadSolicitationById, (state) => ({
     ...state,
     loading: true,
+    selected: null,
+    error: null,
   })),
   on(SolicitationActions.loadSolicitationByIdSuccess, (state, { solicitation }) => ({
     ...state,
@@ -49,41 +49,45 @@ export const solicitationReducer = createReducer(
   on(SolicitationActions.loadSolicitationByIdFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error.message || 'Failed to load solicitation by ID', // Store error message or the object
+    error: error,
   })),
 
-  // Update Solicitation
   on(SolicitationActions.updateSolicitation, (state) => ({
     ...state,
     loading: true,
+    error: null,
   })),
   on(SolicitationActions.updateSolicitationSuccess, (state, { solicitation }) => ({
     ...state,
     loading: false,
-    // Optionally update the 'all' array or 'selected' solicitation
     all: state.all.map((s) => (s._id === solicitation._id ? solicitation : s)),
     selected: state.selected?._id === solicitation._id ? solicitation : state.selected,
   })),
   on(SolicitationActions.updateSolicitationFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error.message || 'Failed to update solicitation', // Store error message or the object
+    error: error,
   })),
 
-  // Remove Solicitation
-  on(SolicitationActions.removeSolicitation, (state) => ({
+  on(SolicitationActions.removeSolicitation, (state, { id }) => ({
     ...state,
     loading: true,
+    error: null,
   })),
   on(SolicitationActions.removeSolicitationSuccess, (state, { id }) => ({
     ...state,
     loading: false,
     all: state.all.filter((s) => s._id !== id),
-    selected: state.selected?._id === id ? undefined : state.selected,
+    selected: state.selected?._id === id ? null : state.selected,
   })),
   on(SolicitationActions.removeSolicitationFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error.message || 'Failed to remove solicitation', // Store error message or the object
+    error: error,
+  })),
+
+  on(SolicitationActions.clearSolicitationError, (state) => ({
+    ...state,
+    error: null,
   }))
 );

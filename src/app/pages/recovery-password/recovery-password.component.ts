@@ -1,80 +1,64 @@
-// components/change-password/change-password.component.ts
-import { IComponentOptions, IController } from 'angular';
-import { AuthService } from '../../core/http/auth.service';
-import { IAuthParams, IDataResponse, IResponseError } from '../../core/models/models.auth'; // Importar IAuthParams, IDataResponse, IResponseError
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
+import { AppState } from '@app/core/store/reducers-map';
+import { selectAuthLoading, selectAuthError, selectRecoverySuccess } from '@app/core/store/auth/auth.selectors';
+import * as AuthActions from '@app/core/store/auth/auth.actions';
+import { IResponseError } from '@app/core/models/models.index';
 
-// Definir um tipo local para o formulário que inclui confirmNewPassword
-interface IRecoveryPasswordForm extends IAuthParams {
-  confirmNewPassword?: string; // Tornar opcional ou inicializar
-}
+@Component({
+  selector: 'app-recovery-password',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  templateUrl: './recovery-password.component.html',
+})
+export class RecoveryPasswordComponent implements OnInit, OnDestroy {
+  recoveryForm!: FormGroup;
+  loading$: Observable<boolean>;
+  error$: Observable<IResponseError | string | null>;
+  recoverySuccess$: Observable<boolean>;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  loading = false;
+  formSubmitted = false;
+  private subs: Subscription[] = [];
 
-class ResetPasswordController implements IController {
-  // Usar o tipo local IRecoveryPasswordForm
-  public form: IRecoveryPasswordForm = {
-    email: '',
-    recoveryCode: '',
-    newPassword: '',
-    confirmNewPassword: '' // Inicializar
-  };
-
-  static $inject = ['AuthService'];
-  constructor(public authService: AuthService) {}
-
-  $onInit() {
-    // TODO: Implementar lógica para obter email e recoveryCode (ex: de $routeParams ou estado)
-    // Exemplo: Se vierem da URL como query params
-    // const params = this.$location.search(); // Supondo injeção de $location
-    // this.form.email = params.email;
-    // this.form.recoveryCode = params.code;
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    public translate: TranslateService
+  ) {
+    this.loading$ = this.store.select(selectAuthLoading);
+    this.error$ = this.store.select(selectAuthError);
+    this.recoverySuccess$ = this.store.select(selectRecoverySuccess);
   }
 
-  public submitForm(): void {
-    if (!this.form.email || !this.form.recoveryCode || !this.form.newPassword || !this.form.confirmNewPassword) {
-      alert('Preencha todos os campos.');
-      return;
-    }
-
-    if (this.form.newPassword !== this.form.confirmNewPassword) {
-      alert('As senhas não conferem.');
-      return;
-    }
-
-    // Criar payload apenas com os campos necessários para IAuthParams
-    const payload: IAuthParams = {
-        email: this.form.email,
-        recoveryCode: this.form.recoveryCode,
-        newPassword: this.form.newPassword
-    };
-
-    // Usar subscribe em vez de then/catch
-    this.authService.resetPasswordService(payload).subscribe({
-      next: (res: IDataResponse | IResponseError) => { // Adicionar tipo explícito para res
-        // Verificar se a resposta indica sucesso
-        if ('success' in res && res.success) {
-            alert('Senha alterada com sucesso!');
-            // Limpar campos sensíveis após sucesso
-            this.form.newPassword = '';
-            this.form.confirmNewPassword = '';
-            this.form.recoveryCode = ''; // Opcional: limpar código
-            // Opcional: redirecionar para login
-            // this.$location.path('/login'); // Supondo injeção de $location
-        } else if ('message' in res) {
-            alert('Erro ao alterar a senha: ' + res.message);
-        } else {
-            // Fallback para caso a resposta não tenha nem success nem message
-            alert('Resposta inesperada do servidor ao tentar alterar a senha.');
-        }
-      },
-      error: (error: any) => { // Usar IResponseError que é o tipo retornado pelo handleError
-        // O handleError no service já deve formatar o erro
-        const message = error?.message || 'Erro desconhecido ao alterar a senha.';
-        alert('Erro ao alterar a senha: ' + message);
-      }
+  ngOnInit(): void {
+    this.recoveryForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
     });
+
+    this.subs.push(
+      this.error$.subscribe((e) => (this.errorMessage = e ? (typeof e === 'string' ? e : e.message) : null)),
+      this.loading$.subscribe((v) => (this.loading = v)),
+      this.recoverySuccess$.subscribe(
+        (s) => (this.successMessage = s ? this.translate.instant('passwordRecoverySuccessMessage') : null)
+      )
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((s) => s.unsubscribe());
+  }
+
+  onSubmitForm(): void {
+    this.formSubmitted = true;
+    if (this.recoveryForm.invalid) return;
+    this.errorMessage = null;
+    this.successMessage = null;
+    this.store.dispatch(AuthActions.recoveryPassword({ email: this.recoveryForm.value.email }));
   }
 }
-
-export const recoveryPasswordComponent: IComponentOptions = {
-  controller: ResetPasswordController,
-  templateUrl: 'app/pages/recovery-password/recovery-password.component.html'
-};

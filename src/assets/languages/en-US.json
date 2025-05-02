@@ -1,4 +1,100 @@
 {
+  "home": {
+    "filters": {
+      "sortAlphabeticalAZ": "Alphabetical (A-Z)",
+      "sortAlphabeticalZA": "Alphabetical (Z-A)",
+      "sortPrice": "Price",
+      "sortDate": "Date",
+      "sortRelevance": "Relevance",
+      "sortRatingAsc": "Rating (asc)",
+      "sortRatingDesc": "Rating (desc)",
+      "sortLocation": "Location",
+      "searchButton": "Search",
+      "keywordPlaceholder": "Keyword...",
+      "categoryPlaceholder": "Category...",
+      "minPricePlaceholder": "Min. Price",
+      "maxPricePlaceholder": "Max. Price",
+      "languagePlaceholder": "Language...",
+      "sortTitle": "Sort by..."
+    },
+    "hero": {
+      "title": "Explore the Essence of Portugal",
+      "subtitle": "Live unforgettable experiences in Lusitanian lands, from the coast to the interior.",
+      "searchPlaceholder": "Discover activities, destinations...",
+      "searchButton": "Explore"
+    },
+    "activitiesSectionTitle": "Featured Activities",
+    "activityLocationLabel": "Location",
+    "activityPriceLabel": "Price",
+    "apresentationTitle": "Portugal Awaits You!",
+    "apresentationLead": "Start planning your trip now and discover all the charms Portugal has to offer.",
+    "planAdventure": "Plan Adventure",
+    "gastronomySectionTitle": "Delights of Portuguese Gastronomy",
+    "gastronomySectionLead": "Get ready for a journey of flavors! Discover dishes that are true treasures of Portuguese cuisine.",
+    "foodPastelNataTitle": "Pastel de Nata",
+    "foodPastelNataText": "The icon of Portuguese pastry, perfect with coffee or tea.",
+    "foodFrancesinhaTitle": "Francesinha",
+    "foodFrancesinhaText": "A unique sandwich from Porto, rich in flavors and ideal for meat lovers.",
+    "foodBacalhauTitle": "Bacalhau à Brás",
+    "foodBacalhauText": "One of the many ways to enjoy codfish, a reinvented classic.",
+    "foodPastelNataAlt": "Photograph of a Pastel de Nata",
+    "foodFrancesinhaAlt": "Photograph of a Francesinha",
+    "foodBacalhauAlt": "Photograph of Bacalhau à Brás",
+    "showcase1Title": "Urban Adventures",
+    "showcase1Lead": "Explore Portugal's historic cities, full of culture and life.",
+    "showcase1Btn": "Discover Cities",
+    "showcase2Title": "Stunning Nature",
+    "showcase2Lead": "From golden beaches to green mountains, Portugal's nature captivates.",
+    "showcase2Btn": "Explore Nature",
+    "showcase3Title": "Living Traditions",
+    "showcase3Lead": "Immerse yourself in local traditions, from Fado to regional gastronomy.",
+    "showcase3Btn": "Experience Traditions",
+    "specialOfferBadge": "Special offer",
+    "priceNote": "Prices vary depending on group size",
+    "joinButton": "Join",
+    "errorFetchActivities": "Error fetching activities:"
+  },
+  "footer": {
+    "top": {
+      "title": "24/7 Customer Support",
+      "subtitle": "From our award-winning travel experts",
+      "phoneNumber": "+1-XXX-XXX-XXXX",
+      "followUsTitle": "Follow Us",
+      "followUsText": "Stay updated with the latest news and special offers from Noropa Travel and Tourism"
+    },
+    "newsletter": {
+      "title": "Subscribe to Newsletter",
+      "subtitle": "Receive recent news and latest updates",
+      "placeholder": "Email Address",
+      "button": "Subscribe"
+    },
+    "bottom": {
+      "contactTitle": "Contact Us",
+      "contactAddressLine1": "Avenida da República 755 5th floor Room 51,",
+      "contactAddressLine2": "Vila Nova de Gaia, Portugal 4430-201",
+      "contactEmail": "info@noropa.com",
+      "linkTourSearch": "Tour Search Result",
+      "linkClientsSay": "What Our Clients Say",
+      "linkServices": "Services Provided",
+      "linkAboutUs": "About Us",
+      "linkGridView": "Tour Grid View",
+      "linkContact": "Contact Us",
+      "linkTeam": "Our Team",
+      "linkWhyChooseUs": "Why Choose Us",
+      "linkTourism": "Tourism",
+      "instagramTitle": "Instagram Photos"
+    }
+  },
+  "dropdown": {
+    "header": "My Account",
+    "profile": "My Profile",
+    "editProfile": "Edit Profile",
+    "enrollment": "My Enrollments",
+    "logout": "Logout"
+  },
+  "cart": {
+    "errorUnknown": "An unknown error occurred in the cart."
+  },
   "welcome": "Welcome",
   "login": "Login",
   "signup": "Sign Up",
@@ -22,7 +118,7 @@
   "street": "Street",
   "number": "Number",
   "complement": "Complement",
-  "district": "District",
+  "district": "District/Neighborhood",
   "city": "City",
   "stateUF": "State (UF)",
   "placeholder": {
@@ -43,10 +139,10 @@
     "complement": "Apartment, block...",
     "district": "Enter your district/neighborhood",
     "city": "Enter your city",
-    "stateUF": "e.g. CA or NY",
+    "stateUF": "e.g. CA",
     "emailLogin": "Enter your e-mail",
     "passwordLogin": "Enter your password",
-    "companyName": "e.g. ABC Business LLC",
+    "companyName": "e.g. ABC Enterprises Inc.",
     "tradeName": "e.g. ABC Store"
   },
   "tourWalk": "Walk",
@@ -54,208 +150,25 @@
   "tourEvent": "Event",
   "tourTrail": "Trail",
   "tourOther": "Other",
-  "followUs": "Follow us",
+  "followUs": "Follow Us",
   "signIn": "Sign In",
-  "registerAgent": "Sign Up Agent",
-  "registerClient": "Sign Up client",
-  "homePage": "Home",
+  "registerAgent": "Register Agent",
+  "registerClient": "Register Client",
+  "homePage": "Homepage",
   "about": "About",
   "tours": "Tours",
   "prices": "Prices",
   "destinations": "Destinations",
-  "contact": "Contact us",
+  "contact": "Contact Us",
   "helpline": "Helpline",
   "bookTour": "Book Tour",
   "siteLogoAlt": "Site logo",
   "loginTitle": "Login",
   "signInButton": "Sign In",
-  "resetPassword": "Reset password",
-  "home": {
-    "apresentationTitle": "Portugal Awaits You!",
-    "apresentationLead": "Start planning your trip now and discover all the charms Portugal has to offer.",
-    "planAdventure": "Plan Adventure",
-    "gastronomySectionTitle": "Delights of Portuguese Gastronomy",
-    "gastronomySectionLead": "Get ready for a journey of flavors! Discover dishes that are true treasures of Portuguese cuisine.",
-    "foodPastelNataTitle": "Pastel de Nata",
-    "foodPastelNataText": "The icon of Portuguese pastries, perfect to enjoy with a coffee or tea.",
-    "foodFrancesinhaTitle": "Francesinha",
-    "foodFrancesinhaText": "A unique Porto sandwich, rich in flavors and perfect for meat lovers.",
-    "foodBacalhauTitle": "Bacalhau à Brás",
-    "foodBacalhauText": "One of the many ways to taste codfish, a reinvented classic.",
-    "foodPastelNataAlt": "Photograph of a Pastel de Nata",
-    "foodFrancesinhaAlt": "Photograph of a Francesinha",
-    "foodBacalhauAlt": "Photograph of Bacalhau à Brás",
-    "specialOfferBadge": "Special Offer",
-    "priceNote": "Prices vary depending on the group size",
-    "joinButton": "Join",
-    "errorFetchActivities": "Error fetching activities:",
-    "errorGeolocation": "Geolocation is not supported by this browser.",
-    "showcase1Title": "Algarve: Sun, Beach and Relaxation",
-    "showcase1Lead": "Relax on the paradisiacal beaches of the Algarve, explore sea caves and enjoy the sun all year round...",
-    "showcase1Btn": "Discover Algarve",
-    "showcase2Title": "Lisbon: Living History and Vibrant Nights",
-    "showcase2Lead": "Embark on a memorable night tour of Lisbon, where you'll be treated to a delicious mix...",
-    "showcase2Btn": "Explore Lisbon",
-    "showcase3Title": "Porto: Wine, River and Unique Architecture",
-    "showcase3Lead": "The Douro wine region, a UNESCO World Heritage site, has produced wines for thousands of years...",
-    "showcase3Btn": "Visit Porto",
-    "activitiesSectionTitle": "Tourist Activities",
-    "activityLocationLabel": "Location",
-    "activityPriceLabel": "Price",
-    "filters": {
-      "keywordPlaceholder": "Keyword",
-      "categoryPlaceholder": "Category",
-      "startDatePlaceholder": "Start Date",
-      "endDatePlaceholder": "End Date",
-      "minPricePlaceholder": "Min Price",
-      "maxPricePlaceholder": "Max Price",
-      "languagePlaceholder": "Language",
-      "sortTitle": "Sort by",
-      "sortAlphabeticalAZ": "Alphabetical (A-Z)",
-      "sortAlphabeticalZA": "Alphabetical (Z-A)",
-      "sortPrice": "Price",
-      "sortDate": "Date",
-      "sortRelevance": "Relevance",
-      "sortRatingAsc": "Rating (asc)",
-      "sortRatingDesc": "Rating (desc)",
-      "sortLocation": "Location",
-      "searchButton": "Search"
-    },
-    "hero": {
-      "title": "Explore the Essence of Portugal",
-      "subtitle": "Live unforgettable experiences in Lusitanian lands, from the coast to the countryside.",
-      "searchPlaceholder": "Discover activities, destinations...",
-      "searchButton": "Explore"
-    }
-  },
-  "footer": {
-    "top": {
-      "title": "24/7 Customer Assistance",
-      "subtitle": "From our award-winning travel specialists",
-      "phoneNumber": "+111-888-000",
-      "followUsTitle": "Follow us",
-      "followUsText": "Stay updated with the latest news and special offers from Noropa Travel and Tourism"
-    },
-    "newsletter": {
-      "title": "Subscribe to our Newsletter",
-      "subtitle": "Get recent news and the latest updates",
-      "placeholder": "Email Address",
-      "button": "Subscribe"
-    },
-    "bottom": {
-      "contactTitle": "Contact Us",
-      "contactAddressLine1": "Avenida da República 755 5th floor Room 51,",
-      "contactAddressLine2": "Vila Nova de Gaia, Portugal 4430-201",
-      "contactEmail": "info@noropa.com",
-      "quickLinks": "Quick Links",
-      "linkTourSearch": "Tour Search Results",
-      "linkClientsSay": "What Our Clients Say",
-      "linkServices": "Services Provided",
-      "linkAboutUs": "About Us",
-      "linkGridView": "Tour Grid View",
-      "linkContact": "Contact Us",
-      "linkTeam": "Our Team",
-      "linkWhyChooseUs": "Why Choose Us",
-      "linkTourism": "Tourism",
-      "instagramTitle": "Instagram Photos"
-    }
-  },
-  "dropdown": {
-    "header": "My Account",
-    "profile": "My Profile",
-    "editProfile": "Edit Profile",
-    "enrollment": "My Enrollment",
-    "logout": "Sign Out"
-  },
+  "resetPassword": "Reset Password",
   "agentType": "Agent Type",
   "agent": {
     "person": "Individual",
     "company": "Company"
-  },
-  "companyName": "Company Name",
-  "tradeName": "Trade Name",
-  "cpf": "CPF (Brazil)",
-  "cnpj": "CNPJ (Brazil)",
-  "mobilePhone": "Mobile Phone",
-  "whatsapp": "WhatsApp",
-  "neighborhood": "Neighborhood",
-  "bank": "Bank",
-  "bankAgency": "Agency",
-  "bankAccount": "Account",
-  "accountType": "Account Type",
-  "accountTypeChecking": "Checking Account",
-  "accountTypeSaving": "Savings Account",
-  "hide": "Hide",
-  "show": "Show",
-  "profileAgent": "Profile Agent",
-  "saveChanges": "Save Changes",
-  "profile": {
-    "clientTitle": "Client Profile"
-  },
-  "errors": {
-    "401": {
-      "title": "Error 401",
-      "message": "Unauthorized access."
-    },
-    "403": {
-      "title": "Error 403",
-      "message": "You do not have permission to access this content!"
-    },
-    "404": {
-      "title": "Error 404",
-      "message": "This page cannot be found."
-    },
-    "500": {
-      "title": "Error 500",
-      "message": "An internal server error has occurred. Please try again later!"
-    },
-    "nameRequired": "Name is required.", 
-    "passwordRequired": "Password is required.", 
-    "passwordConfirmRequired": "Password confirmation is required.", 
-    "agentTypeRequired": "Agent type is required.", 
-    "cnpjInvalid": "Invalid CNPJ. Must contain 14 digits.", 
-    "client": {
-      "userBlank": "Username cannot be blank.",
-      "userMin4": "Username must have at least 4 characters.",
-      "userMax20": "Username can have a maximum of 20 characters.",
-      "documentBlank": "Document cannot be blank.",
-      "cpfInvalid": "Invalid CPF. Must contain 11 digits.",
-      "phoneRequired": "Main phone is required.",
-      "phoneInvalidRange": "Phone is invalid. Must be between 8 and 15 digits.",
-      "birthDateBlank": "Birth Date cannot be blank.",
-      "birthDateInvalid": "Invalid date.",
-      "birthDateFuture": "Birth date cannot be in the future.",
-      "birthDateUnder18": "You must be at least 18 years old.",
-      "countryEmpty": "Select a country."
-    }
-  },
-  "aboutPage": {
-    "pageTitle": "About Us",
-    "breadcrumbHome": "Home",
-    "breadcrumbCurrent": "About Us",
-
-    "teamMembersTitle": "Team Members",
-    "teamMembersSubtitle": "Group of professionals behind our successful company",
-
-    "featureVideoTitle": "ASK A LOCAL",
-    "featureVideoHeading": "Your Flexible And Risk-Free Booking",
-    "featureVideoParagraph": "To give you peace of mind and more time to make decisions about your future travel plans...",
-
-    "featureButtonContact": "Contact Us",
-    "featureButtonBook": "Book Now",
-
-    "whyChooseUsSubtitle": "Why Choose Us",
-    "whyChooseUsTitle": "Book with Confidence",
-    "whyChooseUsParagraph": "We're with you every step of the way",
-
-    "ourGalleryTitle": "Our Gallery",
-    "ourGallerySubtitle": "Moments captured from amazing adventures",
-    "viewAllGallery": "View All Gallery"
-  },
-  "loadingText": "Loading...", 
-  "newPasswordLabel": "New Password", 
-  "newPasswordPlaceholder": "Enter the new password", 
-  "confirmNewPasswordLabel": "Confirm Password", 
-  "confirmNewPasswordPlaceholder": "Confirm the new password", 
-  "changePasswordButton": "Change Password" 
+  }
 }

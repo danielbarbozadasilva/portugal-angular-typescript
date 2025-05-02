@@ -1,89 +1,69 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http'; // Import HttpErrorResponse
-import { Observable, throwError } from 'rxjs'; // Import throwError
-import { IAgent, IResponse, IResponseError } from '../models/models.index'; // Import IResponseError
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { IAgent, IAgentData } from '../models/models.agent';
 import { environment } from '../../../environments/environments';
-import { catchError, map } from 'rxjs/operators'; // Import catchError, map
+import { IPaginatedResponse } from '../models/models.user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AgentService {
-  private baseUrl = `${environment.apiBaseUrl}/agents`; // Corrected base URL
+  private apiUrl = `${environment.apiBaseUrl}/agents`;
 
   constructor(private http: HttpClient) {}
 
-  public getAllAgents(): Observable<IAgent[]> {
-    return this.http.get<IResponse<IAgent[]>>(this.baseUrl).pipe(
-      // Expect IResponse
-      map((response) => response.data), // Extract data
-      catchError(this.handleError) // Add error handling
-    );
+  getAgents(page: number = 1, limit: number = 10, filters?: any): Observable<IPaginatedResponse<IAgent>> {
+    let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
+
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        if (filters[key]) {
+          params = params.set(key, filters[key]);
+        }
+      });
+    }
+
+    return this.http.get<IPaginatedResponse<IAgent>>(this.apiUrl, { params }).pipe(catchError(this.handleError));
   }
 
-  public getAgent(id: string): Observable<IAgent> {
-    return this.http.get<IResponse<IAgent>>(`${this.baseUrl}/${id}`).pipe(
-      // Expect IResponse
-      map((response) => response.data), // Extract data
-      catchError(this.handleError) // Add error handling
-    );
+  // GET: Buscar um agente pelo ID
+  getAgentById(id: string): Observable<IAgent> {
+    return this.http.get<IAgent>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
   }
 
-  public createAgent(agent: IAgent): Observable<IAgent> {
-    // Return created IAgent
-    // Determine Content-Type based on whether file upload is actually needed
-    // If no file upload, use 'application/json'
-    // For now, assuming JSON is sufficient unless a file field exists in ISignUpAgent
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let body: any = agent;
-
-    // Example check if a file field exists (adjust field name like 'profilePictureFile')
-    // if (agent.profilePictureFile instanceof File) {
-    //   headers = new HttpHeaders(); // Let browser set Content-Type for FormData
-    //   const formData = new FormData();
-    //   Object.keys(agent).forEach((key) => {
-    //     const value = (agent as any)[key];
-    //     if (value !== undefined && value !== null) {
-    //       formData.append(key, value);
-    //     }
-    //   });
-    //   body = formData;
-    // }
-
-    return this.http
-      .post<IResponse<IAgent>>(this.baseUrl, body, { headers }) // Use corrected URL, expect IResponse<IAgent>
-      .pipe(
-        map((response) => response.data), // Extract created agent data
-        catchError(this.handleError) // Use generic handler
-      );
+  // POST: Criar um novo agente
+  createAgent(agentData: IAgentData): Observable<IAgent> {
+    // Removendo campos que não devem ser enviados na criação (ex: _id, createdAt, etc.)
+    // A interface IAgentRequest já deve refletir os campos necessários para criação
+    return this.http.post<IAgent>(this.apiUrl, agentData).pipe(catchError(this.handleError));
   }
 
-  public updateAgent(id: string, data: Partial<IAgent>): Observable<IAgent> {
-    // Return updated IAgent
-    // Similar logic for Content-Type if update involves files
-    return this.http.put<IResponse<IAgent>>(`${this.baseUrl}/${id}`, data).pipe(
-      // Expect IResponse<IAgent>
-      map((response) => response.data), // Extract updated agent data
-      catchError(this.handleError) // Add error handling
-    );
+  // PUT: Atualizar um agente existente
+  updateAgent(id: string, agentData: Partial<IAgentData>): Observable<IAgent> {
+    // A interface Partial<IAgentRequest> permite atualizações parciais
+    return this.http.put<IAgent>(`${this.apiUrl}/${id}`, agentData).pipe(catchError(this.handleError));
   }
 
-  public deleteAgent(id: string): Observable<{ id: string }> {
-    // Return id object
-    return this.http.delete<IResponse<any>>(`${this.baseUrl}/${id}`).pipe(
-      // Expect IResponse
-      map(() => ({ id })), // Map to id object on success
-      catchError(this.handleError) // Add error handling
-    );
+  // DELETE: Deletar um agente
+  deleteAgent(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
   }
 
-  // Generic error handler
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('AgentService Error:', error);
-    const errorResponse: IResponseError = {
-      success: false,
-      message: error.error?.message || error.message || 'An unknown error occurred',
-    };
-    return throwError(() => errorResponse);
+  // Tratamento de erros genérico
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Ocorreu um erro desconhecido.';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Erro: ${error.error.message}`;
+    } else {
+      errorMessage = `Erro ${error.status}: ${error.message}`;
+      if (error.error && typeof error.error === 'string') {
+        errorMessage += ` - ${error.error}`;
+      } else if (error.error && error.error.message) {
+        errorMessage += ` - ${error.error.message}`;
+      }
+    }
+    return throwError(() => new Error(errorMessage));
   }
 }

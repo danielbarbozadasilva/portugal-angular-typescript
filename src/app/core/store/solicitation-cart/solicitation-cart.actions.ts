@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ISolicitationCartItem } from '../../models/models.index';
+import { ISolicitationCartItem, IResponseError } from '../../models/models.index';
 
 export const loadAllSolicitationCartItems = createAction('[SolicitationCart] Load All');
 export const loadAllSolicitationCartItemsSuccess = createAction(
@@ -8,38 +8,58 @@ export const loadAllSolicitationCartItemsSuccess = createAction(
 );
 export const loadAllSolicitationCartItemsFailure = createAction(
   '[SolicitationCart] Load All Failure',
-  props<{ error: any }>()
+  props<{ error: IResponseError }>()
 );
 
-export const loadSolicitationCartItemById = createAction(
-  '[SolicitationCart] Load By ID',
-  props<{ id: string }>()
-);
+export const loadSolicitationCartItemById = createAction('[SolicitationCart] Load By ID', props<{ id: string }>());
 export const loadSolicitationCartItemByIdSuccess = createAction(
   '[SolicitationCart] Load By ID Success',
   props<{ item: ISolicitationCartItem }>()
 );
 export const loadSolicitationCartItemByIdFailure = createAction(
   '[SolicitationCart] Load By ID Failure',
-  props<{ error: any }>()
+  props<{ error: IResponseError }>()
+);
+
+export const addSolicitationCartItem = createAction(
+  '[SolicitationCart] Add Item',
+  props<{ item: Partial<ISolicitationCartItem> }>()
+);
+export const addSolicitationCartItemSuccess = createAction(
+  '[SolicitationCart] Add Item Success',
+  props<{ item: ISolicitationCartItem }>()
+);
+export const addSolicitationCartItemFailure = createAction(
+  '[SolicitationCart] Add Item Failure',
+  props<{ error: IResponseError }>()
 );
 
 export const updateSolicitationCartItem = createAction(
-  '[SolicitationCart] Update',
+  '[SolicitationCart] Update Item',
   props<{ id: string; data: Partial<ISolicitationCartItem> }>()
 );
-export const updateSolicitationCartItemSuccess = createAction('[SolicitationCart] Update Success');
+export const updateSolicitationCartItemSuccess = createAction(
+  '[SolicitationCart] Update Item Success',
+  props<{ item: ISolicitationCartItem }>()
+);
 export const updateSolicitationCartItemFailure = createAction(
-  '[SolicitationCart] Update Failure',
-  props<{ error: any }>()
+  '[SolicitationCart] Update Item Failure',
+  props<{ error: IResponseError }>()
 );
 
-export const removeSolicitationCartItem = createAction(
-  '[SolicitationCart] Remove',
+export const removeSolicitationCartItem = createAction('[SolicitationCart] Remove Item', props<{ id: string }>());
+export const removeSolicitationCartItemSuccess = createAction(
+  '[SolicitationCart] Remove Item Success',
   props<{ id: string }>()
 );
-export const removeSolicitationCartItemSuccess = createAction('[SolicitationCart] Remove Success');
 export const removeSolicitationCartItemFailure = createAction(
-  '[SolicitationCart] Remove Failure',
-  props<{ error: any }>()
+  '[SolicitationCart] Remove Item Failure',
+  props<{ error: IResponseError }>()
+);
+
+export const clearSolicitationCart = createAction('[SolicitationCart] Clear Cart');
+export const clearSolicitationCartSuccess = createAction('[SolicitationCart] Clear Cart Success');
+export const clearSolicitationCartFailure = createAction(
+  '[SolicitationCart] Clear Cart Failure',
+  props<{ error: IResponseError }>()
 );

@@ -1,70 +1,46 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { ISolicitationCartItem, IResponse, IResponseError } from '../models/models.index';
-import { environment } from '../../../environments/environments';
+import { Injectable } from '@angular/core'
+import { BehaviorSubject, Observable } from 'rxjs'
+import { map } from 'rxjs'
+import { ISolicitationCartItem } from '../../core/models/models.solicitationCartItem'
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class SolicitationCartService {
-  // Renamed service to match filename convention
-  private baseUrl = `${environment.apiBaseUrl}/solicitation-cart-items`; // Adjust endpoint
+  private itemsSubject = new BehaviorSubject<ISolicitationCartItem[]>([])
+  private items$ = this.itemsSubject.asObservable()
 
-  constructor(private http: HttpClient) {}
-
-  // Get all cart items (potentially filtered by user/cart ID if needed)
-  public getAllSolicitationCartItems(): Observable<ISolicitationCartItem[]> {
-    // Add query params if filtering is required, e.g., { params: { userId: '...' } }
-    return this.http.get<IResponse<ISolicitationCartItem[]>>(this.baseUrl).pipe(
-      map((response) => response.data),
-      catchError(this.handleError)
-    );
+  get cartItems$(): Observable<ISolicitationCartItem[]> {
+    return this.items$
   }
 
-  // Get cart item by ID
-  public getSolicitationCartItemById(id: string): Observable<ISolicitationCartItem> {
-    return this.http.get<IResponse<ISolicitationCartItem>>(`${this.baseUrl}/${id}`).pipe(
-      map((response) => response.data),
-      catchError(this.handleError)
-    );
+  get count$(): Observable<number> {
+    return this.items$.pipe(map(items => items.length))
   }
 
-  // Create cart item (assuming this might be needed)
-  public createSolicitationCartItem(item: Partial<ISolicitationCartItem>): Observable<ISolicitationCartItem> {
-    return this.http.post<IResponse<ISolicitationCartItem>>(this.baseUrl, item).pipe(
-      map((response) => response.data),
-      catchError(this.handleError)
-    );
+  get total$(): Observable<number> {
+    return this.items$.pipe(map(items => items.reduce((acc, curr) => acc + curr.price, 0)))
   }
 
-  // Update cart item
-  public updateSolicitationCartItem(
-    id: string,
-    data: Partial<ISolicitationCartItem>
-  ): Observable<ISolicitationCartItem> {
-    return this.http.put<IResponse<ISolicitationCartItem>>(`${this.baseUrl}/${id}`, data).pipe(
-      map((response) => response.data),
-      catchError(this.handleError)
-    );
+  addItem(item: ISolicitationCartItem): void {
+    const list = this.itemsSubject.value
+    this.itemsSubject.next([...list, item])
   }
 
-  // Remove cart item
-  public removeSolicitationCartItem(id: string): Observable<{ id: string }> {
-    return this.http.delete<IResponse<any>>(`${this.baseUrl}/${id}`).pipe(
-      map(() => ({ id })),
-      catchError(this.handleError)
-    );
+  removeItem(id: string): void {
+    const list = this.itemsSubject.value.filter(x => x._id !== id)
+    this.itemsSubject.next(list)
   }
 
-  // Generic error handler
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('SolicitationCartService Error:', error);
-    const errorResponse: IResponseError = {
-      success: false,
-      message: error.error?.message || error.message || 'An unknown error occurred',
-    };
-    return throwError(() => errorResponse);
+  updateItemPrice(id: string, newPrice: number): void {
+    const updated = this.itemsSubject.value.map(x => {
+      if (x._id === id) return { ...x, price: newPrice }
+      return x
+    })
+    this.itemsSubject.next(updated)
+  }
+
+  clearCart(): void {
+    this.itemsSubject.next([])
   }
 }

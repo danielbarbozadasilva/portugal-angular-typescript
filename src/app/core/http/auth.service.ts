@@ -16,21 +16,17 @@ import { Observable, catchError, throwError, tap } from 'rxjs';
 })
 export class AuthService {
   private baseUrl = `${environment.apiBaseUrl}/auth`;
-  private readonly TOKEN_KEY = 'authToken'; // Chave para armazenar token no localStorage
+  private readonly TOKEN_KEY = 'authToken';
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {}
 
-  /**
-   * Realiza login com e-mail e senha.
-   */
   public loginService(credentials: { email: string; password: string }): Observable<IAuthResponse> {
     const url = `${this.baseUrl}/login`;
     return this.http.post<IAuthResponse>(url, credentials).pipe(
       tap((response) => {
-        // Armazena token ao logar com sucesso
         if (response?.data?.token) {
           this.storeToken(response.data.token);
         }
@@ -39,9 +35,6 @@ export class AuthService {
     );
   }
 
-  /**
-   * Realiza logout.
-   */
   public logoutService(credentials: { _id: string }): Observable<IDataResponse> {
     const url = `${this.baseUrl}/logout`;
     return this.http.post<IDataResponse>(url, credentials).pipe(
@@ -50,9 +43,6 @@ export class AuthService {
     );
   }
 
-  /**
-   * Solicita a renovação do token.
-   */
   public refreshTokenService(id: string): Observable<ITokenResponse> {
     const url = `${this.baseUrl}/refresh-token`;
     return this.http.post<ITokenResponse>(url, { _id: id }).pipe(
@@ -65,9 +55,6 @@ export class AuthService {
     );
   }
 
-  /**
-   * Verifica se um token ainda é válido.
-   */
   public checkTokenService(credentials: { token: string }): Observable<ITokenResponse> {
     const url = `${this.baseUrl}/check-token`;
     return this.http.post<ITokenResponse>(url, credentials).pipe(
@@ -75,9 +62,6 @@ export class AuthService {
     );
   }
 
-  /**
-   * Redefine a senha usando código de recuperação.
-   */
   public resetPasswordService(credentials: IAuthParams): Observable<IDataResponse> {
     const url = `${this.baseUrl}/reset-password`;
     return this.http.put<IDataResponse>(url, credentials).pipe(
@@ -85,17 +69,12 @@ export class AuthService {
     );
   }
 
-  /**
-   * Envia um código de recuperação de senha para o e-mail.
-   */
   public passwordRecoveryService(credentials: { email: string }): Observable<IDataResponse> {
-    const url = `${this.baseUrl}/password-recovery`;
+    const url = this.baseUrl + '/password-recovery';
     return this.http.post<IDataResponse>(url, credentials).pipe(
       catchError(this.handleError)
     );
   }
-
-  // --- Token Management ---
 
   private storeToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
@@ -112,8 +91,6 @@ export class AuthService {
   public hasToken(): boolean {
     return !!this.getToken();
   }
-
-  // --- Tratamento de Erros ---
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('Erro AuthService:', error);

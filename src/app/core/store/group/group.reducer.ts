@@ -1,79 +1,22 @@
 import { createReducer, on } from '@ngrx/store';
-import * as GroupActions from './group.actions';
-import { IGroup } from '../../models/models.index';
+import { loadGroups, loadGroupsSuccess, loadGroupsFailure } from './group.actions';
+import { IGroup } from '../../models/models.group';
 
 export interface GroupState {
+  groups: IGroup[];
   loading: boolean;
-  all: IGroup[];
-  selected?: IGroup;
-  error?: string;
+  error: any;
 }
 
-const initialState: GroupState = {
+export const initialState: GroupState = {
+  groups: [],
   loading: false,
-  all: [],
-  selected: undefined,
-  error: undefined
+  error: null,
 };
 
 export const groupReducer = createReducer(
   initialState,
-
-  on(GroupActions.loadGroups, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(GroupActions.loadGroupsSuccess, (state, { groups }) => ({
-    ...state,
-    loading: false,
-    all: groups
-  })),
-  on(GroupActions.loadGroupsFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
-
-  on(GroupActions.loadGroupById, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(GroupActions.loadGroupByIdSuccess, (state, { group }) => ({
-    ...state,
-    loading: false,
-    selected: group
-  })),
-  on(GroupActions.loadGroupByIdFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
-
-  on(GroupActions.updateGroup, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(GroupActions.updateGroupSuccess, (state) => ({
-    ...state,
-    loading: false
-  })),
-  on(GroupActions.updateGroupFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
-
-  on(GroupActions.removeGroup, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(GroupActions.removeGroupSuccess, (state) => ({
-    ...state,
-    loading: false
-  })),
-  on(GroupActions.removeGroupFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  }))
+  on(loadGroups, (state) => ({ ...state, loading: true, error: null })),
+  on(loadGroupsSuccess, (state, { groups }) => ({ ...state, groups, loading: false })),
+  on(loadGroupsFailure, (state, { error }) => ({ ...state, error, loading: false }))
 );

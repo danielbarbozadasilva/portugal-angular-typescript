@@ -1,7 +1,7 @@
 export type ContentPageStatus = 'published' | 'draft' | 'archived';
 
 export interface IContentPage {
-  _id?: string;
+  _id: string;
   title: string;
   slug: string;
   content: string;
@@ -9,6 +9,6 @@ export interface IContentPage {
   metaDescription?: string;
   keywords?: string[];
   status: ContentPageStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 }

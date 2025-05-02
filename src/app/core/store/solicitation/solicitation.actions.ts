@@ -1,42 +1,47 @@
 import { createAction, props } from '@ngrx/store';
 import { ISolicitation, IResponseError } from '../../models/models.index';
 
-export const loadAllSolicitations = createAction('[Solicitation] Load All');
+export const loadAllSolicitations = createAction('[Solicitation] Load All Solicitations');
 export const loadAllSolicitationsSuccess = createAction(
-  '[Solicitation] Load All Success',
+  '[Solicitation] Load All Solicitations Success',
   props<{ solicitations: ISolicitation[] }>()
 );
 export const loadAllSolicitationsFailure = createAction(
-  '[Solicitation] Load All Failure',
+  '[Solicitation] Load All Solicitations Failure',
   props<{ error: IResponseError }>()
 );
 
-export const loadSolicitationById = createAction('[Solicitation] Load By ID', props<{ id: string }>());
+export const loadSolicitationById = createAction('[Solicitation] Load Solicitation By ID', props<{ id: string }>());
 export const loadSolicitationByIdSuccess = createAction(
-  '[Solicitation] Load By ID Success',
+  '[Solicitation] Load Solicitation By ID Success',
   props<{ solicitation: ISolicitation }>()
 );
 export const loadSolicitationByIdFailure = createAction(
-  '[Solicitation] Load By ID Failure',
+  '[Solicitation] Load Solicitation By ID Failure',
   props<{ error: IResponseError }>()
 );
 
 export const updateSolicitation = createAction(
-  '[Solicitation] Update',
+  '[Solicitation] Update Solicitation',
   props<{ id: string; data: Partial<ISolicitation> }>()
 );
 export const updateSolicitationSuccess = createAction(
-  '[Solicitation] Update Success',
+  '[Solicitation] Update Solicitation Success',
   props<{ solicitation: ISolicitation }>()
 );
 export const updateSolicitationFailure = createAction(
-  '[Solicitation] Update Failure',
+  '[Solicitation] Update Solicitation Failure',
   props<{ error: IResponseError }>()
 );
 
-export const removeSolicitation = createAction('[Solicitation] Remove', props<{ id: string }>());
-export const removeSolicitationSuccess = createAction('[Solicitation] Remove Success', props<{ id: string }>());
+export const removeSolicitation = createAction('[Solicitation] Remove Solicitation', props<{ id: string }>());
+export const removeSolicitationSuccess = createAction(
+  '[Solicitation] Remove Solicitation Success',
+  props<{ id: string }>()
+);
 export const removeSolicitationFailure = createAction(
-  '[Solicitation] Remove Failure',
+  '[Solicitation] Remove Solicitation Failure',
   props<{ error: IResponseError }>()
 );
+
+export const clearSolicitationError = createAction('[Solicitation] Clear Error');

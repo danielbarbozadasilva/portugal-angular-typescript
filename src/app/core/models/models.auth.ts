@@ -1,11 +1,5 @@
 import { IUser } from './models.user'; // Import IUser
 
-// Interface for generic API responses (can be shared)
-export interface IResponseError {
-  success: boolean;
-  message: string;
-}
-
 // Interface for responses that contain data (can be shared)
 export interface IDataResponse {
   success: boolean;
@@ -41,5 +35,4 @@ export interface IAuthParams {
   token?: string;
   recoveryCode?: string;
   newPassword?: string;
-  // Add other params as needed
 }

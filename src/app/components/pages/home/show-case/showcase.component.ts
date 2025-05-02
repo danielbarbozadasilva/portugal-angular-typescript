@@ -1,4 +1,3 @@
-/* src/app/components/showcase/showcase.component.ts */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -15,11 +14,8 @@ interface IShowcaseData {
 @Component({
   selector: 'app-showcase',
   standalone: true,
-  imports: [
-    CommonModule,
-    TranslateModule,
-  ],
-  templateUrl: './showcase.component.html'
+  imports: [CommonModule, TranslateModule],
+  templateUrl: './showcase.component.html',
 })
 export class ShowcaseComponent {
   showcases: IShowcaseData[] = [];
@@ -32,7 +28,7 @@ export class ShowcaseComponent {
         lead: this.translate.instant('home.showcase1Lead'),
         bgImage: 'assets/img/11111.jpg',
         btnLabel: this.translate.instant('home.showcase1Btn'),
-        reverse: true
+        reverse: true,
       },
       {
         id: 2,
@@ -40,7 +36,7 @@ export class ShowcaseComponent {
         lead: this.translate.instant('home.showcase2Lead'),
         bgImage: 'assets/img/777.jpg',
         btnLabel: this.translate.instant('home.showcase2Btn'),
-        reverse: false
+        reverse: false,
       },
       {
         id: 3,
@@ -48,14 +44,8 @@ export class ShowcaseComponent {
         lead: this.translate.instant('home.showcase3Lead'),
         bgImage: './assets/img/999.jpeg',
         btnLabel: this.translate.instant('home.showcase3Btn'),
-        reverse: true
-      }
+        reverse: true,
+      },
     ];
-  }
-  
-  languages = ['en-US', 'es-ES', 'fr-FR', 'pt-BR', 'pt-PT'];
-
-  changeLanguage(lang: string) {
-    this.translate.use(lang);
   }
 }

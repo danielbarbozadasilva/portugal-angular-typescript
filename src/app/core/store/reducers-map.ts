@@ -11,10 +11,13 @@ import { PaymentState, paymentReducer } from './payment/payment.reducer';
 import { PaymentMethodState, paymentMethodReducer } from './payment-method/payment-method.reducer';
 import { RatingState, ratingReducer } from './rating/rating.reducer';
 import { SolicitationState, solicitationReducer } from './solicitation/solicitation.reducer';
-import { SolicitationCartState, solicitationCartReducer } from './solicitation-cart/solicitation-cart.reducer';
 import { UserState, userReducer } from './user/user.reducer';
+import { SolicitationCartState, solicitationCartReducer } from './solicitation-cart/solicitation-cart.reducer';
+import { cartReducer, CartState } from './cart/cart.reducer';
 
-// Representa o estado global do app:
+/**
+ * Representa o estado global do app:
+ */
 export interface AppState {
   auth: AuthState;
   activity: ActivityState;
@@ -30,8 +33,12 @@ export interface AppState {
   solicitation: SolicitationState;
   solicitationCart: SolicitationCartState;
   user: UserState;
+  cart: CartState
 }
 
+/**
+ * Mapeamento de todos os reducers da aplicação.
+ */
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   activity: activityReducer,
@@ -46,5 +53,6 @@ export const reducers: ActionReducerMap<AppState> = {
   rating: ratingReducer,
   solicitation: solicitationReducer,
   solicitationCart: solicitationCartReducer,
-  user: userReducer
+  user: userReducer,
+  cart: cartReducer,
 };

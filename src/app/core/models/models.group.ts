@@ -1,12 +1,9 @@
-import { IActivity } from "./models.activity";
-import { IClient } from "./models.client";
-
 export interface IGroup {
   _id: string;
   name: string;
-  members: IClient[];
-  activity: IActivity[];
+  members: string[]; 
+  activity: string;
   createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

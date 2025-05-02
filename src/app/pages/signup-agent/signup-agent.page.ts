@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { createAgent } from '../../core/store/agent/agent.actions';
-import { IAgent } from '../../core/models/models.agent';
-
-/* Se desejar standalone, importe o componente Agent aqui */
-import { SignupAgentComponent } from './signup-agent-component'; // <== Ajustar path real
+import { signUpAgent } from '../../core/store/agent/agent.actions';
+import { SignupAgentComponent } from './signup-agent-component';
 
 @Component({
   standalone: true,
@@ -15,13 +12,10 @@ import { SignupAgentComponent } from './signup-agent-component'; // <== Ajustar 
       <h1 class="text-xl font-bold text-center mb-8">
         {{ title }}
       </h1>
-      <!-- Usando o componente signup-agent -->
-      <app-signup-agent></app-signup-agent>
+      <app-signup-agent-component></app-signup-agent-component>
     </div>
   `,
-  imports: [
-    SignupAgentComponent,
-  ],
+  imports: [SignupAgentComponent],
 })
 export class SignupAgentPage {
   title = 'SignUp Agent Page';
@@ -31,9 +25,8 @@ export class SignupAgentPage {
     private router: Router
   ) {}
 
-  async onSubmit(formData: IAgent) {
-    const agent = formData as unknown as IAgent;
-    this.store.dispatch(createAgent({ agent }));
+  async onSubmit(formData: any) {
+    this.store.dispatch(signUpAgent(formData as any));
     this.router.navigate(['/']);
   }
 }

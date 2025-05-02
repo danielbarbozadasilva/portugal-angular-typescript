@@ -1,19 +1,16 @@
-// server.ts (exemplo de Express)
 import 'zone.js/node';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import bootstrap from './main.server';
 
 function createApp() {
   const server = express();
-
-  // Configura o engine de renderização Angular Universal:
+  
   server.engine('html', ngExpressEngine({ bootstrap }));
   server.set('view engine', 'html');
   server.set('views', 'dist/atividades-turisticas-portugal/browser');
 
-  // Rota default
-  server.get('*', (req, res) => {
+  server.get('*', (req: Request, res: Response) => {
     res.render('index', { req });
   });
 
@@ -23,6 +20,7 @@ function createApp() {
 function run() {
   const port = process.env['PORT'] || 4000;
   const app = createApp();
+
   app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
   });

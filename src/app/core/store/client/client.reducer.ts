@@ -1,39 +1,42 @@
 import { createReducer, on } from '@ngrx/store';
-import { Client, signUpClient, signUpClientSuccess, signUpClientFailure } from './client.actions';
+import * as ClientActions from './client.actions';
+import { IClient, IResponseError } from '../../models/models.index'; // Importar tipos centrais
 
-export const clientFeatureKey = 'client';
-
-// Estado da feature de cliente (cadastro)
 export interface ClientState {
-  client: Client | null;
   loading: boolean;
-  error: string | null;
+  client: IClient | null; // Usar IClient
+  error: IResponseError | string | null; // Usar tipo de erro padronizado
 }
 
-// Estado inicial
 export const initialState: ClientState = {
-  client: null,
   loading: false,
-  error: null
+  client: null,
+  error: null,
 };
 
-// Reducer de cliente para tratar as ações de cadastro
 export const clientReducer = createReducer(
   initialState,
-  on(signUpClient, state => ({
+
+  // Reducer para iniciar o cadastro
+  on(ClientActions.signUpClient, (state) => ({
     ...state,
     loading: true,
-    error: null
+    error: null, // Limpa erros anteriores
   })),
-  on(signUpClientSuccess, (state, { client }) => ({
+
+  // Reducer para sucesso no cadastro
+  on(ClientActions.signUpClientSuccess, (state, { client }) => ({
     ...state,
     loading: false,
-    client: client,
-    error: null
+    client: client, // Armazena o cliente retornado
+    error: null,
   })),
-  on(signUpClientFailure, (state, { error }) => ({
+
+  // Reducer para falha no cadastro
+  on(ClientActions.signUpClientFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    client: null, // Limpa o cliente em caso de erro
+    error: error,
   }))
 );

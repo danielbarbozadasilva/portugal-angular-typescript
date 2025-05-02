@@ -1,0 +1,121 @@
+<div class="container mx-auto px-4 py-8">
+  <ng-container *ngIf="activity$ | async as activity; else loadingOrError">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <!-- Imagem Principal (ou Carrossel) -->
+      <div *ngIf="activity.images && activity.images.length > 0" class="w-full h-64 md:h-96 bg-gray-200">
+        <img [src]="activity.images[0]" alt="{{ activity.name }}" class="w-full h-full object-cover" />
+        <!-- TODO: Implementar carrossel se houver múltiplas imagens -->
+      </div>
+
+      <div class="p-6">
+        <h1 class="text-3xl font-bold mb-4">{{ activity.name }}</h1>
+
+        <!-- Preço e Botão Adicionar ao Carrinho -->
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-2xl font-semibold text-blue-600">
+            {{ activity.price | currency: 'EUR' : 'symbol' : '1.2-2' }}
+            <!-- Ajustar formato da moeda se necessário -->
+          </span>
+          <button
+            (click)="addToCart(activity)"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            {{ 'activityDetail.addToCartButton' | translate }}
+          </button>
+        </div>
+
+        <!-- Descrição Curta -->
+        <p class="text-gray-700 mb-4">{{ activity.shortDescription }}</p>
+
+        <!-- Detalhes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border-t pt-4">
+          <div>
+            <h3 class="font-semibold mb-1">{{ 'activityDetail.locationLabel' | translate }}:</h3>
+            <p>{{ activity.location }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1">{{ 'activityDetail.meetingPointLabel' | translate }}:</h3>
+            <p>{{ activity.meetingPoint }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1">{{ 'activityDetail.datesLabel' | translate }}:</h3>
+            <p>{{ activity.startDate | date: 'shortDate' }} - {{ activity.endDate | date: 'shortDate' }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1">{{ 'activityDetail.slotsLabel' | translate }}:</h3>
+            <p>
+              {{ activity.totalSlots - activity.bookedSlots }} / {{ activity.totalSlots }}
+              {{ 'activityDetail.availableSlots' | translate }}
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1">{{ 'activityDetail.categoryLabel' | translate }}:</h3>
+            <p>{{ activity.category }}</p>
+          </div>
+          <!-- TODO: Adicionar Guia (se houver no modelo) -->
+          <!-- TODO: Adicionar Mapa (integração com Google Maps/Leaflet) -->
+        </div>
+
+        <!-- Descrição Completa -->
+        <div class="mb-6 border-t pt-4">
+          <h2 class="text-2xl font-semibold mb-2">{{ 'activityDetail.descriptionTitle' | translate }}</h2>
+          <p class="text-gray-800 whitespace-pre-line">{{ activity.description }}</p>
+          <!-- TODO: Adicionar Notas (activity.notes) -->
+        </div>
+
+        <!-- Vídeos -->
+        <div *ngIf="activity.videos && activity.videos.length > 0" class="mb-6 border-t pt-4">
+          <h2 class="text-2xl font-semibold mb-2">{{ 'activityDetail.videosTitle' | translate }}</h2>
+          <!-- TODO: Implementar player de vídeo -->
+          <div *ngFor="let videoUrl of activity.videos">
+            <a [href]="videoUrl" target="_blank" class="text-blue-500 hover:underline">{{ videoUrl }}</a>
+          </div>
+        </div>
+
+        <!-- Calendário de Disponibilidade -->
+        <div class="mb-6 border-t pt-4">
+          <h2 class="text-2xl font-semibold mb-2">{{ 'activityDetail.availabilityTitle' | translate }}</h2>
+          <!-- <app-availability-calendar [activityId]="activity._id"></app-availability-calendar> -->
+          <p class="text-gray-500 italic">(Componente de calendário pendente)</p>
+        </div>
+
+        <!-- Ações (Compartilhar, Criar Grupo) -->
+        <div class="flex space-x-4 mb-6 border-t pt-4">
+          <button
+            (click)="shareActivity(activity)"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            {{ 'activityDetail.shareButton' | translate }}
+          </button>
+          <button
+            (click)="createGroup(activity)"
+            class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            {{ 'activityDetail.createGroupButton' | translate }}
+          </button>
+          <!-- <app-share-buttons [activityUrl]="getCurrentUrl()"></app-share-buttons> -->
+        </div>
+
+        <!-- Comentários e Avaliações -->
+        <div class="border-t pt-4">
+          <h2 class="text-2xl font-semibold mb-2">{{ 'activityDetail.reviewsTitle' | translate }}</h2>
+          <!-- <app-comments [activityId]="activity._id"></app-comments> -->
+          <p class="text-gray-500 italic">(Componente de comentários pendente)</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="!(activity$ | async); else errorState" class="text-center py-10">
+      <p>{{ 'general.loading' | translate }}</p>
+      <!-- Adicionar um spinner/indicador de loading -->
+    </div>
+    <ng-template #errorState>
+      <div class="text-center py-10 text-red-600">
+        <p>{{ 'general.errorLoadingData' | translate }}</p>
+        <a routerLink="/" class="text-blue-500 hover:underline">{{ 'general.backToHome' | translate }}</a>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

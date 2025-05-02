@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router'; // Importar RouterLink
   imports: [
     CommonModule,
     TranslateModule,
-    RouterLink, // Adicionar RouterLink aos imports
+    RouterLink,
   ],
   selector: 'app-about-page',
   templateUrl: 'about-us.component.html',

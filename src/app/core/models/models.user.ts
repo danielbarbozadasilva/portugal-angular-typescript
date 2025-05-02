@@ -1,4 +1,4 @@
-import { UserType } from './models.index'; // Assuming userTypes is defined here or elsewhere
+export type UserType = 'administrator' | 'client' | 'agent' | 'manager' | 'support' | 'developer';
 
 export interface IUser {
   _id: string;
@@ -7,7 +7,7 @@ export interface IUser {
   name: string;
   email: string;
   username: string;
-  permissions: UserType[]; 
+  permissions: UserType[];
   recovery?: {
     token?: string;
     date?: Date;
@@ -17,7 +17,17 @@ export interface IUser {
     expiresIn: number;
     iv: string;
   };
-  createdAt?: Date; // Made optional
-  updatedAt?: Date; // Made optional
+  passwordRecoveryCode?: string; // Adicionado campo opcional do backend
+  createdAt?: Date;
+  updatedAt?: Date;
   wasNew?: any;
+}
+
+// Interface para paginação (exemplo)
+export interface IPaginatedResponse<T> {
+  items: T[];
+  totalItems: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }

@@ -25,5 +25,5 @@ export {
   PaymentMethodService,
   PaymentService,
   RatingService,
-  SolicitationCartService
+  SolicitationCartService,
 };

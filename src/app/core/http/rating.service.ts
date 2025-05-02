@@ -1,30 +1,67 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IRating } from '../models/models.rating';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environments';
+import { IResponse, IResponseError, IRating } from '../models/models.index';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RatingService {
-  private baseUrl = `${environment.apiBaseUrl}/rating`;
+  private baseUrl = `${environment.apiBaseUrl}/ratings`;
 
   constructor(private http: HttpClient) {}
 
-  public getRating(id: string): Observable<IRating> {
-    return this.http.get<IRating>(`${this.baseUrl}/${id}`);
+  // Obter avaliações (ex: por atividade)
+  getRatings(activityId: string): Observable<IRating[]> {
+    const params = new HttpParams().set('activityId', activityId);
+    return this.http.get<IResponse<IRating[]>>(this.baseUrl, { params }).pipe(
+      map((response) => response.data),
+      catchError(this.handleError)
+    );
   }
 
-  public createRating(data: IRating): Observable<any> {
-    return this.http.post<any>(this.baseUrl, data);
+  // Criar uma nova avaliação
+  createRating(ratingData: Partial<IRating>): Observable<IRating> {
+    return this.http.post<IResponse<IRating>>(this.baseUrl, ratingData).pipe(
+      map((response) => response.data),
+      catchError(this.handleError)
+    );
   }
 
-  public updateRating(id: string, data: Partial<IRating>): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, data);
+  // Atualizar uma avaliação (se aplicável)
+  updateRating(id: string, ratingData: Partial<IRating>): Observable<IRating> {
+    return this.http.put<IResponse<IRating>>(`${this.baseUrl}/${id}`, ratingData).pipe(
+      map((response) => response.data),
+      catchError(this.handleError)
+    );
   }
 
-  public deleteRating(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`);
+  // Excluir uma avaliação (se aplicável)
+  deleteRating(id: string): Observable<{ id: string }> {
+    return this.http.delete<IResponse<any>>(`${this.baseUrl}/${id}`).pipe(
+      map(() => ({ id })),
+      catchError(this.handleError)
+    );
   }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('RatingService Error:', error);
+    const errorResponse: IResponseError = {
+      success: false,
+      message: error.error?.message || error.message || 'An unknown error occurred while managing ratings.',
+    };
+    return throwError(() => errorResponse);
+  }
+}
+
+// Definição básica - Mover para models/rating.model.ts e models/models.index.ts
+export interface IRating {
+  id: string;
+  activityId: string;
+  userId: string;
+  rating: number;
+  comment?: string;
+  createdAt: Date;
 }

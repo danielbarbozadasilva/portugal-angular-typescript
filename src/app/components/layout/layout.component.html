@@ -1,7 +1,5 @@
-<div class="flex flex-col min-h-screen">
-  <app-header></app-header>
-  <main class="flex-1 p-4 text-justify text-[#473f57] font-sans text-sm leading-6 overflow-auto relative">
-    <ng-content></ng-content>
-  </main>
-  <app-footer></app-footer>
-</div>
+<app-header></app-header>
+<main class="min-h-[80vh]">
+  <router-outlet></router-outlet>
+</main>
+<app-footer></app-footer>

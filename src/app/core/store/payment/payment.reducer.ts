@@ -1,19 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import * as PaymentActions from './payment.actions';
-import { IPayment } from '../../models/models.index';
+import { IPayment, IResponseError } from '../../models/models.index';
 
 export interface PaymentState {
   loading: boolean;
   all: IPayment[];
-  selected?: IPayment;
-  error?: string;
+  selected: IPayment | null;
+  error: IResponseError | string | null;
 }
 
 const initialState: PaymentState = {
   loading: false,
   all: [],
-  selected: undefined,
-  error: undefined
+  selected: null,
+  error: null,
 };
 
 export const paymentReducer = createReducer(
@@ -21,59 +21,73 @@ export const paymentReducer = createReducer(
 
   on(PaymentActions.loadPayments, (state) => ({
     ...state,
-    loading: true
+    loading: true,
+    error: null,
   })),
   on(PaymentActions.loadPaymentsSuccess, (state, { payments }) => ({
     ...state,
     loading: false,
-    all: payments
+    all: payments,
   })),
   on(PaymentActions.loadPaymentsFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error: error,
   })),
 
   on(PaymentActions.loadPaymentById, (state) => ({
     ...state,
-    loading: true
+    loading: true,
+    selected: null,
+    error: null,
   })),
   on(PaymentActions.loadPaymentByIdSuccess, (state, { payment }) => ({
     ...state,
     loading: false,
-    selected: payment
+    selected: payment,
   })),
   on(PaymentActions.loadPaymentByIdFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error: error,
   })),
 
   on(PaymentActions.updatePayment, (state) => ({
     ...state,
-    loading: true
+    loading: true,
+    error: null,
   })),
-  on(PaymentActions.updatePaymentSuccess, (state) => ({
+  on(PaymentActions.updatePaymentSuccess, (state, { payment }) => ({
     ...state,
-    loading: false
+    loading: false,
+    all: state.all.map((p) => (p._id === payment._id ? payment : p)),
+    selected: state.selected?._id === payment._id ? payment : state.selected,
   })),
   on(PaymentActions.updatePaymentFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error: error,
   })),
 
-  on(PaymentActions.removePayment, (state) => ({
+  on(PaymentActions.removePayment, (state, { id }) => ({
     ...state,
-    loading: true
+    loading: true,
+    error: null,
   })),
-  on(PaymentActions.removePaymentSuccess, (state) => ({
+  on(PaymentActions.removePaymentSuccess, (state, { id }) => ({
     ...state,
-    loading: false
+    loading: false,
+    all: state.all.filter((p) => p._id !== id),
+    selected: state.selected?._id === id ? null : state.selected,
   })),
   on(PaymentActions.removePaymentFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error: error,
+  })),
+
+  on(PaymentActions.clearPaymentError, (state) => ({
+    ...state,
+    error: null,
   }))
 );

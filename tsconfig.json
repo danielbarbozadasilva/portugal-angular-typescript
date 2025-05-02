@@ -1,40 +1,33 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "target": "es2020",
-    "module": "es2020",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    /* Estrito e coerente */
-    "strict": true,
-    "strictNullChecks": true,
-    "strictBindCallApply": true,
-    "noImplicitAny": true,
-    /* Decorators para Angular */
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    /* Erros e avisos */
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noEmitOnError": true,
-    /* Emit e interop */
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    /* Outras opções */
-    "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "strictPropertyInitialization": false,
-    "useDefineForClassFields": false
-  },
-  "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compileOnSave": false,
+    "compilerOptions": {
+      "baseUrl": "src",
+      "target": "es2020",
+      "module": "es2020",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "downlevelIteration": true,
+      "importHelpers": true,
+      "strictBindCallApply": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "skipLibCheck": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noEmitOnError": false,
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "useDefineForClassFields": false,
+      "paths": {
+        "@app/*": ["app/*"]
+      }
+    },
+    "angularCompilerOptions": {
+      "strictInjectionParameters": true,
+      "strictInputAccessModifiers": true,
+      "strictTemplates": true
+    }
   }
-}

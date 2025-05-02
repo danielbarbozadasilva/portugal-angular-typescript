@@ -1,3 +1,5 @@
+export type ActivityCategory = 'Passeio' | 'Excursão' | 'Evento' | 'Outro';
+
 export interface ILocationCoordinates {
   type: string;
   coordinates: number[];
@@ -9,34 +11,31 @@ export interface IActivity {
   name: string;
   description: string;
   shortDescription: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date | string; // Mantido como Date | string para flexibilidade
+  endDate: Date | string; // Mantido como Date | string para flexibilidade
   location: string;
-  meetingPoint: string;
+  meetingPoint?: string; // Marcado como opcional
   price: number;
   featured: boolean;
+  promotion?: string; // Adicionado campo opcional
   images: string[];
-  videos: string[];
+  videos?: string[]; // Marcado como opcional
   totalSlots: number;
   bookedSlots: number;
   available: boolean;
-  notes: string;
-  category: string;
-  // TODO: Consider defining specific interfaces instead of using any[]
-  agent: any[];
+  notes?: string; // Marcado como opcional
+  category: ActivityCategory; // Usando o enum definido
+  language?: string; // Adicionado campo opcional
+  agent: string[]; // Alterado de any[] para string[] (IDs)
+  rating: string[]; // Alterado de any[] para string[] (IDs)
+  likes: string[]; // Alterado de any[] para string[] (IDs)
+  client: string[]; // Alterado de any[] para string[] (IDs)
+  groups: string[]; // Alterado de any[] para string[] (IDs)
   shareCount: number;
   allowedPaymentMethods: string[];
-  createdAt: string;
-  updatedAt: string;
-  // TODO: Consider defining specific interfaces instead of using any[]
-  rating: any[];
-  // TODO: Consider defining specific interfaces instead of using any[]
-  likes: any[];
-  // TODO: Consider defining specific interfaces instead of using any[]
-  client: any[];
-  // TODO: Consider defining specific interfaces instead of using any[]
-  groups: any[];
-  averageRating: number;
+  createdAt: Date | string; // Mantido como Date | string
+  updatedAt: Date | string; // Mantido como Date | string
+  averageRating?: number; // Mantido, pode ser calculado no frontend/backend
 }
 
 export interface IActivityFilters {

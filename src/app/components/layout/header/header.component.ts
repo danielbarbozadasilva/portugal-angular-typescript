@@ -1,20 +1,10 @@
-import { Component } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageSelectorComponent } from '../../language-selector/language-selector.component';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core'
+import { LanguageSelectorComponent } from '../../language-selector/language-selector.component'
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [TranslateModule, LanguageSelectorComponent, RouterLink],
-  templateUrl: './header.component.html',
+  imports: [LanguageSelectorComponent],
+  templateUrl: './header.component.html'
 })
-export class HeaderComponent {
-  constructor(public translate: TranslateService) {}
-
-  languages = ['en-US', 'es-ES', 'fr-FR', 'pt-BR', 'pt-PT'];
-
-  changeLanguage(lang: string) {
-    this.translate.use(lang);
-  }
-}
+export class HeaderComponent {}

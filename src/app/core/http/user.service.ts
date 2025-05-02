@@ -1,58 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { IUser, IResponse, IResponseError } from '../models/models.index'; // Import necessary interfaces
-import { environment } from '../../../environments/environments';
+import { catchError } from 'rxjs/operators';
+import { IUser, IPaginatedResponse } from '../models/models.index'; // Ajuste o caminho se necessário
+import { environment } from '../../../environments/environments'; // Importa as variáveis de ambiente
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl = `${environment.apiBaseUrl}/users`; // Correct base URL
+  private apiUrl = `${environment.apiBaseUrl}/users`; // Usa a URL base da API definida nos environments
 
   constructor(private http: HttpClient) {}
 
-  // Get all users
-  public getAllUsers(): Observable<IUser[]> {
-    return this.http.get<IResponse<IUser[]>>(this.baseUrl).pipe(
-      map((response) => response.data), // Assuming API returns { data: [...] }
-      catchError(this.handleError)
-    );
+  // READ: Obter todos os usuários (com paginação)
+  getUsers(page: number = 1, limit: number = 10): Observable<IPaginatedResponse<IUser>> {
+    return this.http
+      .get<IPaginatedResponse<IUser>>(`${this.apiUrl}?page=${page}&limit=${limit}`)
+      .pipe(catchError(this.handleError));
   }
 
-  // Get user by ID
-  public getUserById(id: string): Observable<IUser> {
-    return this.http.get<IResponse<IUser>>(`${this.baseUrl}/${id}`).pipe(
-      map((response) => response.data), // Assuming API returns { data: {...} }
-      catchError(this.handleError)
-    );
+  // READ: Obter um usuário pelo ID
+  getUserById(id: string): Observable<IUser> {
+    return this.http.get<IUser>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
   }
 
-  // Update user
-  public updateUser(id: string, data: Partial<IUser>): Observable<IUser> {
-    return this.http.put<IResponse<IUser>>(`${this.baseUrl}/${id}`, data).pipe(
-      map((response) => response.data), // Assuming API returns updated user in data
-      catchError(this.handleError)
-    );
+  // CREATE: Criar um novo usuário
+  // Ajuste a interface de entrada conforme necessário (ex: Omit<IUser, '_id' | 'createdAt' | 'updatedAt'>)
+  createUser(userData: Partial<IUser>): Observable<IUser> {
+    return this.http.post<IUser>(this.apiUrl, userData).pipe(catchError(this.handleError));
   }
 
-  // Remove user
-  public removeUser(id: string): Observable<{ id: string }> {
-    // Return object with id for effect
-    return this.http.delete<IResponse<any>>(`${this.baseUrl}/${id}`).pipe(
-      map(() => ({ id })), // Return the id on success
-      catchError(this.handleError)
-    );
+  // UPDATE: Atualizar um usuário existente
+  updateUser(id: string, userData: Partial<IUser>): Observable<IUser> {
+    return this.http
+      .patch<IUser>(`${this.apiUrl}/${id}`, userData) // Ou PUT
+      .pipe(catchError(this.handleError));
   }
 
-  // Generic error handler
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('UserService Error:', error);
-    const errorResponse: IResponseError = {
-      success: false,
-      message: error.error?.message || error.message || 'An unknown error occurred',
-    };
-    return throwError(() => errorResponse);
+  // DELETE: Deletar um usuário
+  deleteUser(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
+  }
+
+  // Tratamento de erros genérico
+  private handleError(error: HttpErrorResponse) {
+    console.error('API Error:', error);
+    return throwError(() => new Error('Ocorreu um erro na comunicação com a API. Tente novamente mais tarde.'));
   }
 }

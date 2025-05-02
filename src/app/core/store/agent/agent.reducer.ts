@@ -1,99 +1,50 @@
+// Filepath: c:\Users\POPULIS\Desktop\VSCODE\ATIVIDADES-TURISTICAS-PORTUGAL\front-end-atividades-turisticas-portugal-angular-typescript\src\app\core\store\agent\agent.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import * as AgentActions from './agent.actions';
-import { IAgent } from '../../models/models.index';
+import { IAgent, IResponseError } from '../../models/models.index'; // Adjust path
 
 export interface AgentState {
   loading: boolean;
-  all: IAgent[];
-  selected?: IAgent;
-  error?: string;
+  error: IResponseError | string | null;
+  currentAgent: IAgent | null; // Optional: Store the newly created agent
+  signupSuccess: boolean;
 }
 
 const initialState: AgentState = {
   loading: false,
-  all: [],
-  selected: undefined,
-  error: undefined
+  error: null,
+  currentAgent: null,
+  signupSuccess: false,
 };
 
 export const agentReducer = createReducer(
   initialState,
 
-  // Load Agents
-  on(AgentActions.loadAgents, (state) => ({
+  on(AgentActions.signUpAgent, (state) => ({
     ...state,
     loading: true,
-    error: undefined
-  })),
-  on(AgentActions.loadAgentsSuccess, (state, { agents }) => ({
-    ...state,
-    loading: false,
-    all: agents
-  })),
-  on(AgentActions.loadAgentsFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
+    error: null,
+    signupSuccess: false, // Reset success flag on new attempt
   })),
 
-  // Load Agent by ID
-  on(AgentActions.loadAgentById, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(AgentActions.loadAgentByIdSuccess, (state, { agent }) => ({
+  on(AgentActions.signUpAgentSuccess, (state, { agent }) => ({
     ...state,
     loading: false,
-    selected: agent
-  })),
-  on(AgentActions.loadAgentByIdFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
+    currentAgent: agent, // Store the agent data if returned
+    error: null,
+    signupSuccess: true,
   })),
 
-  // Create Agent
-  on(AgentActions.createAgent, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(AgentActions.createAgentSuccess, (state) => ({
-    ...state,
-    loading: false
-  })),
-  on(AgentActions.createAgentFailure, (state, { error }) => ({
+  on(AgentActions.signUpAgentFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error: error,
+    currentAgent: null,
+    signupSuccess: false,
   })),
 
-  // Update Agent
-  on(AgentActions.updateAgent, (state) => ({
+  on(AgentActions.clearAgentError, (state) => ({
     ...state,
-    loading: true
-  })),
-  on(AgentActions.updateAgentSuccess, (state) => ({
-    ...state,
-    loading: false
-  })),
-  on(AgentActions.updateAgentFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
-
-  // Delete Agent
-  on(AgentActions.deleteAgent, (state) => ({
-    ...state,
-    loading: true
-  })),
-  on(AgentActions.deleteAgentSuccess, (state) => ({
-    ...state,
-    loading: false
-  })),
-  on(AgentActions.deleteAgentFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
+    error: null,
   }))
 );

@@ -1,0 +1,24 @@
+<div class="p-6 max-w-2xl mx-auto">
+  <h2 class="text-lg font-semibold mb-4">Avaliações e Comentários</h2>
+  <form [formGroup]="form" class="bg-white rounded shadow p-4 flex flex-col gap-4 mb-6">
+    <div>
+      <label class="block mb-1">Nota</label>
+      <select formControlName="rating" class="border rounded px-3 py-2 w-full">
+        <option [value]="0">Selecione</option>
+        <option [value]="1">1</option>
+        <option [value]="2">2</option>
+        <option [value]="3">3</option>
+        <option [value]="4">4</option>
+        <option [value]="5">5</option>
+      </select>
+    </div>
+    <div>
+      <label class="block mb-1">Comentário</label>
+      <textarea formControlName="comment" class="border rounded px-3 py-2 w-full"></textarea>
+    </div>
+    <div class="flex justify-end">
+      <button type="submit" class="bg-primary text-white px-6 py-2 rounded" [disabled]="form.invalid">Enviar</button>
+    </div>
+  </form>
+  <div class="bg-white rounded shadow p-4 min-h-[80px]">Nenhum comentário ainda.</div>
+</div>
