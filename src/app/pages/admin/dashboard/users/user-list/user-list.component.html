@@ -1,0 +1,57 @@
+<!-- filepath: c:\Users\POPULIS\Desktop\VSCODE\ATIVIDADES-TURISTICAS-PORTUGAL\front-end-atividades-turisticas-portugal-angular-typescript\src\app\admin\users\user-list\user-list.component.html -->
+<div class="container mx-auto p-4">
+  <h2>{{ 'admin.users.list.title' | translate }}</h2>
+
+  <div class="mb-4">
+    <a [routerLink]="['../users/new']" class="btn btn-primary">{{ 'common.buttons.createNew' | translate }}</a>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()"
+      placeholder="{{ 'common.searchPlaceholder' | translate }}"
+      class="ml-4 p-2 border"
+    />
+    <button (click)="onSearch()" class="btn btn-secondary ml-2">{{ 'common.buttons.search' | translate }}</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator">{{ 'common.loading' | translate }}</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="users$ | async as response; else noUsers">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{ 'admin.users.form.nameLabel' | translate }}</th>
+          <th>{{ 'admin.users.form.emailLabel' | translate }}</th>
+          <th>{{ 'admin.users.form.usernameLabel' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of response.items">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+            <a [routerLink]="['../users', user._id, 'edit']" class="btn btn-sm btn-secondary mr-2">{{
+              'common.buttons.edit' | translate
+            }}</a>
+            <button (click)="deleteUser(user._id)" class="btn btn-sm btn-danger">
+              {{ 'common.buttons.delete' | translate }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      Total: {{ totalItems }}
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage <= 1">Previous</button>
+      <span> Page {{ currentPage }} </span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage * pageSize >= totalItems">Next</button>
+    </div>
+  </div>
+
+  <ng-template #noUsers>
+    <p *ngIf="!isLoading && !error">{{ 'common.noData' | translate }}</p>
+  </ng-template>
+</div>

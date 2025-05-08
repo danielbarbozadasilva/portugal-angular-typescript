@@ -1,0 +1,23 @@
+<div id="hero" class="relative bg-cover bg-center text-white py-24 px-4"
+     style="background-image: url('assets/img/hero-background-lisboa-sunset.jpg');">
+  <div class="absolute inset-0 bg-blue-900 opacity-70"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto text-center">
+    <h1 class="text-5xl font-bold mb-6 drop-shadow-lg">
+      {{ 'home.hero.title' | translate }}
+    </h1>
+    <p class="text-xl mb-8 drop-shadow-lg">
+      {{ 'home.hero.subtitle' | translate }}
+    </p>
+
+    <form class="max-w-xl mx-auto">
+      <input type="search"
+             class="w-full p-3 rounded mb-4 text-black"
+             placeholder="{{ 'home.hero.searchPlaceholder' | translate }}">
+      <button type="submit"
+              class="w-full md:w-1/3 bg-yellow-400 text-blue-900 p-3 rounded font-bold hover:bg-yellow-300 transition mx-auto flex items-center justify-center">
+        {{ 'home.hero.searchButton' | translate }}
+      </button>
+    </form>
+  </div>
+</div>

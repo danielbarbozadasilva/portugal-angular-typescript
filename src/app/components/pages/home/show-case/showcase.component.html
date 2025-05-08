@@ -1,0 +1,38 @@
+<div class="w-full">
+  <div *ngFor="let item of showcases" class="flex flex-col lg:flex-row items-center justify-center w-full">
+    <!-- Se reverse for true, vamos inverter a ordem no layout -->
+    <div *ngIf="item.reverse; else normalOrder" class="flex flex-col lg:flex-row-reverse w-full">
+      <!-- Imagem -->
+      <div
+        class="lg:w-1/2 h-80 bg-no-repeat bg-cover bg-center"
+        [ngStyle]="{ 'background-image': 'url(' + item.bgImage + ')' }"
+      ></div>
+      <!-- Texto -->
+      <div class="lg:w-1/2 bg-gray-800 text-white p-8 flex flex-col justify-center items-start">
+        <h3 class="text-2xl font-bold mb-4">{{ item.title | translate }}</h3>
+        <p class="mb-6">{{ item.lead | translate }}</p>
+        <button
+          class="border border-white bg-transparent px-4 py-2 hover:bg-white hover:text-gray-800 transition rounded"
+        >
+          {{ item.btnLabel | translate }}
+        </button>
+      </div>
+    </div>
+
+    <ng-template #normalOrder>
+      <div
+        class="lg:w-1/2 h-80 bg-no-repeat bg-cover bg-center"
+        [ngStyle]="{ 'background-image': 'url(' + item.bgImage + ')' }"
+      ></div>
+      <div class="lg:w-1/2 bg-gray-800 text-white p-8 flex flex-col justify-center items-start">
+        <h3 class="text-2xl font-bold mb-4">{{ item.title | translate }}</h3>
+        <p class="mb-6">{{ item.lead | translate }}</p>
+        <button
+          class="border border-white bg-transparent px-4 py-2 hover:bg-white hover:text-gray-800 transition rounded"
+        >
+          {{ item.btnLabel | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

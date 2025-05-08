@@ -1,0 +1,274 @@
+<mat-sidenav-container class="h-screen bg-gray-100 font-sans">
+  <!-- Sidebar -->
+  <mat-sidenav #sidenav mode="side" [opened]="isSidebarOpen()"
+    class="bg-gray-800 text-white transition-all duration-300 ease-in-out"
+    [style.width]="isSidebarOpen() ? '16rem' : '5rem'">
+    <div class="flex items-center justify-between p-4 mb-6" [class.p-2]="!isSidebarOpen()">
+      <h1 class="text-xl font-semibold" [class.hidden]="!isSidebarOpen()">
+        {{ 'admin.dashboard.title' | translate }}
+      </h1>
+      <button (click)="toggleSidebar()" class="text-gray-400 hover:text-white focus:outline-none">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['/admin/dashboard']" routerLinkActive="bg-gray-700"
+        [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded hover:bg-gray-700"
+        [class.justify-center]="!isSidebarOpen()">
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">dashboard</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.dashboard' | translate }}</span>
+      </a>
+      <a mat-list-item [routerLink]="['/admin/users']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">people</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.users' | translate }}</span>
+      </a>
+      <a mat-list-item [routerLink]="['/admin/agents']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">support_agent</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.agents' | translate }}</span>
+      </a>
+
+      <a
+        mat-list-item
+        [routerLink]="['/admin/consultants']"
+        routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700"
+        [class.justify-center]="!isSidebarOpen()"
+      >
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">supervisor_account</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.consultants' | translate }}</span>
+      </a>
+  
+
+      <a mat-list-item [routerLink]="['/admin/activities']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">hiking</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.activities' | translate }}</span>
+      </a>
+      <!-- Adicione mais itens de menu conforme necessário -->
+    </mat-nav-list>
+
+    <div class="mt-auto p-4" [class.p-2]="!isSidebarOpen()">
+      <button mat-flat-button color="warn" (click)="logout()"
+        class="w-full flex items-center justify-center p-2 rounded hover:bg-red-700">
+        <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">logout</mat-icon>
+        <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.logout' | translate }}</span>
+      </button>
+    </div>
+  </mat-sidenav>
+  <form [formGroup]="activityForm" (ngSubmit)="saveActivity()">
+    <!-- Campos -->
+    <div *ngIf="activityForm.errors?.dateRangeInvalid" class="text-red-500 mb-2">
+      A data de término não pode ser anterior à data de início.
+    </div>
+    <!-- ... -->
+  </form>
+  <!-- Main Content Area -->
+  <mat-sidenav-content class="flex-1 flex flex-col overflow-hidden">
+    <!-- Top Bar -->
+    <mat-toolbar color="primary" class="shadow-md flex justify-between items-center">
+      <h2 class="text-lg font-semibold">
+        {{ 'admin.welcome' | translate: { name: userName() } }}
+      </h2>
+      <div>
+        <button mat-icon-button class="text-white hover:text-gray-200 focus:outline-none mr-4">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <button mat-icon-button class="text-white hover:text-gray-200 focus:outline-none">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto p-6">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-6">
+        {{ 'admin.dashboard.overview' | translate }}
+      </h3>
+
+      <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-semibold mb-6">
+          {{ 'admin.users.listTitle' | translate }}
+        </h2>
+
+        <!-- Botão para Adicionar Novo Usuário -->
+        <div class="mb-4 text-right">
+          <a [routerLink]="['/admin/users/new']"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+            {{ 'admin.users.addUserButton' | translate }}
+          </a>
+        </div>
+
+        <!-- Indicador de Loading -->
+        <div *ngIf="loading$ | async" class="text-center py-4">
+          <p>{{ 'loading' | translate }}...</p>
+          <!-- Pode adicionar um spinner aqui -->
+        </div>
+
+        <!-- Tabela de Usuários -->
+        <div *ngIf="!(loading$ | async) && (users$ | async) as users"
+          class="bg-white shadow-md rounded overflow-x-auto">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">
+                  {{ 'admin.users.tableHeaderName' | translate }}
+                </th>
+                <th class="py-3 px-6 text-left">
+                  {{ 'admin.users.tableHeaderEmail' | translate }}
+                </th>
+                <th class="py-3 px-6 text-left">
+                  {{ 'admin.users.tableHeaderRoles' | translate }}
+                </th>
+                <th class="py-3 px-6 text-center">
+                  {{ 'admin.users.tableHeaderActions' | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm">
+              <tr *ngIf="users.length === 0">
+                <td colspan="4" class="py-4 px-6 text-center">
+                  {{ 'admin.users.noUsersFound' | translate }}
+                </td>
+              </tr>
+              <tr *ngFor="let user of users" class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left whitespace-nowrap">
+                  {{ user.name }}
+                </td>
+                <td class="py-3 px-6 text-left">
+                  {{ user.email }}
+                </td>
+                <td class="py-3 px-6 text-left">
+                  <!-- Assumindo que 'permissions' é um array de strings -->
+                  <span *ngFor="let role of user.permissions"
+                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+                    {{ role | translate }}
+                  </span>
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <button (click)="editUser(user._id)"
+                    class="bg-yellow-500 hover:bg-yellow-700 text-white text-xs font-bold py-1 px-2 rounded mr-2 transition duration-300"
+                    title="{{ 'admin.users.editAction' | translate }}">
+                    <span class="material-icons text-sm">edit</span>
+                  </button>
+                  <button (click)="deleteUser(user._id)"
+                    class="bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded transition duration-300"
+                    title="{{ 'admin.users.deleteAction' | translate }}">
+                    <span class="material-icons text-sm">delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="error$ | async as error" class="mt-4 p-4 bg-red-100 text-red-700 rounded">
+          {{ 'admin.users.loadingError' | translate }}: {{ error }}
+        </div>
+      </div>
+
+      <!-- Loading Indicator (usando Signals) -->
+      <div *ngIf="loading()" class="flex justify-center items-center h-64">
+        <p class="text-gray-500 text-lg">{{ 'loading' | translate }}...</p>
+        <!-- Ou spinner -->
+      </div>
+
+      <div *ngIf="!loading()">
+        <!-- Cards de Resumo -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          <mat-card class="hover:shadow-lg transition-shadow">
+            <mat-card-header>
+              <mat-card-title class="text-blue-600">
+                {{ 'admin.dashboard.users' | translate }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="text-3xl font-bold">{{ userCount() ?? '-' }}</p>
+              <p class="text-gray-600 mt-2">
+                {{ 'admin.dashboard.totalUsers' | translate }}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button color="primary" (click)="navigateToUsers()">
+                {{ 'admin.dashboard.manageUsers' | translate }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="hover:shadow-lg transition-shadow">
+            <mat-card-header>
+              <mat-card-title class="text-purple-600">
+                {{ 'admin.dashboard.sales' | translate }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="text-3xl font-bold">
+                <ng-container *ngIf="(salesSummary()?.total | currency: 'EUR' : 'symbol') as formattedTotal; else dash">
+                  {{ formattedTotal }}
+                </ng-container>
+                <ng-template #dash>-</ng-template>
+              </p>
+              <p class="text-gray-600 mt-2">
+                {{ 'admin.dashboard.totalSalesCount' | translate: { count: salesSummary()?.count ?? 0 } }}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button color="primary" (click)="navigateToOrders()">
+                {{ 'admin.dashboard.viewOrders' | translate }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="hover:shadow-lg transition-shadow">
+            <mat-card-header>
+              <mat-card-title class="text-green-600">
+                {{ 'admin.dashboard.recentActivities' | translate }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <!-- Se existem atividades recentes -->
+              <div *ngIf="recentActivities() && recentActivities()?.length > 0; else noRecentActivities">
+                <ul>
+                  <li *ngFor="let activity of recentActivities()" class="text-gray-700 mb-1">
+                    {{ activity.name }} -
+                    {{ activity.date | date: 'shortDate' }}
+                  </li>
+                </ul>
+              </div>
+              <ng-template #noRecentActivities>
+                <p class="text-gray-500">
+                  {{ 'admin.dashboard.noRecentActivities' | translate }}
+                </p>
+              </ng-template>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button color="primary" (click)="navigateToActivities()">
+                {{ 'admin.dashboard.manageActivities' | translate }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <!-- Outro conteúdo do dashboard -->
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title class="text-gray-700">
+              {{ 'admin.dashboard.exampleChart' | translate }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="h-64 bg-gray-200 rounded flex items-center justify-center">
+              <span class="text-gray-500">
+                {{ 'admin.dashboard.chartArea' | translate }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

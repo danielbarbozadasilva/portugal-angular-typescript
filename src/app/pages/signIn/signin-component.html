@@ -1,0 +1,95 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
+    <h2 class="text-2xl font-bold text-center text-gray-900">
+      {{ 'signInPage.title' | translate }}
+    </h2>
+
+    <!-- Display Server Error Message -->
+    <div *ngIf="errorMessage" class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+      {{ errorMessage | translate }} <!-- Translate server message if needed -->
+    </div>
+
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">
+          {{ 'signInPage.emailLabel' | translate }}
+        </label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          required
+          class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          [ngClass]="{ 'border-red-500': email?.invalid && (email?.dirty || email?.touched) }"
+        />
+        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="mt-1 text-xs text-red-600">
+          <span *ngIf="email?.errors?.['required']">{{ 'validation.required' | translate }}</span>
+          <span *ngIf="email?.errors?.['email']">{{ 'validation.emailInvalid' | translate }}</span>
+          <!-- Add server error message specific to email if needed -->
+          <!-- <span *ngIf="email?.errors?.['serverError']">{{ 'validation.serverErrorEmail' | translate }}</span> -->
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">
+          {{ 'signInPage.passwordLabel' | translate }}
+        </label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          required
+          class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          [ngClass]="{ 'border-red-500': password?.invalid && (password?.dirty || password?.touched) }"
+        />
+         <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="mt-1 text-xs text-red-600">
+           <span *ngIf="password?.errors?.['required']">{{ 'validation.required' | translate }}</span>
+           <!-- Add server error message specific to password if needed -->
+         </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" formControlName="rememberMe" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+          <label for="remember-me" class="block ml-2 text-sm text-gray-900">
+            {{ 'signInPage.rememberMeLabel' | translate }}
+          </label>
+        </div>
+
+        <div class="text-sm">
+          <a routerLink="/recovery-password" class="font-medium text-indigo-600 hover:text-indigo-500">
+            {{ 'signInPage.forgotPasswordLink' | translate }}
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="signInForm.invalid || (isLoading$ | async)"
+          class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!(isLoading$ | async)">{{ 'signInPage.submitButton' | translate }}</span>
+          <span *ngIf="isLoading$ | async">
+            <!-- Add a simple spinner or loading text -->
+            <svg class="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ 'signInPage.loadingButton' | translate }}...
+          </span>
+        </button>
+      </div>
+    </form>
+
+    <p class="mt-4 text-sm text-center text-gray-600">
+      {{ 'signInPage.noAccountPrompt' | translate }}
+      <a routerLink="/signup-client" class="font-medium text-indigo-600 hover:text-indigo-500">
+        {{ 'signInPage.signUpClientLink' | translate }}
+      </a> |
+       <a routerLink="/signup-agent" class="font-medium text-indigo-600 hover:text-indigo-500">
+         {{ 'signInPage.signUpAgentLink' | translate }}
+       </a>
+    </p>
+  </div>
+</div>

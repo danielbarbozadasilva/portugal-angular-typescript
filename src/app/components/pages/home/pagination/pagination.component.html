@@ -1,0 +1,21 @@
+<div class="flex justify-center items-center mt-4">
+    <button class="px-3 py-1 mx-1 border rounded"
+            [disabled]="currentPage === 1"
+            (click)="goToPage(currentPage - 1)">
+      &laquo; Prev
+    </button>
+
+    <button *ngFor="let p of pages"
+            class="px-3 py-1 mx-1 border rounded"
+            [class.bg-blue-600]="p === currentPage"
+            [class.text-white]="p === currentPage"
+            (click)="goToPage(p)">
+      {{ p }}
+    </button>
+
+    <button class="px-3 py-1 mx-1 border rounded"
+            [disabled]="currentPage === totalPages"
+            (click)="goToPage(currentPage + 1)">
+      Next &raquo;
+    </button>
+  </div>

@@ -1,0 +1,41 @@
+# Editor configuration, see https://editorconfig.org
+# Top-most EditorConfig file
+root = true
+
+# Aplica a todos os arquivos (exceto se sobrescrito abaixo)
+[*]
+charset = utf-8             # Define o charset do arquivo
+indent_style = space        # Usar espaços para indentação (não tabs)
+indent_size = 2             # Tamanho da indentação (2 espaços é comum em Angular/TS)
+end_of_line = lf            # Usar Line Feed (LF) para quebras de linha (padrão Unix/macOS)
+insert_final_newline = true # Garante uma linha em branco no final do arquivo
+trim_trailing_whitespace = true # Remove espaços em branco no final das linhas
+
+# Arquivos TypeScript e JavaScript
+[*.{ts,js}]
+quote_type = single         # Define aspas simples como padrão (sobreposto por formatadores como Prettier)
+# A configuração abaixo é específica do IntelliJ/WebStorm para reforçar aspas simples em TS
+# Pode ser mantida se a equipe usa essas IDEs, mas 'quote_type' é mais genérico.
+# ij_typescript_use_double_quotes = false
+
+# Arquivos HTML
+[*.html]
+# Mantém indent_size = 2 herdado de [*]
+
+# Arquivos CSS, SCSS, Less (comuns em Angular)
+[*.{css,scss,less}]
+# Mantém indent_size = 2 herdado de [*]
+
+# Arquivos JSON
+[*.json]
+# Mantém indent_size = 2 herdado de [*]
+
+# Arquivos Markdown (configurações específicas)
+[*.md]
+max_line_length = off       # Desliga limite de linha para Markdown
+trim_trailing_whitespace = false # Permite espaços no final da linha em Markdown (às vezes significativo)
+insert_final_newline = false   # Opcional: pode não querer linha final em MD
+
+# Adicional: Arquivos YAML (se usar)
+[*.{yaml,yml}]
+indent_size = 2             # YAML geralmente usa 2 espaços

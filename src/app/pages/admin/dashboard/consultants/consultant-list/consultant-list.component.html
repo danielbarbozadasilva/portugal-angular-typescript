@@ -1,0 +1,101 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-semibold">{{ 'admin.consultants.title' | translate }}</h2>
+    <button (click)="goToNewConsultant()" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded">
+      {{ 'admin.consultants.newButton' | translate }}
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="mb-4 flex flex-wrap gap-2">
+    <input
+      type="text"
+      class="border rounded px-3 py-2 w-full sm:w-64"
+      [placeholder]="'admin.consultants.searchPlaceholder' | translate"
+      [value]="searchTerm()"
+      (input)="onSearchInput($event)"
+    />
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading()" class="text-center py-4">
+    <p>{{ 'loadingText' | translate }}</p>
+  </div>
+
+  <!-- Error Message -->
+  <div
+    *ngIf="error() && !loading()"
+    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+    role="alert"
+  >
+    <strong class="font-bold">{{ 'error' | translate }}!</strong>
+    <span class="block sm:inline"> {{ error() }}</span>
+  </div>
+
+  <!-- Consultant Table -->
+  <div *ngIf="!loading() && !error()" class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded shadow">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left">{{ 'name' | translate }}</th>
+          <th class="px-4 py-2 text-left">{{ 'specialty' | translate }}</th>
+          <th class="px-4 py-2 text-left">{{ 'contact' | translate }}</th>
+          <th class="px-4 py-2 text-left">{{ 'actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="consultants().length === 0">
+          <td colspan="4" class="px-4 py-4 text-center text-gray-500">
+            {{ 'admin.consultants.noConsultantsFound' | translate }}
+          </td>
+        </tr>
+        <tr *ngFor="let consultant of consultants()" class="border-b hover:bg-gray-50">
+          <!-- Ajustar campos conforme IConsultant -->
+          <td class="px-4 py-2">{{ consultant.name || '-' }}</td>
+          <td class="px-4 py-2">{{ consultant.specialty || '-' }}</td>
+          <td class="px-4 py-2">{{ consultant.contact || '-' }}</td>
+          <td class="px-4 py-2 whitespace-nowrap">
+            <button (click)="editConsultant(consultant._id)" class="text-indigo-600 hover:text-indigo-900 mr-3">
+              {{ 'edit' | translate }}
+            </button>
+            <button (click)="deleteConsultant(consultant._id)" class="text-red-600 hover:text-red-900">
+              {{ 'delete' | translate }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading() && totalConsultants() > 0" class="mt-4 flex flex-wrap justify-center items-center gap-2">
+    <button
+      (click)="onPageChange(currentPage() - 1)"
+      [disabled]="currentPage() === 1"
+      class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      &lt;
+    </button>
+    <ng-container *ngFor="let page of getPages()">
+      <button
+        (click)="onPageChange(page)"
+        [ngClass]="{ 'bg-primary text-white': page === currentPage(), border: page !== currentPage() }"
+        class="px-3 py-1 rounded mx-1"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+    <button
+      (click)="onPageChange(currentPage() + 1)"
+      [disabled]="currentPage() === totalPages()"
+      class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      &gt;
+    </button>
+    <span class="text-sm text-gray-600 ml-4">
+      {{ 'pagination.showing' | translate }}
+      {{ (currentPage() - 1) * limit() + 1 }} - {{ Math.min(currentPage() * limit(), totalConsultants()) }}
+      {{ 'pagination.of' | translate }} {{ totalConsultants() }}
+    </span>
+  </div>
+</div>

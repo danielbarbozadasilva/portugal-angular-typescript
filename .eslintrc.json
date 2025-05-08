@@ -1,0 +1,106 @@
+// // .eslintrc.json
+// {
+//   // Indica que este é o arquivo de configuração raiz, impedindo que o ESLint procure em diretórios pais.
+//   "root": true,
+
+//   // Ignora padrões de arquivos/diretórios (alternativa ao .eslintignore)
+//   "ignorePatterns": [
+//     "./node_modules",
+//     "./dist",
+//     "**/generated/", // Adicione outros diretórios/arquivos que não devem ser lintados
+//     "*.config.js", // Arquivos de configuração comuns
+//     "*.conf.js"
+//   ],
+
+//   // Configurações específicas para diferentes tipos de arquivos
+//   "overrides": [
+//     // Configuração para arquivos TypeScript (componentes, serviços, etc.)
+//     {
+//       "files": ["*.ts"],
+//       // Parser que permite ao ESLint entender TypeScript
+//       "parser": "@typescript-eslint/parser",
+//       // Opções do Parser
+//       "parserOptions": {
+//         "ecmaVersion": "latest", // Suporta a sintaxe mais recente do ECMAScript
+//         "sourceType": "module", // Permite o uso de imports/exports
+//         // ESSENCIAL: Aponta para o(s) tsconfig(s) do projeto. Necessário para regras que exigem informações de tipo.
+//         // Ajuste os caminhos conforme a estrutura do seu projeto.
+//         "project": ["tsconfig.app.json", "tsconfig.spec.json", "e2e/tsconfig.json"],
+//         "createDefaultProgram": true // Permite lintar arquivos não especificados nos tsconfigs acima
+//       },
+//       // Plugins que adicionam regras específicas
+//       "plugins": [
+//         "@typescript-eslint", // Regras específicas para TypeScript
+//         "@angular-eslint" // Regras específicas para Angular
+//       ],
+//       // Conjuntos de regras pré-configuradas (a ordem importa!)
+//       "extends": [
+//         "eslint:recommended", // Regras básicas recomendadas pelo ESLint
+//         "plugin:@typescript-eslint/recommended", // Regras recomendadas para TypeScript
+//         // Opcional: Regras mais rigorosas que exigem informações de tipo (mais lento, porém mais seguro)
+//         // Descomente se desejar uma análise mais profunda.
+//         // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+//         "plugin:@angular-eslint/recommended", // Regras recomendadas para código Angular em TS
+//         // **IMPORTANTE**: Deve ser o ÚLTIMO item em 'extends' para desativar regras ESLint
+//         // que conflitam com a formatação do Prettier.
+//         "prettier"
+//       ],
+//       // Regras individuais (para sobrescrever/adicionar regras dos 'extends')
+//       "rules": {
+//         // --- Regras de Qualidade e Boas Práticas (Exemplos) ---
+//         "@typescript-eslint/no-explicit-any": "warn", // Sinaliza 'any', mas não impede (bom para migração)
+//         "@typescript-eslint/explicit-function-return-type": "off", // Permite inferência de tipo de retorno (comum em apps)
+//         "no-console": ["warn", { "allow": ["error"] }], // Permite console.warn e console.error
+//         "no-debugger": "error", // Proíbe 'debugger'
+//         "eqeqeq": ["error", "always"], // Exige === e !== em vez de == e !=
+
+//         // --- Regras Específicas do Angular (Exemplos - ajuste prefixos!) ---
+//         "@angular-eslint/directive-selector": [
+//           "error",
+//           { "type": "attribute", "prefix": "app", "style": "camelCase" } // Ex: [appMinhaDiretiva]
+//         ],
+//         "@angular-eslint/component-selector": [
+//           "error",
+//           { "type": "element", "prefix": "app", "style": "kebab-case" } // Ex: <app-meu-componente>
+//         ],
+//         "@angular-eslint/no-input-rename": "error", // Proíbe renomear @Input aliases
+//         "@angular-eslint/no-output-rename": "error", // Proíbe renomear @Output aliases
+//         "@angular-eslint/use-lifecycle-interface": "warn", // Recomenda implementar interfaces de lifecycle (OnInit, etc.)
+//         "@angular-eslint/use-pipe-transform-interface": "error" // Exige que Pipes implementem PipeTransform
+
+//         // Adicione/ajuste outras regras conforme as necessidades da sua equipe
+//         // Lembre-se: Não adicione regras de ESTILO/FORMATAÇÃO aqui se estiver usando Prettier.
+//       }
+//     },
+//     // Configuração para arquivos HTML (Templates do Angular)
+//     {
+//       "files": ["*.html"],
+//       // Parser e Plugins específicos para templates Angular
+//       "parser": "@angular-eslint/template-parser",
+//       "plugins": ["@angular-eslint/template"],
+//       // Conjuntos de regras pré-configuradas
+//       "extends": [
+//         "plugin:@angular-eslint/template/recommended", // Regras recomendadas para templates
+//         // Opcional: Regras de acessibilidade (altamente recomendado)
+//         // Instale: npm install --save-dev @angular-eslint/template-accessibility
+//         // "plugin:@angular-eslint/template/accessibility",
+//         // **IMPORTANTE**: Deve ser o ÚLTIMO item em 'extends'
+//         "prettier"
+//       ],
+//       "rules": {
+//         // Adicione/sobrescreva regras específicas para templates aqui, se necessário.
+//         // Exemplo: "@angular-eslint/template/banana-in-a-box": "error", (Evita [(ngModel)]="...")
+//         // Exemplo: "@angular-eslint/template/no-negated-async": "error", (Evita !prop | async)
+//       }
+//     },
+//     // Opcional: Configuração para arquivos de teste
+//     {
+//       "files": ["*.spec.ts"],
+//       "rules": {
+//         // Relaxar/ajustar regras em arquivos de teste, se necessário
+//         "@typescript-eslint/no-explicit-any": "off" // Permite 'any' mais livremente em testes
+//         // Pode precisar de regras específicas dependendo do framework de teste (Jasmine, Jest)
+//       }
+//     }
+//   ]
+// }

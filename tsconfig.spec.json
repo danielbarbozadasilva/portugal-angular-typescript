@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/atividades-turisticas-portugal",
+    "types": [
+      "jasmine",
+      "node",
+      "jest",
+      "mocha",
+    ]
+  },
+  "files": [
+  ],
+  "include": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.d.ts"
+  ]
+}

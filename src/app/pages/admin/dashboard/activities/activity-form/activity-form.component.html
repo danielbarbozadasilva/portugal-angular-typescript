@@ -1,0 +1,134 @@
+<!-- src/app/dashboard/pages/activities/activity-form/activity-form.component.html -->
+<div class="bg-white p-6 rounded shadow-md max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">
+    {{ activityId ? 'Editar Atividade' : 'Nova Atividade' }}
+  </h2>
+
+  <div *ngIf="loading" class="text-center text-gray-500">
+    Carregando...
+  </div>
+
+  <!-- Form Reactive -->
+  <form [formGroup]="activityForm" (ngSubmit)="saveActivity()" *ngIf="!loading">
+    <!-- Nome -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Nome da Atividade</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)">
+        <span *ngIf="f.name.errors?.['required']">Nome é obrigatório.</span>
+        <span *ngIf="f.name.errors?.['minlength']">
+          O nome deve ter pelo menos 3 caracteres.
+        </span>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Categoria -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{ cat }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="f.category.invalid && (f.category.dirty || f.category.touched)">
+        Categoria é obrigatória.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Descrição -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Descrição</mat-label>
+      <textarea matInput rows="3" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <!-- Descrição Curta -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Descrição Curta</mat-label>
+      <textarea matInput rows="2" formControlName="shortDescription"></textarea>
+    </mat-form-field>
+
+    <!-- Datas -->
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Data de Início</mat-label>
+        <input matInput type="date" formControlName="startDate" />
+        <mat-error *ngIf="f.startDate.invalid && (f.startDate.dirty || f.startDate.touched)">
+          Início é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data de Término</mat-label>
+        <input matInput type="date" formControlName="endDate" />
+        <mat-error *ngIf="f.endDate.invalid && (f.endDate.dirty || f.endDate.touched)">
+          Término é obrigatório.
+        </mat-error>
+      </mat-form-field>
+    </div>
+<mat-form-field appearance="fill" class="w-full mb-4">
+  <mat-label>Imagens</mat-label>
+  <input type="file" multiple matInput (change)="onFilesSelected($event)" />
+</mat-form-field>
+
+<!-- Exibir pré-visualização das imagens selecionadas -->
+<div class="flex gap-4 flex-wrap mb-4">
+  <div *ngFor="let preview of imagePreviews" class="w-32 h-32 relative">
+    <img [src]="preview" alt="Image preview" class="object-cover w-full h-full" />
+  </div>
+</div>
+    <!-- Local e Preço -->
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Localização</mat-label>
+        <input matInput formControlName="location" />
+      </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Preço</mat-label>
+    <input matInput formControlName="price" mask="separator.2" 
+    thousandSeparator="."
+    decimalMarker=","
+    />
+  </mat-form-field>
+      </mat-form-field>
+    </div>
+
+    <!-- Vagas -->
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <mat-form-field appearance="fill">
+        <mat-label>Total de Vagas</mat-label>
+        <input matInput type="number" formControlName="totalSlots" />
+        <mat-error *ngIf="f.totalSlots.invalid && (f.totalSlots.dirty || f.totalSlots.touched)">
+          <span *ngIf="f.totalSlots.errors?.['min']">
+            Valor mínimo é 0.
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Vagas Reservadas</mat-label>
+        <input matInput type="number" formControlName="bookedSlots" />
+        <mat-error *ngIf="f.bookedSlots.invalid && (f.bookedSlots.dirty || f.bookedSlots.touched)">
+          <span *ngIf="f.bookedSlots.errors?.['min']">
+            Valor mínimo é 0.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Em Destaque -->
+    <mat-checkbox formControlName="featured" class="mb-4">
+      Em Destaque
+    </mat-checkbox>
+
+    <!-- Botões -->
+    <div class="mt-6 flex gap-4">
+      <button type="submit" class="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 rounded">
+        {{ activityId ? 'Salvar Alterações' : 'Criar Atividade' }}
+      </button>
+      <button type="button" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+        (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+</div>

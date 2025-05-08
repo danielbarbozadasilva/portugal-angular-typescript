@@ -1,0 +1,29 @@
+<form [formGroup]="form" class="p-6 max-w-lg mx-auto bg-white rounded shadow flex flex-col gap-4">
+  <h2 class="text-lg font-semibold mb-4">Finalizar Compra</h2>
+  <div>
+    <label class="block mb-1">Nome no Cartão</label>
+    <input formControlName="cardName" type="text" class="border rounded px-3 py-2 w-full" />
+  </div>
+  <div>
+    <label class="block mb-1">Número do Cartão</label>
+    <input formControlName="cardNumber" type="text" class="border rounded px-3 py-2 w-full" />
+  </div>
+  <div class="flex gap-4">
+    <div class="flex-1">
+      <label class="block mb-1">Validade</label>
+      <input formControlName="expDate" type="text" class="border rounded px-3 py-2 w-full" placeholder="MM/AA" />
+    </div>
+    <div class="flex-1">
+      <label class="block mb-1">CVC</label>
+      <input formControlName="cvc" type="text" class="border rounded px-3 py-2 w-full" />
+    </div>
+  </div>
+  <div>
+    <label class="block mb-1">E-mail para envio do voucher</label>
+    <input formControlName="email" type="email" class="border rounded px-3 py-2 w-full" />
+  </div>
+  <div class="flex justify-end gap-2 mt-4">
+    <button type="submit" class="bg-primary text-white px-6 py-2 rounded" [disabled]="form.invalid">Pagar</button>
+    <button type="button" class="bg-gray-200 px-6 py-2 rounded">Cancelar</button>
+  </div>
+</form>

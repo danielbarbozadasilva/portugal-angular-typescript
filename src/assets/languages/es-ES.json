@@ -1,0 +1,51 @@
+{
+  "consultant": {
+    "form": {
+      "title": "Consultor",
+      "name": {
+        "placeholder": "Nombre"
+      },
+      "country": {
+        "placeholder": "País"
+      },
+      "cpf": {
+        "placeholder": "CPF"
+      },
+      "documentType": {
+        "placeholder": "Tipo de Documento"
+      },
+      "documentValue": {
+        "placeholder": "Número de Documento"
+      },
+      "phones": {
+        "label": "Teléfonos",
+        "add": "Agregar Teléfono"
+      },
+      "specialty": {
+        "label": "Especialidades",
+        "add": "Agregar Especialidad"
+      },
+      "address": {
+        "street": "Calle",
+        "number": "Número",
+        "complement": "Complemento",
+        "district": "Barrio",
+        "city": "Ciudad",
+        "state": "Estado",
+        "zipCode": "Código Postal",
+        "country": "País"
+      },
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "delete": "Eliminar"
+    },
+    "list": {
+      "title": "Consultores",
+      "add": "Nuevo Consultor",
+      "name": "Nombre",
+      "birthDate": "Fecha de Nacimiento",
+      "country": "País",
+      "edit": "Editar"
+    }
+  }
+}

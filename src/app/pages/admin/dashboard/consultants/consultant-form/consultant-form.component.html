@@ -1,0 +1,108 @@
+<div class="container mx-auto p-4 max-w-3xl">
+  <h1 class="text-2xl font-bold mb-4">
+    {{ (isEditMode() ? 'admin.consultants.editTitle' : 'admin.consultants.newTitle') | translate }}
+  </h1>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading()" class="text-center py-4">
+    <p>{{ 'loadingText' | translate }}</p>
+  </div>
+
+  <!-- Error Message -->
+  <div
+    *ngIf="error() && !loading()"
+    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+    role="alert"
+  >
+    <strong class="font-bold">{{ 'error' | translate }}!</strong>
+    <span class="block sm:inline"> {{ error() }}</span>
+  </div>
+
+  <!-- Consultant Form -->
+  <form
+    *ngIf="!loading()"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    class="p-6 max-w-lg mx-auto bg-white rounded shadow flex flex-col gap-4"
+  >
+    <!-- Name Field -->
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700">{{ 'name' | translate }}</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['name'].invalid && f['name'].touched,
+          'border-gray-300': !f['name'].invalid || !f['name'].touched,
+        }"
+      />
+      <div *ngIf="f['name'].invalid && f['name'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['name'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+        <span *ngIf="f['name'].errors?.['minlength']">{{ 'errors.nameMin' | translate: { min: 3 } }}</span>
+      </div>
+    </div>
+
+    <!-- Specialty Field -->
+    <div class="mb-4">
+      <label for="specialty" class="block text-sm font-medium text-gray-700">{{ 'specialty' | translate }}</label>
+      <input
+        type="text"
+        id="specialty"
+        formControlName="specialty"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['specialty'].invalid && f['specialty'].touched,
+          'border-gray-300': !f['specialty'].invalid || !f['specialty'].touched,
+        }"
+      />
+      <div *ngIf="f['specialty'].invalid && f['specialty'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['specialty'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Contact Field -->
+    <div class="mb-4">
+      <label for="contact" class="block text-sm font-medium text-gray-700">{{ 'contact' | translate }}</label>
+      <input
+        type="text"
+        id="contact"
+        formControlName="contact"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['contact'].invalid && f['contact'].touched,
+          'border-gray-300': !f['contact'].invalid || !f['contact'].touched,
+        }"
+      />
+      <div *ngIf="f['contact'].invalid && f['contact'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['contact'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+        <!-- Adicionar validação de email/telefone se necessário -->
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-2 mt-4">
+      <button
+        type="button"
+        (click)="onCancel()"
+        [disabled]="saving()"
+        class="rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.invalid || saving()"
+        class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span *ngIf="!saving()">{{ (isEditMode() ? 'saveChanges' : 'create') | translate }}</span>
+        <span *ngIf="saving()">{{ 'saving' | translate }}...</span>
+      </button>
+    </div>
+  </form>
+</div>
