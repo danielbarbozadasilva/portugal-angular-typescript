@@ -1,43 +1,88 @@
-<div class="p-6">
-  <h2 class="text-lg font-semibold mb-4">Atividades</h2>
-  <div class="mb-4 flex flex-wrap gap-2">
-    <input type="text" class="border rounded px-3 py-2 w-64" placeholder="Buscar por nome, local ou data" />
-    <button class="bg-primary text-white px-4 py-2 rounded">Buscar</button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-white rounded shadow">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Nome</th>
-          <th class="px-4 py-2">Data</th>
-          <th class="px-4 py-2">Local</th>
-          <th class="px-4 py-2">Preço</th>
-          <th class="px-4 py-2">Capacidade</th>
-          <th class="px-4 py-2">Destaque</th>
-          <th class="px-4 py-2">Promoção</th>
-          <th class="px-4 py-2">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">-</td>
-          <td class="px-4 py-2">
-            <button class="text-blue-600 hover:underline">Editar</button>
-            <button class="text-red-600 hover:underline ml-2">Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="mt-4 flex justify-end">
-    <button class="px-3 py-1 border rounded mx-1">&lt;</button>
-    <span class="px-3 py-1">1</span>
-    <button class="px-3 py-1 border rounded mx-1">&gt;</button>
-  </div>
+<!-- src/app/dashboard/pages/activities/activities-list/activities-list.component.html -->
+
+<div class="flex items-center justify-between mb-4">
+  <h2 class="text-2xl font-bold text-gray-700">Lista de Atividades</h2>
+  <a routerLink="/dashboard/activities/new"
+    class="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 rounded">
+    + Nova Atividade
+  </a>
 </div>
+
+<!-- Form de Filtros (Reactive) -->
+<form [formGroup]="filterForm" (ngSubmit)="onFilterSubmit()" class="flex gap-2 mb-4 items-end">
+  <mat-form-field appearance="fill" class="flex-1">
+    <mat-label>Buscar</mat-label>
+    <input matInput formControlName="keyword" placeholder="Nome, descrição...">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-48">
+    <mat-label>Categoria</mat-label>
+    <mat-select formControlName="category">
+      <mat-option value="">Todas</mat-option>
+      <mat-option value="Passeio">Passeio</mat-option>
+      <mat-option value="Excursão">Excursão</mat-option>
+      <mat-option value="Evento">Evento</mat-option>
+      <mat-option value="Outro">Outro</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Filtrar
+  </button>
+</form>
+
+<!-- Loading e Erros -->
+<div *ngIf="loading" class="text-center text-gray-500 mb-2">Carregando...</div>
+<div *ngIf="errorMessage" class="text-red-500 mb-4">
+  {{ errorMessage }}
+</div>
+
+<!-- Tabela de Lista -->
+<div *ngIf="!loading && !errorMessage">
+  <table mat-table [dataSource]="dataSource" matSort
+    class="min-w-full leading-normal bg-white shadow-md rounded overflow-hidden">
+    <!-- NAME -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+      <td mat-cell *matCellDef="let activity">{{ activity.name }}</td>
+    </ng-container>
+  
+    <!-- CATEGORY -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+      <td mat-cell *matCellDef="let activity">{{ activity.category }}</td>
+    </ng-container>
+  
+    <!-- START DATE -->
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Início </th>
+      <td mat-cell *matCellDef="let activity">
+        {{ activity.startDate | date:'short' }}
+      </td>
+    </ng-container>
+  
+    <!-- END DATE -->
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Término </th>
+      <td mat-cell *matCellDef="let activity">
+        {{ activity.endDate | date:'short' }}
+      </td>
+    </ng-container>
+  
+    <!-- AÇÕES -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let activity">
+        <!-- Botões Excluir/Editar/Ver -->
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<!-- Paginação (Angular Material) -->
+<mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [pageIndex]="currentPage"
+  (page)="onPageChange($event)">
+</mat-paginator>

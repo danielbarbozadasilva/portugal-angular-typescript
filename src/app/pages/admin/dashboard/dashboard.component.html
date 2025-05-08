@@ -1,12 +1,8 @@
 <mat-sidenav-container class="h-screen bg-gray-100 font-sans">
   <!-- Sidebar -->
-  <mat-sidenav
-    #sidenav
-    mode="side"
-    [opened]="isSidebarOpen()"
+  <mat-sidenav #sidenav mode="side" [opened]="isSidebarOpen()"
     class="bg-gray-800 text-white transition-all duration-300 ease-in-out"
-    [style.width]="isSidebarOpen() ? '16rem' : '5rem'"
-  >
+    [style.width]="isSidebarOpen() ? '16rem' : '5rem'">
     <div class="flex items-center justify-between p-4 mb-6" [class.p-2]="!isSidebarOpen()">
       <h1 class="text-xl font-semibold" [class.hidden]="!isSidebarOpen()">
         {{ 'admin.dashboard.title' | translate }}
@@ -17,39 +13,23 @@
     </div>
 
     <mat-nav-list>
-      <a
-        mat-list-item
-        [routerLink]="['/admin/dashboard']"
-        routerLinkActive="bg-gray-700"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-2 rounded hover:bg-gray-700"
-        [class.justify-center]="!isSidebarOpen()"
-      >
+      <a mat-list-item [routerLink]="['/admin/dashboard']" routerLinkActive="bg-gray-700"
+        [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded hover:bg-gray-700"
+        [class.justify-center]="!isSidebarOpen()">
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">dashboard</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.dashboard' | translate }}</span>
       </a>
-      <a
-        mat-list-item
-        [routerLink]="['/admin/users']"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center p-2 rounded hover:bg-gray-700"
-        [class.justify-center]="!isSidebarOpen()"
-      >
+      <a mat-list-item [routerLink]="['/admin/users']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">people</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.users' | translate }}</span>
       </a>
-      <a
-        mat-list-item
-        [routerLink]="['/admin/agents']"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center p-2 rounded hover:bg-gray-700"
-        [class.justify-center]="!isSidebarOpen()"
-      >
+      <a mat-list-item [routerLink]="['/admin/agents']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">support_agent</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.agents' | translate }}</span>
       </a>
 
-      <!-- Exemplo comentado de outro item de menu
       <a
         mat-list-item
         [routerLink]="['/admin/consultants']"
@@ -60,15 +40,10 @@
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">supervisor_account</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.consultants' | translate }}</span>
       </a>
-      -->
+  
 
-      <a
-        mat-list-item
-        [routerLink]="['/admin/activities']"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center p-2 rounded hover:bg-gray-700"
-        [class.justify-center]="!isSidebarOpen()"
-      >
+      <a mat-list-item [routerLink]="['/admin/activities']" routerLinkActive="bg-gray-700"
+        class="flex items-center p-2 rounded hover:bg-gray-700" [class.justify-center]="!isSidebarOpen()">
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">hiking</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.activities' | translate }}</span>
       </a>
@@ -76,18 +51,20 @@
     </mat-nav-list>
 
     <div class="mt-auto p-4" [class.p-2]="!isSidebarOpen()">
-      <button
-        mat-flat-button
-        color="warn"
-        (click)="logout()"
-        class="w-full flex items-center justify-center p-2 rounded hover:bg-red-700"
-      >
+      <button mat-flat-button color="warn" (click)="logout()"
+        class="w-full flex items-center justify-center p-2 rounded hover:bg-red-700">
         <mat-icon class="mr-3" [class.mr-0]="!isSidebarOpen()">logout</mat-icon>
         <span [class.hidden]="!isSidebarOpen()">{{ 'admin.sidebar.logout' | translate }}</span>
       </button>
     </div>
   </mat-sidenav>
-
+  <form [formGroup]="activityForm" (ngSubmit)="saveActivity()">
+    <!-- Campos -->
+    <div *ngIf="activityForm.errors?.dateRangeInvalid" class="text-red-500 mb-2">
+      A data de término não pode ser anterior à data de início.
+    </div>
+    <!-- ... -->
+  </form>
   <!-- Main Content Area -->
   <mat-sidenav-content class="flex-1 flex flex-col overflow-hidden">
     <!-- Top Bar -->
@@ -118,10 +95,8 @@
 
         <!-- Botão para Adicionar Novo Usuário -->
         <div class="mb-4 text-right">
-          <a
-            [routerLink]="['/admin/users/new']"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-          >
+          <a [routerLink]="['/admin/users/new']"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
             {{ 'admin.users.addUserButton' | translate }}
           </a>
         </div>
@@ -133,10 +108,8 @@
         </div>
 
         <!-- Tabela de Usuários -->
-        <div
-          *ngIf="!(loading$ | async) && (users$ | async) as users"
-          class="bg-white shadow-md rounded overflow-x-auto"
-        >
+        <div *ngIf="!(loading$ | async) && (users$ | async) as users"
+          class="bg-white shadow-md rounded overflow-x-auto">
           <table class="min-w-full leading-normal">
             <thead>
               <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -169,26 +142,20 @@
                 </td>
                 <td class="py-3 px-6 text-left">
                   <!-- Assumindo que 'permissions' é um array de strings -->
-                  <span
-                    *ngFor="let role of user.permissions"
-                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
-                  >
+                  <span *ngFor="let role of user.permissions"
+                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
                     {{ role | translate }}
                   </span>
                 </td>
                 <td class="py-3 px-6 text-center">
-                  <button
-                    (click)="editUser(user._id)"
+                  <button (click)="editUser(user._id)"
                     class="bg-yellow-500 hover:bg-yellow-700 text-white text-xs font-bold py-1 px-2 rounded mr-2 transition duration-300"
-                    title="{{ 'admin.users.editAction' | translate }}"
-                  >
+                    title="{{ 'admin.users.editAction' | translate }}">
                     <span class="material-icons text-sm">edit</span>
                   </button>
-                  <button
-                    (click)="deleteUser(user._id)"
+                  <button (click)="deleteUser(user._id)"
                     class="bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded transition duration-300"
-                    title="{{ 'admin.users.deleteAction' | translate }}"
-                  >
+                    title="{{ 'admin.users.deleteAction' | translate }}">
                     <span class="material-icons text-sm">delete</span>
                   </button>
                 </td>

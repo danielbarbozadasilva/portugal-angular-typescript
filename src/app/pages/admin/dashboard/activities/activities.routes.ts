@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const ACTIVITY_ROUTES: Routes = [
   {
     path: '', // Rota /admin/activities -> Lista de atividades
-    loadComponent: () => import('./activity-list/activity-list.component').then((m) => m.ActivityListComponent),
+    loadComponent: () => import('./activity-list/activity-list.component').then((m) => m.ActivitiesListComponent),
     title: 'Admin - Activity List',
   },
   {

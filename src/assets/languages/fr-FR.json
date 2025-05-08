@@ -1,174 +1,51 @@
 {
-  "home": {
-    "filters": {
-      "sortAlphabeticalAZ": "Alphabétique (A-Z)",
-      "sortAlphabeticalZA": "Alphabétique (Z-A)",
-      "sortPrice": "Prix",
-      "sortDate": "Date",
-      "sortRelevance": "Pertinence",
-      "sortRatingAsc": "Évaluation (asc)",
-      "sortRatingDesc": "Évaluation (desc)",
-      "sortLocation": "Localisation",
-      "searchButton": "Rechercher",
-      "keywordPlaceholder": "Mot-clé...",
-      "categoryPlaceholder": "Catégorie...",
-      "minPricePlaceholder": "Prix Min.",
-      "maxPricePlaceholder": "Prix Max.",
-      "languagePlaceholder": "Langue...",
-      "sortTitle": "Trier par..."
+  "consultant": {
+    "form": {
+      "title": "Consultant",
+      "name": {
+        "placeholder": "Nom"
+      },
+      "country": {
+        "placeholder": "Pays"
+      },
+      "cpf": {
+        "placeholder": "CPF"
+      },
+      "documentType": {
+        "placeholder": "Type de Document"
+      },
+      "documentValue": {
+        "placeholder": "Numéro de Document"
+      },
+      "phones": {
+        "label": "Téléphones",
+        "add": "Ajouter Téléphone"
+      },
+      "specialty": {
+        "label": "Spécialités",
+        "add": "Ajouter Spécialité"
+      },
+      "address": {
+        "street": "Rue",
+        "number": "Numéro",
+        "complement": "Complément",
+        "district": "Quartier",
+        "city": "Ville",
+        "state": "État",
+        "zipCode": "Code Postal",
+        "country": "Pays"
+      },
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "delete": "Supprimer"
     },
-    "hero": {
-      "title": "Explorez l'Essence du Portugal",
-      "subtitle": "Vivez des expériences inoubliables en terres lusitaniennes, de la côte à l'intérieur.",
-      "searchPlaceholder": "Découvrez activités, destinations...",
-      "searchButton": "Explorer"
-    },
-    "activitiesSectionTitle": "Activités à la Une",
-    "activityLocationLabel": "Lieu",
-    "activityPriceLabel": "Prix",
-    "apresentationTitle": "Le Portugal vous attend!",
-    "apresentationLead": "Commencez à planifier votre voyage dès maintenant et découvrez tous les charmes que le Portugal a à offrir.",
-    "planAdventure": "Planifier l'Aventure",
-    "gastronomySectionTitle": "Délices de la gastronomie portugaise",
-    "gastronomySectionLead": "Préparez-vous pour un voyage de saveurs! Découvrez des plats qui sont de véritables trésors de la cuisine portugaise.",
-    "foodPastelNataTitle": "Pastel de Nata",
-    "foodPastelNataText": "L'icône de la pâtisserie portugaise, parfaite pour accompagner un café ou un thé.",
-    "foodFrancesinhaTitle": "Francesinha",
-    "foodFrancesinhaText": "Un sandwich unique de Porto, riche en saveurs et idéal pour les amateurs de viande.",
-    "foodBacalhauTitle": "Bacalhau à Brás",
-    "foodBacalhauText": "L'une des nombreuses façons de déguster la morue, un classique réinventé.",
-    "foodPastelNataAlt": "Photographie d'un Pastel de Nata",
-    "foodFrancesinhaAlt": "Photographie d'une Francesinha",
-    "foodBacalhauAlt": "Photographie de Bacalhau à Brás",
-    "showcase1Title": "Aventures Urbaines",
-    "showcase1Lead": "Explorez les villes historiques du Portugal, pleines de culture et de vie.",
-    "showcase1Btn": "Découvrir les Villes",
-    "showcase2Title": "Nature Éblouissante",
-    "showcase2Lead": "Des plages dorées aux montagnes verdoyantes, la nature du Portugal captive.",
-    "showcase2Btn": "Explorer la Nature",
-    "showcase3Title": "Traditions Vivantes",
-    "showcase3Lead": "Plongez dans les traditions locales, du Fado à la gastronomie régionale.",
-    "showcase3Btn": "Vivre les Traditions",
-    "specialOfferBadge": "Offre spéciale",
-    "priceNote": "Les prix varient en fonction de la taille du groupe",
-    "joinButton": "Participer",
-    "errorFetchActivities": "Erreur lors de la récupération des activités:"
-  },
-  "footer": {
-    "top": {
-      "title": "Assistance Client 24/7",
-      "subtitle": "Par nos spécialistes de voyage primés",
-      "phoneNumber": "+33-X-XX-XX-XX-XX",
-      "followUsTitle": "Suivez-nous",
-      "followUsText": "Restez informé des dernières nouvelles et offres spéciales de Noropa Voyages et Tourisme"
-    },
-    "newsletter": {
-      "title": "Abonnez-vous à la Newsletter",
-      "subtitle": "Recevez les dernières nouvelles et mises à jour",
-      "placeholder": "Adresse E-mail",
-      "button": "S'abonner"
-    },
-    "bottom": {
-      "contactTitle": "Contactez-nous",
-      "contactAddressLine1": "Avenida da República 755 5ème étage Bureau 51,",
-      "contactAddressLine2": "Vila Nova de Gaia, Portugal 4430-201",
-      "contactEmail": "info@noropa.com",
-      "linkTourSearch": "Résultat Recherche d'Excursion",
-      "linkClientsSay": "Ce que Disent Nos Clients",
-      "linkServices": "Services Fournis",
-      "linkAboutUs": "À Propos de Nous",
-      "linkGridView": "Vue Grille d'Excursion",
-      "linkContact": "Contactez-nous",
-      "linkTeam": "Notre Équipe",
-      "linkWhyChooseUs": "Pourquoi Nous Choisir",
-      "linkTourism": "Tourisme",
-      "instagramTitle": "Photos Instagram"
+    "list": {
+      "title": "Consultants",
+      "add": "Nouveau Consultant",
+      "name": "Nom",
+      "birthDate": "Date de Naissance",
+      "country": "Pays",
+      "edit": "Éditer"
     }
-  },
-  "dropdown": {
-    "header": "Mon Compte",
-    "profile": "Mon Profil",
-    "editProfile": "Modifier le Profil",
-    "enrollment": "Mes Inscriptions",
-    "logout": "Se Déconnecter"
-  },
-  "cart": {
-    "errorUnknown": "Une erreur inconnue s'est produite dans le panier."
-  },
-  "welcome": "Bienvenue",
-  "login": "Se connecter",
-  "signup": "S'inscrire",
-  "forgotPassword": "Mot de passe oublié",
-  "email": "E-mail",
-  "password": "Mot de passe",
-  "confirmPassword": "Confirmer le mot de passe",
-  "name": "Nom complet",
-  "username": "Nom d'utilisateur",
-  "birthDate": "Date de naissance",
-  "interests": "Intérêts",
-  "submit": "Envoyer",
-  "termsAndConditions": "Conditions d'utilisation et politique de confidentialité",
-  "agreeWithTerms": "Je suis d'accord avec les conditions d'utilisation et la politique de confidentialité.",
-  "country": "Pays",
-  "documentType": "Type de document",
-  "documentValue": "Document",
-  "mainPhone": "Téléphone principal",
-  "optionalPhone": "Téléphone optionnel",
-  "zipCode": "Code Postal",
-  "street": "Rue",
-  "number": "Numéro",
-  "complement": "Complément",
-  "district": "Quartier",
-  "city": "Ville",
-  "stateUF": "Département/Région (UF)",
-  "placeholder": {
-    "name": "Ex.: Jean Dupont",
-    "email": "exemple@domaine.fr",
-    "password": "Entrez votre mot de passe",
-    "confirmPassword": "Répétez votre mot de passe",
-    "username": "Nom d'utilisateur unique",
-    "birthDate": "Sélectionnez une date",
-    "country": "Sélectionnez votre pays",
-    "documentType": "Sélectionnez le type de document",
-    "documentValue": "Entrez votre document",
-    "mainPhone": "Entrez votre téléphone principal",
-    "optionalPhone": "Entrez votre téléphone optionnel",
-    "zipCode": "Ex.: 75001",
-    "street": "Avenue Exemple...",
-    "number": "123",
-    "complement": "Appartement, bâtiment...",
-    "district": "Entrez votre quartier",
-    "city": "Entrez votre ville",
-    "stateUF": "Ex.: 75",
-    "emailLogin": "Entrez votre e-mail",
-    "passwordLogin": "Entrez votre mot de passe",
-    "companyName": "Ex.: ABC Entreprises SARL",
-    "tradeName": "Ex.: Boutique ABC"
-  },
-  "tourWalk": "Balade",
-  "tourExcursion": "Excursion",
-  "tourEvent": "Événement",
-  "tourTrail": "Randonnée",
-  "tourOther": "Autre",
-  "followUs": "Suivez-nous",
-  "signIn": "Se connecter",
-  "registerAgent": "S'inscrire Agent",
-  "registerClient": "S'inscrire Client",
-  "homePage": "Page d'accueil",
-  "about": "À propos",
-  "tours": "Excursions",
-  "prices": "Tarifs",
-  "destinations": "Destinations",
-  "contact": "Contactez-nous",
-  "helpline": "Ligne d'assistance",
-  "bookTour": "Réserver une excursion",
-  "siteLogoAlt": "Logo du site",
-  "loginTitle": "Connexion",
-  "signInButton": "Se connecter",
-  "resetPassword": "Réinitialiser le mot de passe",
-  "agentType": "Type d'Agent",
-  "agent": {
-    "person": "Particulier",
-    "company": "Entreprise"
   }
 }

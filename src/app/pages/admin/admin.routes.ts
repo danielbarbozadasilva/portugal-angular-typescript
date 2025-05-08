@@ -11,29 +11,40 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DashboardHomeComponent
+        component: DashboardHomeComponent,
       },
       {
         path: 'users',
-        component: UserListComponent
+        component: UserListComponent,
       },
-      // Exemplo de rota para 'agents'
-      // {
-      //   path: 'agents',
-      //   component: AgentsComponent
-      // },
-      // E assim por diante...
+      // Rota para 'agents' (Lazy Loading)
+      {
+        path: 'agents',
+        loadChildren: () => import('./dashboard/agents/agents.routes').then((m) => m.AGENT_ROUTES),
+      },
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+      {
+        path: 'consultant',
+        loadChildren: () => import('./dashboard/consultants/consultants.routes').then((m) => m.CONSULTANT_ROUTES),
+      },
+      {
+        path: 'consultant/form',
+        component: ConsultantFormComponent,
+      },
+      {
+        path: 'consultant',
+        component: ConsultantListComponent ,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AdminRoutingModule {}

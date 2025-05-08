@@ -23,6 +23,18 @@ import {
 import { selectAllActivities } from '@app/core/store/activity/activity.selectors';
 import { selectAllOrders } from '@app/core/store/order/order.selectors';
 import { Observable } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/module.d-DBDMCw5I';
+import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { TopbarComponent } from './layout/topbar/topbar.component';
+import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
+import { DashboardRoutingModule } from './dashboard-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/module.d-vndDeG-q';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -32,14 +44,33 @@ import { Observable } from 'rxjs';
     RouterModule,
     TranslateModule,
     MatSidenavModule,
+    MatSelectModule,
+    MatInputModule,
     MatListModule,
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
+    DashboardLayoutComponent,
+    MatSortModule,
+    SidebarComponent,
+    TopbarComponent,
+    DashboardHomeComponent,
+    CommonModule,
+    RouterModule,
+    DashboardRoutingModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatButtonModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatSnackBarModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   isSidebarOpen = signal(true);

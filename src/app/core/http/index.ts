@@ -27,3 +27,5 @@ export {
   RatingService,
   SolicitationCartService,
 };
+
+export * from './consultant.service';

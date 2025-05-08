@@ -22,8 +22,12 @@ export interface IUser {
   updatedAt?: Date;
   wasNew?: any;
 }
-
-// Interface para paginação (exemplo)
+export interface IAuthStatus {
+  isAuthenticated: boolean;
+  user: IUser;
+  loading: boolean;
+  error: any;
+}
 export interface IPaginatedResponse<T> {
   items: T[];
   totalItems: number;

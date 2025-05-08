@@ -1,174 +1,51 @@
 {
-  "home": {
-    "filters": {
-      "sortAlphabeticalAZ": "Alphabetical (A-Z)",
-      "sortAlphabeticalZA": "Alphabetical (Z-A)",
-      "sortPrice": "Price",
-      "sortDate": "Date",
-      "sortRelevance": "Relevance",
-      "sortRatingAsc": "Rating (asc)",
-      "sortRatingDesc": "Rating (desc)",
-      "sortLocation": "Location",
-      "searchButton": "Search",
-      "keywordPlaceholder": "Keyword...",
-      "categoryPlaceholder": "Category...",
-      "minPricePlaceholder": "Min. Price",
-      "maxPricePlaceholder": "Max. Price",
-      "languagePlaceholder": "Language...",
-      "sortTitle": "Sort by..."
+  "consultant": {
+    "form": {
+      "title": "Consultant",
+      "name": {
+        "placeholder": "Name"
+      },
+      "country": {
+        "placeholder": "Country"
+      },
+      "cpf": {
+        "placeholder": "CPF"
+      },
+      "documentType": {
+        "placeholder": "Document Type"
+      },
+      "documentValue": {
+        "placeholder": "Document Number"
+      },
+      "phones": {
+        "label": "Phones",
+        "add": "Add Phone"
+      },
+      "specialty": {
+        "label": "Specialties",
+        "add": "Add Specialty"
+      },
+      "address": {
+        "street": "Street",
+        "number": "Number",
+        "complement": "Complement",
+        "district": "District",
+        "city": "City",
+        "state": "State",
+        "zipCode": "ZIP Code",
+        "country": "Country"
+      },
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete"
     },
-    "hero": {
-      "title": "Explore the Essence of Portugal",
-      "subtitle": "Live unforgettable experiences in Lusitanian lands, from the coast to the interior.",
-      "searchPlaceholder": "Discover activities, destinations...",
-      "searchButton": "Explore"
-    },
-    "activitiesSectionTitle": "Featured Activities",
-    "activityLocationLabel": "Location",
-    "activityPriceLabel": "Price",
-    "apresentationTitle": "Portugal Awaits You!",
-    "apresentationLead": "Start planning your trip now and discover all the charms Portugal has to offer.",
-    "planAdventure": "Plan Adventure",
-    "gastronomySectionTitle": "Delights of Portuguese Gastronomy",
-    "gastronomySectionLead": "Get ready for a journey of flavors! Discover dishes that are true treasures of Portuguese cuisine.",
-    "foodPastelNataTitle": "Pastel de Nata",
-    "foodPastelNataText": "The icon of Portuguese pastry, perfect with coffee or tea.",
-    "foodFrancesinhaTitle": "Francesinha",
-    "foodFrancesinhaText": "A unique sandwich from Porto, rich in flavors and ideal for meat lovers.",
-    "foodBacalhauTitle": "Bacalhau à Brás",
-    "foodBacalhauText": "One of the many ways to enjoy codfish, a reinvented classic.",
-    "foodPastelNataAlt": "Photograph of a Pastel de Nata",
-    "foodFrancesinhaAlt": "Photograph of a Francesinha",
-    "foodBacalhauAlt": "Photograph of Bacalhau à Brás",
-    "showcase1Title": "Urban Adventures",
-    "showcase1Lead": "Explore Portugal's historic cities, full of culture and life.",
-    "showcase1Btn": "Discover Cities",
-    "showcase2Title": "Stunning Nature",
-    "showcase2Lead": "From golden beaches to green mountains, Portugal's nature captivates.",
-    "showcase2Btn": "Explore Nature",
-    "showcase3Title": "Living Traditions",
-    "showcase3Lead": "Immerse yourself in local traditions, from Fado to regional gastronomy.",
-    "showcase3Btn": "Experience Traditions",
-    "specialOfferBadge": "Special offer",
-    "priceNote": "Prices vary depending on group size",
-    "joinButton": "Join",
-    "errorFetchActivities": "Error fetching activities:"
-  },
-  "footer": {
-    "top": {
-      "title": "24/7 Customer Support",
-      "subtitle": "From our award-winning travel experts",
-      "phoneNumber": "+1-XXX-XXX-XXXX",
-      "followUsTitle": "Follow Us",
-      "followUsText": "Stay updated with the latest news and special offers from Noropa Travel and Tourism"
-    },
-    "newsletter": {
-      "title": "Subscribe to Newsletter",
-      "subtitle": "Receive recent news and latest updates",
-      "placeholder": "Email Address",
-      "button": "Subscribe"
-    },
-    "bottom": {
-      "contactTitle": "Contact Us",
-      "contactAddressLine1": "Avenida da República 755 5th floor Room 51,",
-      "contactAddressLine2": "Vila Nova de Gaia, Portugal 4430-201",
-      "contactEmail": "info@noropa.com",
-      "linkTourSearch": "Tour Search Result",
-      "linkClientsSay": "What Our Clients Say",
-      "linkServices": "Services Provided",
-      "linkAboutUs": "About Us",
-      "linkGridView": "Tour Grid View",
-      "linkContact": "Contact Us",
-      "linkTeam": "Our Team",
-      "linkWhyChooseUs": "Why Choose Us",
-      "linkTourism": "Tourism",
-      "instagramTitle": "Instagram Photos"
+    "list": {
+      "title": "Consultants",
+      "add": "New Consultant",
+      "name": "Name",
+      "birthDate": "Birth Date",
+      "country": "Country",
+      "edit": "Edit"
     }
-  },
-  "dropdown": {
-    "header": "My Account",
-    "profile": "My Profile",
-    "editProfile": "Edit Profile",
-    "enrollment": "My Enrollments",
-    "logout": "Logout"
-  },
-  "cart": {
-    "errorUnknown": "An unknown error occurred in the cart."
-  },
-  "welcome": "Welcome",
-  "login": "Login",
-  "signup": "Sign Up",
-  "forgotPassword": "Forgot your password",
-  "email": "E-mail",
-  "password": "Password",
-  "confirmPassword": "Confirm Password",
-  "name": "Full Name",
-  "username": "Username",
-  "birthDate": "Birth Date",
-  "interests": "Interests",
-  "submit": "Submit",
-  "termsAndConditions": "Terms of Use and Privacy Policy",
-  "agreeWithTerms": "I agree with the terms of use and privacy policy.",
-  "country": "Country",
-  "documentType": "Document Type",
-  "documentValue": "Document",
-  "mainPhone": "Main Phone",
-  "optionalPhone": "Optional Phone",
-  "zipCode": "Zip Code",
-  "street": "Street",
-  "number": "Number",
-  "complement": "Complement",
-  "district": "District/Neighborhood",
-  "city": "City",
-  "stateUF": "State (UF)",
-  "placeholder": {
-    "name": "e.g. John Doe",
-    "email": "example@domain.com",
-    "password": "Enter your password",
-    "confirmPassword": "Repeat your password",
-    "username": "Unique username",
-    "birthDate": "Select a date",
-    "country": "Select your country",
-    "documentType": "Select your document type",
-    "documentValue": "Enter your document number",
-    "mainPhone": "Enter your main phone number",
-    "optionalPhone": "Enter your optional phone number",
-    "zipCode": "e.g. 12345",
-    "street": "Example Avenue...",
-    "number": "123",
-    "complement": "Apartment, block...",
-    "district": "Enter your district/neighborhood",
-    "city": "Enter your city",
-    "stateUF": "e.g. CA",
-    "emailLogin": "Enter your e-mail",
-    "passwordLogin": "Enter your password",
-    "companyName": "e.g. ABC Enterprises Inc.",
-    "tradeName": "e.g. ABC Store"
-  },
-  "tourWalk": "Walk",
-  "tourExcursion": "Excursion",
-  "tourEvent": "Event",
-  "tourTrail": "Trail",
-  "tourOther": "Other",
-  "followUs": "Follow Us",
-  "signIn": "Sign In",
-  "registerAgent": "Register Agent",
-  "registerClient": "Register Client",
-  "homePage": "Homepage",
-  "about": "About",
-  "tours": "Tours",
-  "prices": "Prices",
-  "destinations": "Destinations",
-  "contact": "Contact Us",
-  "helpline": "Helpline",
-  "bookTour": "Book Tour",
-  "siteLogoAlt": "Site logo",
-  "loginTitle": "Login",
-  "signInButton": "Sign In",
-  "resetPassword": "Reset Password",
-  "agentType": "Agent Type",
-  "agent": {
-    "person": "Individual",
-    "company": "Company"
   }
 }

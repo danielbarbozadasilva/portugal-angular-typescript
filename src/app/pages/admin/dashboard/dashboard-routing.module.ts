@@ -3,10 +3,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
-import { DashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
-import { ActivitiesListComponent } from './pages/activities/activities-list/activities-list.component';
-import { ActivityFormComponent } from './pages/activities/activity-form/activity-form.component';
-import { ActivityDetailsComponent } from './pages/activities/activity-details/activity-details.component';
+import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
+import { ActivitiesListComponent } from './activities/activity-list/activity-list.component';
+import { ActivityFormComponent } from './activities/activity-form/activity-form.component';
+import { ActivityDetailComponent } from './activities/activity-detail/activity-detail.component';
 
 const routes: Routes = [
   {
@@ -22,8 +22,6 @@ const routes: Routes = [
         path: 'home',
         component: DashboardHomeComponent
       },
-
-      // Rotas do CRUD de Activities
       {
         path: 'activities',
         component: ActivitiesListComponent
@@ -38,7 +36,7 @@ const routes: Routes = [
       },
       {
         path: 'activities/:id',
-        component: ActivityDetailsComponent
+        component: ActivityDetailComponent
       }
 
       // Outras rotas de CRUD (Agents, Orders, etc.) serão adicionadas depois

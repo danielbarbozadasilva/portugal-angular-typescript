@@ -1,0 +1,56 @@
+<div class="max-w-5xl mx-auto p-6 space-y-6">
+  <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-200">{{ 'consultant.form.title' | translate }}</h1>
+  <form [formGroup]="form" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input formControlName="name" class="input" placeholder="{{ 'consultant.form.name.placeholder' | translate }}" />
+      <input type="date" formControlName="birthDate" class="input" />
+      <input formControlName="country" class="input" placeholder="{{ 'consultant.form.country.placeholder' | translate }}" />
+      <input formControlName="cpf" class="input" placeholder="{{ 'consultant.form.cpf.placeholder' | translate }}" />
+      <select formControlName="documentType" class="input">
+        <option value="" disabled selected>{{ 'consultant.form.documentType.placeholder' | translate }}</option>
+        <option value="CPF">CPF</option>
+        <option value="Passport">Passport</option>
+      </select>
+      <input formControlName="documentValue" class="input" placeholder="{{ 'consultant.form.documentValue.placeholder' | translate }}" />
+    </div>
+    <div class="space-y-2">
+      <label class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ 'consultant.form.phones.label' | translate }}</label>
+      <div class="space-y-2">
+        <ng-container *ngFor="let ctrl of phones.controls; let i = index">
+          <div class="flex gap-2">
+            <input [formControl]="ctrl" class="input flex-1" />
+            <button type="button" class="btn-danger" (click)="removePhone(i)">-</button>
+          </div>
+        </ng-container>
+        <button type="button" class="btn-primary" (click)="addPhone()">{{ 'consultant.form.phones.add' | translate }}</button>
+      </div>
+    </div>
+    <div class="space-y-2">
+      <label class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ 'consultant.form.specialty.label' | translate }}</label>
+      <div class="space-y-2">
+        <ng-container *ngFor="let ctrl of specialties.controls; let i = index">
+          <div class="flex gap-2">
+            <input [formControl]="ctrl" class="input flex-1" />
+            <button type="button" class="btn-danger" (click)="removeSpecialty(i)">-</button>
+          </div>
+        </ng-container>
+        <button type="button" class="btn-primary" (click)="addSpecialty()">{{ 'consultant.form.specialty.add' | translate }}</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input formControlName="address.street" class="input" placeholder="{{ 'consultant.form.address.street' | translate }}" />
+      <input formControlName="address.number" class="input" placeholder="{{ 'consultant.form.address.number' | translate }}" />
+      <input formControlName="address.complement" class="input" placeholder="{{ 'consultant.form.address.complement' | translate }}" />
+      <input formControlName="address.district" class="input" placeholder="{{ 'consultant.form.address.district' | translate }}" />
+      <input formControlName="address.city" class="input" placeholder="{{ 'consultant.form.address.city' | translate }}" />
+      <input formControlName="address.state" class="input" placeholder="{{ 'consultant.form.address.state' | translate }}" />
+      <input formControlName="address.zipCode" class="input" placeholder="{{ 'consultant.form.address.zipCode' | translate }}" />
+      <input formControlName="address.country" class="input" placeholder="{{ 'consultant.form.address.country' | translate }}" />
+    </div>
+    <div class="flex gap-4">
+      <button type="button" class="btn-secondary" (click)="router.navigate(['/consultants'])">{{ 'consultant.form.cancel' | translate }}</button>
+      <button type="submit" class="btn-primary" (click)="save()">{{ 'consultant.form.save' | translate }}</button>
+      <button *ngIf="consultantId" type="button" class="btn-danger" (click)="delete()">{{ 'consultant.form.delete' | translate }}</button>
+    </div>
+  </form>
+</div>

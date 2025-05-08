@@ -1,38 +1,94 @@
-import { IUser } from './models.user'; // Import IUser
-
-// Interface for responses that contain data (can be shared)
-export interface IDataResponse {
+export interface IResponseAuthSignIn {
+  status: number;
   success: boolean;
-  message?: string;
-  data?: any; // Use a specific type if possible
+  message: string;
+  data: {
+    _id: string;
+    token: string;
+    name: string;
+    email: string;
+    username: string;
+    permissions: string[];
+  } | {};
 }
 
-// Interface for login/logout response data
-export interface IAuthData {
-  token: string;
-  user: IUser; // Use the specific IUser interface
-  // Add other relevant fields like expiration, refresh token info, etc.
-}
-
-// Interface for the full login/logout response
-export interface IAuthResponse extends IDataResponse {
-  data: IAuthData;
-}
-
-// Interface for token-related responses (refresh, check)
-export interface ITokenResponse {
+export interface IResponseAuthSignOut {
+  status: number;
   success: boolean;
-  message?: string;
-  token?: string; // For refresh token response
-  valid?: boolean; // For check token response
+  message: string;
+  data: {};
 }
-
-// Interface for parameters used in auth service methods
 export interface IAuthParams {
-  email?: string;
-  password?: string;
-  _id?: string;
-  token?: string;
-  recoveryCode?: string;
-  newPassword?: string;
+  email: string;
+  recoveryCode: string;
+  newPassword: string;
+}
+export interface IResponseAuthRefreshToken {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    token: string,
+    refreshToken: string
+  } | {};
+}
+
+export interface IResponseAuthTokenValid {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    valid: boolean,
+  };
+}
+
+export interface IResponseAuthRecoveryPassword {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    recovery: boolean,
+  };
+}
+
+export interface IResponseAuthResetPassword {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    reseted: boolean,
+  };
+}
+
+export interface IAuthParams {
+  email: string;
+  password: string;
+}
+
+export interface ICheckTokenParams {
+  token: string;
+}
+
+export interface IResetPasswordParams{
+  email: string;
+  recoveryCode: string;
+  newPassword: string;
+}
+
+export interface IDataModel {
+  token: string;
+  name: string;
+  email: string;
+  username: string;
+  permissions: string;
+}
+
+export interface IRefreshToken {
+  status: number;
+  success: boolean;
+  message: string;
+  data: {
+    token: string,
+    refreshToken: string
+  } | {};
 }

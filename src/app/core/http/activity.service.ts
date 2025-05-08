@@ -1,40 +1,43 @@
-// src/app/dashboard/pages/activities/activities.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IActivity } from '../models/models.activity';
+import { environment } from 'environments/environments';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ActivitiesService {
 
-  private baseUrl = 'http://localhost:3000/api/activities'; // Ajustar para sua API
+export class ActivitiesService {
+  private baseUrl = `${environment.apiBaseUrl}/activity`;
 
   constructor(private http: HttpClient) {}
 
-  // Buscar todas as atividades (poderíamos passar filtros, paginação etc.)
-  getActivities(): Observable<IActivity[]> {
+  public getActivities(): Observable<IActivity[]> {
     return this.http.get<IActivity[]>(this.baseUrl);
   }
 
-  // Buscar atividade por ID
-  getActivityById(id: string): Observable<IActivity> {
+  public getActivitiesDashboard(page: number, limit: number, keyword?: string, category?: string, sort?: string): Observable<IActivity[]> {
+    let params = new HttpParams().set('page', page).set('limit', limit);
+    if (keyword) params = params.set('keyword', keyword);
+    if (category) params = params.set('category', category);
+    if (sort) params = params.set('sort', sort);
+    return this.http.get<IActivity[]>(this.baseUrl, { params });
+  }
+
+  public getActivityById(id: string): Observable<IActivity> {
     return this.http.get<IActivity>(`${this.baseUrl}/${id}`);
   }
 
-  // Criar nova atividade
-  createActivity(data: Partial<IActivity>): Observable<IActivity> {
-    return this.http.post<IActivity>(this.baseUrl, data);
+  public createActivityWithImages(formData: FormData): Observable<IActivity> {
+    return this.http.post<IActivity>(this.baseUrl, formData);
   }
 
-  // Atualizar atividade existente
-  updateActivity(id: string, data: Partial<IActivity>): Observable<IActivity> {
-    return this.http.put<IActivity>(`${this.baseUrl}/${id}`, data);
+  public updateActivityWithImages(id: string, formData: IActivity): Observable<IActivity> {
+    return this.http.put<IActivity>(`${this.baseUrl}/${id}`, formData);
   }
 
-  // Excluir atividade
-  deleteActivity(id: string): Observable<{ message: string }> {
+  public deleteActivity(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/${id}`);
   }
 }

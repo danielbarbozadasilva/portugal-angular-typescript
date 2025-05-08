@@ -1,174 +1,51 @@
 {
-  "home": {
-    "filters": {
-      "sortAlphabeticalAZ": "Alfabética (A-Z)",
-      "sortAlphabeticalZA": "Alfabética (Z-A)",
-      "sortPrice": "Preço",
-      "sortDate": "Data",
-      "sortRelevance": "Relevância",
-      "sortRatingAsc": "Avaliação (asc)",
-      "sortRatingDesc": "Avaliação (desc)",
-      "sortLocation": "Localização",
-      "searchButton": "Buscar",
-      "keywordPlaceholder": "Palavra-chave...",
-      "categoryPlaceholder": "Categoria...",
-      "minPricePlaceholder": "Preço Mín.",
-      "maxPricePlaceholder": "Preço Máx.",
-      "languagePlaceholder": "Idioma...",
-      "sortTitle": "Ordenar por..."
+  "consultant": {
+    "form": {
+      "title": "Consultor",
+      "name": {
+        "placeholder": "Nome"
+      },
+      "country": {
+        "placeholder": "País"
+      },
+      "cpf": {
+        "placeholder": "NIF"
+      },
+      "documentType": {
+        "placeholder": "Tipo de Documento"
+      },
+      "documentValue": {
+        "placeholder": "Número do Documento"
+      },
+      "phones": {
+        "label": "Telefones",
+        "add": "Adicionar Telefone"
+      },
+      "specialty": {
+        "label": "Especialidades",
+        "add": "Adicionar Especialidade"
+      },
+      "address": {
+        "street": "Rua",
+        "number": "Número",
+        "complement": "Complemento",
+        "district": "Bairro",
+        "city": "Cidade",
+        "state": "Distrito",
+        "zipCode": "Código Postal",
+        "country": "País"
+      },
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "delete": "Eliminar"
     },
-    "hero": {
-      "title": "Explore a Essência de Portugal",
-      "subtitle": "Viva experiências inesquecíveis em terras lusitanas, do litoral ao interior.",
-      "searchPlaceholder": "Descubra atividades, destinos...",
-      "searchButton": "Explorar"
-    },
-    "activitiesSectionTitle": "Atividades em Destaque",
-    "activityLocationLabel": "Local",
-    "activityPriceLabel": "Preço",
-    "apresentationTitle": "Portugal espera por si!",
-    "apresentationLead": "Comece já a planear a sua viagem e descubra todos os encantos que Portugal tem para oferecer.",
-    "planAdventure": "Planear Aventura",
-    "gastronomySectionTitle": "Delícias da Gastronomia Portuguesa",
-    "gastronomySectionLead": "Prepare-se para uma viagem de sabores! Descubra pratos que são verdadeiros tesouros da culinária lusa.",
-    "foodPastelNataTitle": "Pastel de Nata",
-    "foodPastelNataText": "O ícone da doçaria portuguesa, perfeito para acompanhar um café ou chá.",
-    "foodFrancesinhaTitle": "Francesinha",
-    "foodFrancesinhaText": "Uma sanduíche única do Porto, rica em sabores e ideal para amantes de carne.",
-    "foodBacalhauTitle": "Bacalhau à Brás",
-    "foodBacalhauText": "Uma das muitas formas de saborear o bacalhau, um clássico reinventado.",
-    "foodPastelNataAlt": "Fotografia de um Pastel de Nata",
-    "foodFrancesinhaAlt": "Fotografia de uma Francesinha",
-    "foodBacalhauAlt": "Fotografia de Bacalhau à Brás",
-    "showcase1Title": "Aventuras Urbanas",
-    "showcase1Lead": "Explore as cidades históricas de Portugal, cheias de cultura e vida.",
-    "showcase1Btn": "Descobrir Cidades",
-    "showcase2Title": "Natureza Deslumbrante",
-    "showcase2Lead": "Desde praias douradas a montanhas verdejantes, a natureza de Portugal cativa.",
-    "showcase2Btn": "Explorar Natureza",
-    "showcase3Title": "Tradições Vivas",
-    "showcase3Lead": "Mergulhe nas tradições locais, do Fado à gastronomia regional.",
-    "showcase3Btn": "Viver Tradições",
-    "specialOfferBadge": "Oferta especial",
-    "priceNote": "Os preços variam consoante o tamanho do grupo",
-    "joinButton": "Participar",
-    "errorFetchActivities": "Erro ao carregar atividades:"
-  },
-  "footer": {
-    "top": {
-      "title": "Assistência ao Cliente 24/7",
-      "subtitle": "Dos nossos especialistas de viagem premiados",
-      "phoneNumber": "+351-XXX-XXX-XXX",
-      "followUsTitle": "Siga-nos",
-      "followUsText": "Mantenha-se atualizado com as últimas notícias e ofertas especiais da Noropa Viagens e Turismo"
-    },
-    "newsletter": {
-      "title": "Subscreva a Newsletter",
-      "subtitle": "Receba notícias recentes e as últimas atualizações",
-      "placeholder": "Endereço de Email",
-      "button": "Subscrever"
-    },
-    "bottom": {
-      "contactTitle": "Contacte-nos",
-      "contactAddressLine1": "Avenida da República 755 5 andar Sala 51,",
-      "contactAddressLine2": "Vila Nova de Gaia, Portugal 4430-201",
-      "contactEmail": "info@noropa.com",
-      "linkTourSearch": "Resultado da Pesquisa de Excursão",
-      "linkClientsSay": "O Que Dizem os Nossos Clientes",
-      "linkServices": "Serviços Disponibilizados",
-      "linkAboutUs": "Sobre Nós",
-      "linkGridView": "Vista de Grelha de Excursão",
-      "linkContact": "Contacte-nos",
-      "linkTeam": "A Nossa Equipa",
-      "linkWhyChooseUs": "Porque nos Escolher",
-      "linkTourism": "Turismo",
-      "instagramTitle": "Fotografias do Instagram"
+    "list": {
+      "title": "Consultores",
+      "add": "Novo Consultor",
+      "name": "Nome",
+      "birthDate": "Data de Nascimento",
+      "country": "País",
+      "edit": "Editar"
     }
-  },
-  "dropdown": {
-    "header": "Minha Conta",
-    "profile": "Meu Perfil",
-    "editProfile": "Editar Perfil",
-    "enrollment": "Minhas Inscrições",
-    "logout": "Sair"
-  },
-  "cart": {
-    "errorUnknown": "Ocorreu um erro desconhecido no carrinho."
-  },
-  "welcome": "Bem-vindo",
-  "login": "Entrar",
-  "signup": "Registar",
-  "forgotPassword": "Esqueceu a palavra-passe",
-  "email": "E-mail",
-  "password": "Palavra-passe",
-  "confirmPassword": "Confirmar Palavra-passe",
-  "name": "Nome Completo",
-  "username": "Nome de Utilizador",
-  "birthDate": "Data de Nascimento",
-  "interests": "Interesses",
-  "submit": "Submeter",
-  "termsAndConditions": "Termos de Utilização e Política de Privacidade",
-  "agreeWithTerms": "Concordo com os termos de utilização e a política de privacidade.",
-  "country": "País",
-  "documentType": "Tipo de Documento",
-  "documentValue": "Documento",
-  "mainPhone": "Telefone Principal",
-  "optionalPhone": "Telefone Opcional",
-  "zipCode": "Código Postal",
-  "street": "Rua",
-  "number": "Número",
-  "complement": "Complemento",
-  "district": "Freguesia/Distrito",
-  "city": "Cidade",
-  "stateUF": "Distrito (UF)",
-  "placeholder": {
-    "name": "Ex.: João Silva",
-    "email": "exemplo@dominio.pt",
-    "password": "Introduza a sua palavra-passe",
-    "confirmPassword": "Repita a sua palavra-passe",
-    "username": "Nome de utilizador único",
-    "birthDate": "Selecione uma data",
-    "country": "Selecione o seu país",
-    "documentType": "Selecione o tipo de documento",
-    "documentValue": "Introduza o seu documento",
-    "mainPhone": "Introduza o seu telefone principal",
-    "optionalPhone": "Introduza o seu telefone opcional",
-    "zipCode": "Ex.: 1234-567",
-    "street": "Avenida Exemplo...",
-    "number": "123",
-    "complement": "Apartamento, bloco...",
-    "district": "Introduza a sua freguesia",
-    "city": "Introduza a sua cidade",
-    "stateUF": "Ex.: Lisboa",
-    "emailLogin": "Introduza o seu e-mail",
-    "passwordLogin": "Introduza a sua palavra-passe",
-    "companyName": "Ex.: ABC Empresas Lda.",
-    "tradeName": "Ex.: Loja ABC"
-  },
-  "tourWalk": "Passeio",
-  "tourExcursion": "Excursão",
-  "tourEvent": "Evento",
-  "tourTrail": "Trilho",
-  "tourOther": "Outro",
-  "followUs": "Siga-nos",
-  "signIn": "Entrar",
-  "registerAgent": "Registar Agente",
-  "registerClient": "Registar Cliente",
-  "homePage": "Página Inicial",
-  "about": "Sobre",
-  "tours": "Excursões",
-  "prices": "Preços",
-  "destinations": "Destinos",
-  "contact": "Contacte-nos",
-  "helpline": "Linha de Apoio",
-  "bookTour": "Reservar Excursão",
-  "siteLogoAlt": "Logo do site",
-  "loginTitle": "Iniciar Sessão",
-  "signInButton": "Entrar",
-  "resetPassword": "Redefinir Palavra-passe",
-  "agentType": "Tipo de Agente",
-  "agent": {
-    "person": "Individual",
-    "company": "Empresa"
   }
 }

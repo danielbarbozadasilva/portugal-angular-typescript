@@ -1,52 +1,60 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { AuthState } from './auth.reducer';
+import { IAuthStatus, IUser } from '../../../core/models/models.user';
 
-export const selectAuthState = createFeatureSelector<AuthState>('auth');
+export class AuthSelectors {
+  private constructor() {}
 
-export const selectAuthLoading = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.loading
-);
+  public static get authState(): MemoizedSelector<object, AuthState> {
+    return createFeatureSelector<AuthState>('auth');
+  }
 
-export const selectAuthToken = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.token
-);
+  public static get loading(): MemoizedSelector<object, boolean> {
+    return createSelector(
+      AuthSelectors.authState,
+      (state: AuthState) => state.loading
+    );
+  }
 
-export const selectAuthUser = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.user
-);
+  public static get token(): MemoizedSelector<object, string | null> {
+    return createSelector(AuthSelectors.authState, (state: AuthState) => state.token);
+  }
 
-export const selectAuthError = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.error
-);
+  public static get user(): MemoizedSelector<object, IUser | null> {
+    return createSelector(AuthSelectors.authState, (state: AuthState) => state.user);
+  }
 
-export const selectIsAuthenticated = createSelector(
-  selectAuthToken,
-  (token: string | null) => !!token
-);
+  public static get error(): MemoizedSelector<object, any> {
+    return createSelector(AuthSelectors.authState, (state: AuthState) => state.error);
+  }
 
-export const selectIsRegistered = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.registered
-);
+  public static get isRegistered(): MemoizedSelector<object, boolean> {
+    return createSelector(AuthSelectors.authState, (state: AuthState) => state.registered);
+  }
 
-export const selectAuthStatus = createSelector(
-  selectIsAuthenticated,
-  selectAuthUser,
-  selectAuthLoading,
-  selectAuthError,
-  (isAuthenticated, user, loading, error) => ({
-    isAuthenticated,
-    user,
-    loading,
-    error
-  })
-);
+  public static get recoverySuccess(): MemoizedSelector<object, boolean> {
+    return createSelector(AuthSelectors.authState, (state: AuthState) => state.recoverySuccess);
+  }
 
-export const selectRecoverySuccess = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.recoverySuccess
-);
+  public static get isAuthenticated(): MemoizedSelector<object, boolean> {
+    return createSelector(
+      AuthSelectors.token,
+      (token: string | null) => !!token
+    );
+  }
+
+  public static get authStatus(): MemoizedSelector<object, IAuthStatus> {
+    return createSelector(
+      AuthSelectors.isAuthenticated,
+      AuthSelectors.user,
+      AuthSelectors.loading,
+      AuthSelectors.error,
+      (isAuthenticated: boolean, user: IUser | null, loading: boolean, error: any): IAuthStatus => ({
+        isAuthenticated,
+        user,
+        loading,
+        error,
+      })
+    );
+  }
+}

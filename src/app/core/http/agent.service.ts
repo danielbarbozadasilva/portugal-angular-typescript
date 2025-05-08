@@ -14,9 +14,8 @@ export class AgentService {
 
   constructor(private http: HttpClient) {}
 
-  getAgents(page: number = 1, limit: number = 10, filters?: any): Observable<IPaginatedResponse<IAgent>> {
+  public getAgents(page: number = 1, limit: number = 10, filters?: any): Observable<IPaginatedResponse<IAgent>> {
     let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
-
     if (filters) {
       Object.keys(filters).forEach((key) => {
         if (filters[key]) {
@@ -24,46 +23,28 @@ export class AgentService {
         }
       });
     }
-
-    return this.http.get<IPaginatedResponse<IAgent>>(this.apiUrl, { params }).pipe(catchError(this.handleError));
+    return this.http.get<IPaginatedResponse<IAgent>>(this.apiUrl, { params });
   }
 
   // GET: Buscar um agente pelo ID
-  getAgentById(id: string): Observable<IAgent> {
-    return this.http.get<IAgent>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
+  public getAgentById(id: string): Observable<IAgent> {
+    return this.http.get<IAgent>(`${this.apiUrl}/${id}`);
   }
 
   // POST: Criar um novo agente
-  createAgent(agentData: IAgentData): Observable<IAgent> {
+  public createAgent(agentData: IAgentData): Observable<IAgent> {
     // Removendo campos que não devem ser enviados na criação (ex: _id, createdAt, etc.)
     // A interface IAgentRequest já deve refletir os campos necessários para criação
-    return this.http.post<IAgent>(this.apiUrl, agentData).pipe(catchError(this.handleError));
+    return this.http.post<IAgent>(this.apiUrl, agentData);
   }
 
   // PUT: Atualizar um agente existente
-  updateAgent(id: string, agentData: Partial<IAgentData>): Observable<IAgent> {
+  public updateAgent(id: string, agentData: Partial<IAgentData>): Observable<IAgent> {
     // A interface Partial<IAgentRequest> permite atualizações parciais
-    return this.http.put<IAgent>(`${this.apiUrl}/${id}`, agentData).pipe(catchError(this.handleError));
+    return this.http.put<IAgent>(`${this.apiUrl}/${id}`, agentData);
   }
 
-  // DELETE: Deletar um agente
-  deleteAgent(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
-  }
-
-  // Tratamento de erros genérico
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Ocorreu um erro desconhecido.';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Erro: ${error.error.message}`;
-    } else {
-      errorMessage = `Erro ${error.status}: ${error.message}`;
-      if (error.error && typeof error.error === 'string') {
-        errorMessage += ` - ${error.error}`;
-      } else if (error.error && error.error.message) {
-        errorMessage += ` - ${error.error.message}`;
-      }
-    }
-    return throwError(() => new Error(errorMessage));
+  public deleteAgent(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

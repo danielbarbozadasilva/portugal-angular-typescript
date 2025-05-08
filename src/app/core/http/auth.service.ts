@@ -1,108 +1,67 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
+import { catchError, Observable, throwError } from 'rxjs';
 import {
-  IAuthResponse,
-  IResponseError,
-  IDataResponse,
-  ITokenResponse,
   IAuthParams,
-} from '../models/models.index';
-import { environment } from '../../../environments/environments';
-import { Observable, catchError, throwError, tap } from 'rxjs';
+  ICheckTokenParams,
+  IRefreshToken,
+  IResetPasswordParams,
+  IResponseAuthRecoveryPassword,
+  IResponseAuthRefreshToken,
+  IResponseAuthResetPassword,
+  IResponseAuthSignIn,
+  IResponseAuthSignOut,
+  IResponseAuthTokenValid,
+} from '../models/models.auth';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environments';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class AuthService {
-  private baseUrl = `${environment.apiBaseUrl}/auth`;
-  private readonly TOKEN_KEY = 'authToken';
+  private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
 
   constructor(
     private http: HttpClient,
-    private router: Router
   ) {}
 
-  public loginService(credentials: { email: string; password: string }): Observable<IAuthResponse> {
+  public loginService(credentials: IAuthParams): Observable<IResponseAuthSignIn> {
     const url = `${this.baseUrl}/login`;
-    return this.http.post<IAuthResponse>(url, credentials).pipe(
-      tap((response) => {
-        if (response?.data?.token) {
-          this.storeToken(response.data.token);
-        }
-      }),
-      catchError(this.handleError)
-    );
+    return this.http.post<IResponseAuthSignIn>(url, credentials).pipe(catchError(this.handleError));
   }
 
-  public logoutService(credentials: { _id: string }): Observable<IDataResponse> {
+  public logoutService(credentials: { _id: string }): Observable<IResponseAuthSignOut> {
     const url = `${this.baseUrl}/logout`;
-    return this.http.post<IDataResponse>(url, credentials).pipe(
-      tap(() => this.removeToken()),
+    return this.http.post<IResponseAuthSignOut>(url, credentials).pipe(
       catchError(this.handleError)
     );
   }
 
-  public refreshTokenService(id: string): Observable<ITokenResponse> {
+  public refreshTokenService(credentials: IRefreshToken): Observable<IResponseAuthRefreshToken> {
     const url = `${this.baseUrl}/refresh-token`;
-    return this.http.post<ITokenResponse>(url, { _id: id }).pipe(
-      tap((response) => {
-        if (response?.token) {
-          this.storeToken(response.token);
-        }
-      }),
+    return this.http.post<IResponseAuthRefreshToken>(url, credentials).pipe(
       catchError(this.handleError)
     );
   }
 
-  public checkTokenService(credentials: { token: string }): Observable<ITokenResponse> {
+  public checkTokenService(credentials: ICheckTokenParams): Observable<IResponseAuthTokenValid> {
     const url = `${this.baseUrl}/check-token`;
-    return this.http.post<ITokenResponse>(url, credentials).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<IResponseAuthTokenValid>(url, credentials).pipe(catchError(this.handleError));
   }
 
-  public resetPasswordService(credentials: IAuthParams): Observable<IDataResponse> {
+  public passwordRecoveryService(credentials: IAuthParams): Observable<IResponseAuthResetPassword> {
+    const url = `${this.baseUrl}/password-recovery`;
+    return this.http.post<IResponseAuthResetPassword>(url, credentials).pipe(catchError(this.handleError));
+  }
+
+  public resetPasswordService(credentials: IResetPasswordParams): Observable<IResponseAuthRecoveryPassword> {
     const url = `${this.baseUrl}/reset-password`;
-    return this.http.put<IDataResponse>(url, credentials).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  public passwordRecoveryService(credentials: { email: string }): Observable<IDataResponse> {
-    const url = this.baseUrl + '/password-recovery';
-    return this.http.post<IDataResponse>(url, credentials).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  private storeToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
-  }
-
-  public getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  private removeToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-  }
-
-  public hasToken(): boolean {
-    return !!this.getToken();
+    return this.http.put<IResponseAuthRecoveryPassword>(url, credentials).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('Erro AuthService:', error);
-    // Se for 401 Unauthorized, remove token e redireciona a /signin
-    if (error.status === 401) {
-      this.removeToken();
-      this.router.navigate(['/signin']);
+    if (error.error instanceof ErrorEvent) {
+      console.error('Ocorreu um erro no lado do cliente ou da rede:', error.error.message);
+    } else {
+      console.error(`Backend retornou código ${error.status}, corpo da resposta: `, error.error);
     }
-    const errorResponse: IResponseError = {
-      success: false,
-      message: error.error?.message || error.message || 'Ocorreu um erro de autenticação desconhecido',
-    };
-    return throwError(() => errorResponse);
+    return throwError(() => new Error('Algo deu errado; por favor, tente novamente mais tarde.'));
   }
 }

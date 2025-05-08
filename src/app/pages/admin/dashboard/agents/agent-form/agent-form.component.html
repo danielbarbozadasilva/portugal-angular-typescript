@@ -4,13 +4,15 @@
     {{ (isEditMode() ? 'admin.agents.editTitle' : 'admin.agents.newTitle') | translate }}
   </h1>
 
+  <!-- Loading Indicator -->
   <div *ngIf="loading()" class="text-center py-4">
     <p>{{ 'loadingText' | translate }}</p>
-    <!-- Adicionar spinner -->
+    <!-- Pode adicionar um spinner aqui -->
   </div>
 
+  <!-- Error Message -->
   <div
-    *ngIf="error()"
+    *ngIf="error() && !loading()"
     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
     role="alert"
   >
@@ -18,41 +20,94 @@
     <span class="block sm:inline"> {{ error() }}</span>
   </div>
 
-  <form [formGroup]="form" class="p-6 max-w-lg mx-auto bg-white rounded shadow flex flex-col gap-4">
-    <div>
-      <label class="block mb-1">Nome</label>
-      <input formControlName="name" type="text" class="border rounded px-3 py-2 w-full" />
+  <!-- Agent Form -->
+  <form
+    *ngIf="!loading()"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    class="p-6 max-w-lg mx-auto bg-white rounded shadow flex flex-col gap-4"
+  >
+    <!-- Name Field -->
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700">{{ 'name' | translate }}</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['name'].invalid && f['name'].touched,
+          'border-gray-300': !f['name'].invalid || !f['name'].touched,
+        }"
+      />
+      <div *ngIf="f['name'].invalid && f['name'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['name'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+        <span *ngIf="f['name'].errors?.['minlength']">{{ 'errors.nameMin' | translate: { min: 3 } }}</span>
+      </div>
     </div>
-    <div>
-      <label class="block mb-1">Especialidade</label>
-      <input formControlName="specialty" type="text" class="border rounded px-3 py-2 w-full" />
+
+    <!-- Specialty Field -->
+    <div class="mb-4">
+      <label for="specialty" class="block text-sm font-medium text-gray-700">{{ 'specialty' | translate }}</label>
+      <input
+        type="text"
+        id="specialty"
+        formControlName="specialty"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['specialty'].invalid && f['specialty'].touched,
+          'border-gray-300': !f['specialty'].invalid || !f['specialty'].touched,
+        }"
+      />
+      <div *ngIf="f['specialty'].invalid && f['specialty'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['specialty'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+      </div>
     </div>
-    <div>
-      <label class="block mb-1">Contato</label>
-      <input formControlName="contact" type="text" class="border rounded px-3 py-2 w-full" />
+
+    <!-- Contact Field -->
+    <div class="mb-4">
+      <label for="contact" class="block text-sm font-medium text-gray-700">{{ 'contact' | translate }}</label>
+      <input
+        type="text"
+        id="contact"
+        formControlName="contact"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm sm:text-sm"
+        [ngClass]="{
+          'border-red-500': f['contact'].invalid && f['contact'].touched,
+          'border-gray-300': !f['contact'].invalid || !f['contact'].touched,
+        }"
+      />
+      <!-- Considerar adicionar validação de email ou telefone aqui se o campo for específico -->
+      <div *ngIf="f['contact'].invalid && f['contact'].touched" class="text-red-600 text-sm mt-1">
+        <span *ngIf="f['contact'].errors?.['required']">{{ 'errors.fieldRequired' | translate }}</span>
+        <!-- Adicionar erros de validação específicos (email, phone) se aplicável -->
+      </div>
     </div>
-    <div>
-      <label class="block mb-1">Tipo</label>
-      <select formControlName="type" class="border rounded px-3 py-2 w-full">
-        <option value="individual">Pessoa Física</option>
-        <option value="company">Pessoa Jurídica</option>
-      </select>
-    </div>
-    <div>
-      <label class="block mb-1">Documento</label>
-      <input formControlName="document" type="text" class="border rounded px-3 py-2 w-full" />
-    </div>
-    <div>
-      <label class="block mb-1">Endereço</label>
-      <input formControlName="address" type="text" class="border rounded px-3 py-2 w-full" />
-    </div>
-    <div>
-      <label class="block mb-1">Dados Bancários</label>
-      <input formControlName="bankData" type="text" class="border rounded px-3 py-2 w-full" />
-    </div>
-    <div class="flex justify-end gap-2">
-      <button type="submit" class="bg-primary text-white px-4 py-2 rounded" [disabled]="form.invalid">Salvar</button>
-      <button type="button" class="bg-gray-200 px-4 py-2 rounded">Cancelar</button>
+
+    <!-- Removed Fields: type, document, address, bankData -->
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-2 mt-4">
+      <button
+        type="button"
+        (click)="onCancel()"
+        [disabled]="saving()"
+        class="rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.invalid || saving()"
+        class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span *ngIf="!saving()">{{ (isEditMode() ? 'saveChanges' : 'create') | translate }}</span>
+        <span *ngIf="saving()">{{ 'saving' | translate }}...</span>
+      </button>
     </div>
   </form>
 </div>

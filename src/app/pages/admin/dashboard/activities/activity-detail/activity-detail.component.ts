@@ -1,23 +1,20 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import {  RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
+import { selectActivityCurrentPage, selectActivityError, selectActivityLoading } from '@app/core/store/activity/activity.selectors';
+import { IActivity } from '@app/core/models/models.activity';
 
-import { IActivity } from '../../core/models/models.activity';
-import {
-  selectActivityLoading,
-  selectActivityError,
-} from '../../core/store/activity/activity.selectors';
 
 @Component({
   selector: 'app-activity-detail',
   standalone: true,
   imports: [CommonModule, TranslateModule, RouterLink],
   templateUrl: './activity-detail.component.html',
-  styleUrls: ['./activity-detail.component.scss'],
 })
+
 export class ActivityDetailComponent implements OnInit, OnDestroy {
   private store = inject(Store);
 
@@ -31,30 +28,30 @@ export class ActivityDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loading$ = this.store.select(selectActivityLoading);
     this.error$ = this.store.select(selectActivityError);
-    // this.activity$ = this.store.select(selectActivityCurrentPage);
+    this.activity$ = this.store.select(selectActivityCurrentPage);
 
-    // this.route.paramMap
-    //   .pipe(
-    //     takeUntil(this.destroy$),
-    //     switchMap((params) => {
-    //       const id = params.get('id');
-    //       if (!id) {
-    //         console.error('Activity ID not found in route parameters.');
-    //         this.router.navigate(['/not-found']);
-    //         throw new Error('Activity ID not found');
-    //       }
-    //       this.store.dispatch(ActivityActions.loadActivityById({ id }));
-    //       return this.activity$;
-    //     })
-    //   )
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.activityData = data;
-    //     },
-    //     error: (err) => {
-    //       console.error('Error in activity subscription pipeline:', err);
-    //     },
-    //   });
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((params) => {
+          const id = params.get('id');
+          if (!id) {
+            console.error('Activity ID not found in route parameters.');
+            this.router.navigate(['/not-found']);
+            throw new Error('Activity ID not found');
+          }
+          this.store.dispatch(ActivityActions.loadActivityById({ id }));
+          return this.activity$;
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          this.activityData = data;
+        },
+        error: (err) => {
+          console.error('Error in activity subscription pipeline:', err);
+        },
+      });
 
     this.error$.pipe(takeUntil(this.destroy$)).subscribe((error) => {
       if (error) {
